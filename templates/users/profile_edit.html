@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Edit Profile" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'users:profile' %}" class="text-purple-600 hover:text-purple-700 mb-4 inline-flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Profile" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Edit Profile" %}</h1>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- User Info -->
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{% trans "Account Information" %}</h2>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {% trans "First Name" %}
+                            </label>
+                            {{ user_form.first_name }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {% trans "Last Name" %}
+                            </label>
+                            {{ user_form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {% trans "Email" %}
+                        </label>
+                        {{ user_form.email }}
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="pt-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">{% trans "Profile Information" %}</h2>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {% trans "Phone" %}
+                            </label>
+                            {{ profile_form.phone }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {% trans "Birth Date" %}
+                            </label>
+                            {{ profile_form.birth_date }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {% trans "Bio" %}
+                        </label>
+                        {{ profile_form.bio }}
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {% trans "Avatar" %}
+                        </label>
+                        {{ profile_form.avatar }}
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-6">
+                    <button type="submit" class="flex-1 gradient-primary text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+                        {% trans "Save Changes" %}
+                    </button>
+                    <a href="{% url 'users:profile' %}" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-bold text-center hover:bg-gray-300 transition-all">
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Notification Settings" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'users:settings' %}" class="text-purple-600 hover:text-purple-700 mb-4 inline-flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Settings" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Notification Settings" %}</h1>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Email Notifications -->
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mr-4">
+                            <span class="iconify text-2xl text-blue-600" data-icon="mdi:email"></span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">{% trans "Email Notifications" %}</h3>
+                            <p class="text-sm text-gray-500">{% trans "Receive updates via email" %}</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="email_notifications" class="sr-only peer"
+                               {% if user.profile.email_notifications %}checked{% endif %}>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                    </label>
+                </div>
+
+                <!-- SMS Notifications -->
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mr-4">
+                            <span class="iconify text-2xl text-green-600" data-icon="mdi:message-text"></span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">{% trans "SMS Notifications" %}</h3>
+                            <p class="text-sm text-gray-500">{% trans "Receive updates via SMS" %}</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="sms_notifications" class="sr-only peer"
+                               {% if user.profile.sms_notifications %}checked{% endif %}>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                    </label>
+                </div>
+
+                <!-- Save Button -->
+                <button type="submit" class="w-full gradient-primary text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+                    {% trans "Save Settings" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

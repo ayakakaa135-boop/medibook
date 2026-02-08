@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "My Appointments" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "All Appointments" %}</h1>
+            <a href="{% url 'doctors:dashboard' %}" class="text-purple-600 hover:text-purple-700">
+                ← {% trans "Back to Dashboard" %}
+            </a>
+        </div>
+
+        <!-- Appointments List -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{% trans "Date & Time" %}</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{% trans "Patient" %}</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{% trans "Service" %}</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{% trans "Clinic" %}</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">{% trans "Status" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for appt in appointments %}
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <td class="px-6 py-4">
+                                <p class="font-medium text-gray-900 dark:text-white">{{ appt.date|date:"d M Y" }}</p>
+                                <p class="text-sm text-gray-500">{{ appt.start_time|time:"H:i" }} - {{ appt.end_time|time:"H:i" }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <img src="{{ appt.patient.profile.get_avatar_url }}" alt="" class="w-8 h-8 rounded-full mr-3">
+                                    <span class="text-gray-900 dark:text-white">{{ appt.patient.get_full_name }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ appt.service.name }}</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ appt.clinic.name }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-sm font-medium
+                                    {% if appt.status == 'CONFIRMED' %}bg-green-100 text-green-800
+                                    {% elif appt.status == 'PENDING' %}bg-yellow-100 text-yellow-800
+                                    {% elif appt.status == 'CANCELLED' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ appt.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                <span class="iconify text-4xl mb-2" data-icon="mdi:calendar-blank"></span>
+                                <p>{% trans "No appointments found" %}</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                {% include "partials/pagination.html" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+<!-- templates/emails/payment_reminder.html -->
+{% load i18n %}
+
+<h2>Payment Reminder</h2>
+<p>Dear {{ appointment.patient.get_full_name }},</p>
+<p>This is a reminder that your payment for the appointment with
+Dr. {{ appointment.doctor.user.get_full_name }} is due in
+{{ appointment.days_until_payment_due }} days.</p>
+
+<p><strong>Amount Due: {{ appointment.total_amount }} SAR</strong></p>
+
+<a href="{{ payment_url }}">Pay Now</a>

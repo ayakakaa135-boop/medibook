@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ service.name }} | {% trans "Service Details" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <a href="{% url 'services:list' %}" class="text-purple-600 hover:text-purple-700 inline-flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Services" %}
+            </a>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Image Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                <div class="h-96 bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                    {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <span class="iconify text-8xl text-white" data-icon="mdi:medical-bag"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="space-y-6">
+                <!-- Header -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">{{ service.name }}</h1>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-4xl font-bold text-purple-600">{{ service.price }} SAR</span>
+                        <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                            {{ service.duration }} {% trans "minutes" %}
+                        </span>
+                    </div>
+
+                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+                        {{ service.description|linebreaks }}
+                    </p>
+
+                    <!-- Clinic Info -->
+                    <div class="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl mb-6">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-4">
+                            <span class="iconify text-2xl text-purple-600" data-icon="mdi:hospital-building"></span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">{% trans "Available at" %}</p>
+                            <p class="font-semibold text-gray-900 dark:text-white">{{ service.clinic.name }}</p>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="space-y-3">
+                        <a href="{% url 'appointments:create' %}?service={{ service.pk }}"
+                           class="block w-full text-center gradient-primary text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                            <span class="iconify inline mr-2" data-icon="mdi:calendar-plus"></span>
+                            {% trans "Book This Service" %}
+                        </a>
+
+                        <a href="{% url 'clinics:detail' service.clinic.slug %}"
+                           class="block w-full text-center bg-white dark:bg-gray-700 text-purple-600 dark:text-purple-400 py-4 rounded-lg font-bold border-2 border-purple-600 hover:bg-purple-50 dark:hover:bg-gray-600 transition-all">
+                            {% trans "View Clinic" %}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{% trans "What to Expect" %}</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-green-500" data-icon="mdi:check-circle"></span>
+                            {% trans "Professional consultation" %}
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-green-500" data-icon="mdi:check-circle"></span>
+                            {% trans "State-of-the-art equipment" %}
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-green-500" data-icon="mdi:check-circle"></span>
+                            {% trans "Personalized treatment plan" %}
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-green-500" data-icon="mdi:check-circle"></span>
+                            {% trans "Follow-up care" %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

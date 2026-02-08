@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Cancel Appointment" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <!-- Icon -->
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-3xl text-red-600" data-icon="mdi:alert-circle"></span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    {% trans "Cancel Appointment" %}
+                </h1>
+            </div>
+
+            <!-- Fee Warning -->
+            {% if will_charge_fee %}
+            <div class="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
+                <div class="flex">
+                    <span class="iconify text-red-600 text-2xl mr-4 flex-shrink-0" data-icon="mdi:currency-usd-circle"></span>
+                    <div>
+                        <h3 class="text-lg font-bold text-red-800 dark:text-red-400 mb-2">
+                            {% trans "Cancellation Fee Applies" %}
+                        </h3>
+                        <p class="text-red-700 dark:text-red-300 mb-3">
+                            {% trans "You are canceling less than 24 hours before your appointment. A cancellation fee will be charged." %}
+                        </p>
+                        <div class="bg-white dark:bg-red-950 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300 font-semibold">
+                                    {% trans "Cancellation Fee:" %}
+                                </span>
+                                <span class="text-2xl font-bold text-red-600">
+                                    {{ cancellation_fee }} {% trans "SAR" %}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                                {% trans "50% of appointment fee" %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                <div class="flex">
+                    <span class="iconify text-green-600 text-xl mr-3" data-icon="mdi:check-circle"></span>
+                    <div>
+                        <p class="text-green-800 dark:text-green-400 font-semibold">
+                            {% trans "Free Cancellation" %}
+                        </p>
+                        <p class="text-sm text-green-700 dark:text-green-300 mt-1">
+                            {% trans "You can cancel this appointment without any fees as you're canceling more than 24 hours in advance." %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Appointment Details -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-4">
+                    {% trans "Appointment Details" %}
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Doctor:" %}</span>
+                        <span class="font-semibold text-gray-900 dark:text-white">
+                            Dr. {{ appointment.doctor.user.get_full_name }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Date:" %}</span>
+                        <span class="font-semibold text-gray-900 dark:text-white">
+                            {{ appointment.date|date:"d M Y" }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Time:" %}</span>
+                        <span class="font-semibold text-gray-900 dark:text-white">
+                            {{ appointment.start_time|time:"H:i" }}
+                        </span>
+                    </div>
+                    {% if hours_until %}
+                    <div class="flex justify-between">
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Time Until:" %}</span>
+                        <span class="font-semibold {% if hours_until < 24 %}text-red-600{% else %}text-green-600{% endif %}">
+                            {{ hours_until|floatformat:1 }} {% trans "hours" %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Cancellation Form -->
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Reason -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Reason for Cancellation" %}
+                    </label>
+                    <textarea name="reason" rows="4"
+                              class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+                              placeholder="{% trans 'Please tell us why you are canceling (optional)' %}"></textarea>
+                </div>
+
+                <!-- Fee Acknowledgment -->
+                {% if will_charge_fee %}
+                <div class="mb-6">
+                    <label class="flex items-start">
+                        <input type="checkbox" name="acknowledge_fee" required
+                               class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 mt-1">
+                        <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
+                            {% trans "I understand and agree to pay the cancellation fee of" %} 
+                            <strong class="text-red-600">{{ cancellation_fee }} SAR</strong>
+                        </span>
+                    </label>
+                </div>
+                {% endif %}
+
+                <!-- Buttons -->
+                <div class="flex space-x-3">
+                    <a href="{{ appointment.get_absolute_url }}" 
+                       class="flex-1 text-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        {% trans "Keep Appointment" %}
+                    </a>
+                    <button type="submit"
+                            class="flex-1 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                        {% trans "Confirm Cancellation" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

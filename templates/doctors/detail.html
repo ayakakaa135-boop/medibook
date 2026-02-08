@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ doctor.user.get_full_name }} | {% trans "Doctor Profile" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-20">
+    <!-- Header Section -->
+    <section class="bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 text-white pt-24 pb-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                <!-- Doctor Image -->
+                <div class="relative">
+                    <img src="{{ doctor.user.profile.get_avatar_url }}"
+                         alt="{{ doctor.user.get_full_name }}"
+                         class="w-40 h-40 rounded-full border-4 border-white shadow-2xl object-cover">
+                    {% if doctor.is_verified %}
+                    <div class="absolute bottom-2 right-2 bg-green-500 text-white rounded-full p-2">
+                        <span class="iconify text-xl" data-icon="mdi:check-decagram"></span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Doctor Info -->
+                <div class="text-center md:text-left flex-1">
+                    <h1 class="text-4xl font-bold mb-2">{{ doctor.user.get_full_name }}</h1>
+                    <p class="text-xl text-purple-100 mb-4">{{ doctor.specialization.name }}</p>
+
+                    <div class="flex flex-wrap justify-center md:justify-start gap-4 mb-6">
+                        <div class="flex items-center space-x-2 bg-white/20 rounded-full px-4 py-2">
+                            <span class="iconify text-yellow-300" data-icon="mdi:star"></span>
+                            <span class="font-bold">{{ doctor.rating|default:"5.0" }}</span>
+                            <span class="text-purple-100">({{ doctor.total_reviews|default:"0" }} {% trans "reviews" %})</span>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white/20 rounded-full px-4 py-2">
+                            <span class="iconify" data-icon="mdi:map-marker"></span>
+                            <span>{{ doctor.clinic.city }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-3 gap-4 max-w-md mx-auto md:mx-0">
+                        <div class="bg-white/10 rounded-xl p-4 text-center">
+                            <div class="text-3xl font-bold">{{ stats.experience_years|default:"0" }}</div>
+                            <div class="text-sm text-purple-100">{% trans "Years Exp." %}</div>
+                        </div>
+                        <div class="bg-white/10 rounded-xl p-4 text-center">
+                            <div class="text-3xl font-bold">{{ stats.total_patients|default:"0" }}</div>
+                            <div class="text-sm text-purple-100">{% trans "Patients" %}</div>
+                        </div>
+                        <div class="bg-white/10 rounded-xl p-4 text-center">
+                            <div class="text-3xl font-bold">{{ doctor.consultation_fee }}</div>
+                            <div class="text-sm text-purple-100">{% trans "SAR" %}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Button -->
+                <div class="md:self-center">
+                    {% if user.is_authenticated and user.is_patient %}
+                    <a href="{% url 'appointments:create' %}?doctor={{ doctor.pk }}"
+                       class="block bg-white text-purple-600 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all text-center">
+                        <span class="iconify inline mr-2" data-icon="mdi:calendar-plus"></span>
+                        {% trans "Book Now" %}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}?next={% url 'appointments:create' %}?doctor={{ doctor.pk }}"
+                       class="block bg-white/20 text-white border-2 border-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all text-center">
+                        <span class="iconify inline mr-2" data-icon="mdi:login"></span>
+                        {% trans "Login to Book" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Main Info -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- About -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="iconify mr-2 text-purple-600" data-icon="mdi:information"></span>
+                        {% trans "About" %}
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {{ doctor.bio|default:_("No biography available.")|linebreaks }}
+                    </p>
+                </div>
+
+                <!-- Working Hours -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="iconify mr-2 text-purple-600" data-icon="mdi:clock-outline"></span>
+                        {% trans "Working Hours" %}
+                    </h2>
+                    <div class="space-y-3">
+                        {% for hour in working_hours %}
+                        <div class="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                            <span class="font-medium text-gray-900 dark:text-white">{{ hour.get_day_of_week_display }}</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ hour.start_time|time:"H:i" }} - {{ hour.end_time|time:"H:i" }}</span>
+                        </div>
+                        {% empty %}
+                        <p class="text-gray-500">{% trans "No working hours set" %}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <span class="iconify mr-2 text-purple-600" data-icon="mdi:star-circle"></span>
+                        {% trans "Reviews" %}
+                    </h2>
+                    <p class="text-gray-500">{% trans "Reviews coming soon..." %}</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Clinic Info -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">{% trans "Clinic" %}</h3>
+                    <div class="flex items-start space-x-3 mb-4">
+                        <span class="iconify text-2xl text-purple-600" data-icon="mdi:hospital-building"></span>
+                        <div>
+                            <p class="font-semibold text-gray-900 dark:text-white">{{ doctor.clinic.name }}</p>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">{{ doctor.clinic.address }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'clinics:detail' doctor.clinic.slug %}"
+                       class="block text-center text-purple-600 hover:text-purple-700 font-medium">
+                        {% trans "View Clinic" %} →
+                    </a>
+                </div>
+
+                <!-- Location Map Placeholder -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">{% trans "Location" %}</h3>
+                    <div class="bg-gray-200 dark:bg-gray-700 rounded-xl h-48 flex items-center justify-center">
+                        <span class="iconify text-4xl text-gray-400" data-icon="mdi:map"></span>
+                    </div>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400">{{ doctor.clinic.city }}, {{ doctor.clinic.address }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

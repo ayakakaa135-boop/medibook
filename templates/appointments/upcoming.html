@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Upcoming Appointments" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {% trans "Upcoming Appointments" %}
+            </h1>
+            <a href="{% url 'appointments:my_appointments' %}"
+               class="text-purple-600 hover:text-purple-700 flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to All" %}
+            </a>
+        </div>
+
+        <!-- Appointments List -->
+        <div class="space-y-4">
+            {% for appointment in appointments %}
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow border-l-4
+                {% if appointment.is_paid %}border-green-500{% elif appointment.is_payment_overdue %}border-red-500{% else %}border-yellow-500{% endif %}">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+                    <!-- Doctor Info -->
+                    <div class="flex items-center space-x-4 flex-1">
+                        <img src="{{ appointment.doctor.user.profile.get_avatar_url }}"
+                             alt="{{ appointment.doctor.user.get_full_name }}"
+                             class="w-16 h-16 rounded-full object-cover ring-2
+                                {% if appointment.is_paid %}ring-green-200{% elif appointment.is_payment_overdue %}ring-red-200{% else %}ring-yellow-200{% endif %}">
+                        <div>
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white">
+                                Dr. {{ appointment.doctor.user.get_full_name }}
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ appointment.doctor.specialization.name }}
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                {{ appointment.clinic.name }}
+                            </p>
+
+                            <!-- Payment Status -->
+                            {% if appointment.is_paid %}
+                            <p class="text-sm font-semibold text-green-600 mt-1 flex items-center">
+                                <span class="iconify mr-1" data-icon="mdi:check-circle"></span>
+                                {% trans "Paid" %}
+                            </p>
+                            {% elif appointment.is_payment_overdue %}
+                            <p class="text-sm font-semibold text-red-600 mt-1 flex items-center">
+                                <span class="iconify mr-1" data-icon="mdi:alert-circle"></span>
+                                {% trans "Payment Overdue" %} - {{ appointment.total_amount }} SAR
+                            </p>
+                            {% else %}
+                            <p class="text-sm font-semibold text-yellow-600 mt-1">
+                                {% trans "Payment Due" %} - {{ appointment.total_amount }} SAR
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Date & Time -->
+                    <div class="text-center bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 min-w-[140px]">
+                        <p class="text-2xl font-bold text-purple-600 mb-1">
+                            {{ appointment.date|date:"d" }}
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            {{ appointment.date|date:"F Y" }}
+                        </p>
+                        <p class="text-gray-700 dark:text-gray-300 font-semibold flex items-center justify-center">
+                            <span class="iconify mr-1" data-icon="mdi:clock"></span>
+                            {{ appointment.start_time|time:"H:i" }}
+                        </p>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="text-center min-w-[120px]">
+                        <span class="px-4 py-2 rounded-full text-sm font-semibold
+                            {% if appointment.status == 'CONFIRMED' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                            {% elif appointment.status == 'PENDING' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400
+                            {% endif %}">
+                            {{ appointment.get_status_display }}
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-3">
+                        <a href="{{ appointment.get_absolute_url }}"
+                           class="text-purple-600 hover:text-purple-700 p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors"
+                           title="{% trans 'View Details' %}">
+                            <span class="iconify text-xl" data-icon="mdi:eye"></span>
+                        </a>
+
+                        <!-- Payment Button -->
+                        {% if not appointment.is_paid %}
+                        <a href="{% url 'appointments:payment' appointment.pk %}"
+                           class="{% if appointment.is_payment_overdue %}bg-red-500 hover:bg-red-600{% else %}bg-green-500 hover:bg-green-600{% endif %} text-white px-4 py-2 rounded-lg transition-colors font-semibold text-sm flex items-center">
+                            <span class="iconify mr-1" data-icon="mdi:credit-card"></span>
+                            {% trans "Pay" %}
+                        </a>
+                        {% endif %}
+
+                        {% if appointment.can_cancel %}
+                        <a href="{% url 'appointments:cancel_with_fee' appointment.pk %}"
+                           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors font-semibold text-sm">
+                            {% trans "Cancel" %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Service Info -->
+                {% if appointment.service %}
+                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 dark:text-gray-400">
+                            {{ appointment.service.name }}
+                        </span>
+                        <span class="font-bold text-purple-600">
+                            {{ appointment.service.price }} {% trans "SAR" %}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <!-- Empty State -->
+            <div class="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
+                <span class="iconify text-6xl text-gray-300 dark:text-gray-600 mb-4" data-icon="mdi:calendar-check"></span>
+                <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                    {% trans "No upcoming appointments" %}
+                </h3>
+                <p class="text-gray-500 dark:text-gray-500 mb-6">
+                    {% trans "All your appointments are either completed or canceled" %}
+                </p>
+                <a href="{% url 'doctors:list' %}"
+                   class="gradient-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all inline-flex items-center">
+                    <span class="iconify mr-2" data-icon="mdi:plus"></span>
+                    {% trans "Book New Appointment" %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="mt-8">
+            {% include "partials/pagination.html" %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

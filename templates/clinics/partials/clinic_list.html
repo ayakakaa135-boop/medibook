@@ -1,0 +1,110 @@
+{% load static i18n %}
+
+{% for clinic in clinics %}
+<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 animate-fade-in-up">
+
+    <!-- Clinic Cover Image -->
+    <div class="h-48 bg-gradient-to-br from-purple-500 to-blue-500 relative overflow-hidden">
+        {% if clinic.cover_image %}
+        <img src="{{ clinic.cover_image.url }}"
+             alt="{{ clinic.name }}"
+             class="w-full h-full object-cover">
+        {% else %}
+        <div class="absolute inset-0 flex items-center justify-center">
+            <span class="iconify text-white text-6xl opacity-20" data-icon="mdi:hospital-building"></span>
+        </div>
+        {% endif %}
+
+        <!-- Rating Badge -->
+        <div class="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-3 py-2 shadow-lg flex items-center space-x-1">
+            <span class="iconify text-yellow-500" data-icon="mdi:star"></span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ clinic.rating|floatformat:1 }}</span>
+        </div>
+
+        <!-- Status Badge -->
+        {% if clinic.is_active %}
+        <div class="absolute top-4 left-4 bg-green-500 text-white rounded-full px-3 py-1 text-sm font-semibold shadow-lg">
+            <span class="iconify mr-1" data-icon="mdi:check-circle"></span>
+            {% trans "Open" %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Clinic Info -->
+    <div class="p-6">
+
+        <!-- Clinic Name -->
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-1">
+            {{ clinic.name }}
+        </h3>
+
+        <!-- Location -->
+        <div class="flex items-center text-gray-600 dark:text-gray-400 mb-3">
+            <span class="iconify mr-2 text-purple-600" data-icon="mdi:map-marker"></span>
+            <span class="line-clamp-1">{{ clinic.address }}, {{ clinic.city }}</span>
+        </div>
+
+        <!-- Contact -->
+        <div class="flex items-center text-gray-600 dark:text-gray-400 mb-4">
+            <span class="iconify mr-2 text-purple-600" data-icon="mdi:phone"></span>
+            <span>{{ clinic.phone }}</span>
+        </div>
+
+        <!-- Description -->
+        <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+            {{ clinic.description }}
+        </p>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
+                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    {{ clinic.doctor_count|default:0 }}
+                </div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">
+                    {% trans "Doctors" %}
+                </div>
+            </div>
+
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {{ clinic.total_reviews|default:0 }}
+                </div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">
+                    {% trans "Reviews" %}
+                </div>
+            </div>
+
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+                    {{ clinic.rating|floatformat:1 }}
+                </div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">
+                    {% trans "Rating" %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <a href="{% url 'clinics:detail' clinic.slug %}"
+           class="block w-full text-center gradient-primary text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+            <span class="iconify mr-2" data-icon="mdi:information"></span>
+            {% trans "View Details" %}
+        </a>
+
+    </div>
+</div>
+{% empty %}
+<div class="col-span-full">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
+        <span class="iconify text-6xl text-gray-400 mb-4" data-icon="mdi:hospital-building-outline"></span>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            {% trans "No Clinics Found" %}
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400">
+            {% trans "Try adjusting your search criteria" %}
+        </p>
+    </div>
+</div>
+{% endfor %}
+

@@ -1,0 +1,1230 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-22 17:00+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\apps\appointments\admin.py:32
+msgid "Appointment Info"
+msgstr ""
+
+#: .\apps\appointments\admin.py:35
+msgid "Schedule"
+msgstr ""
+
+#: .\apps\appointments\admin.py:38 .\apps\services\admin.py:21
+msgid "Details"
+msgstr ""
+
+#: .\apps\appointments\admin.py:41
+msgid "Cancellation"
+msgstr ""
+
+#: .\apps\appointments\admin.py:45 .\apps\clinics\admin.py:34
+#: .\apps\doctors\admin.py:56 .\apps\services\admin.py:30
+#: .\apps\users\admin.py:52
+msgid "Timestamps"
+msgstr ""
+
+#: .\apps\appointments\admin.py:54 .\apps\users\models.py:42
+#: .\templates\dashboard\admin.html:212
+msgid "Patient"
+msgstr ""
+
+#: .\apps\appointments\admin.py:59 .\apps\users\models.py:43
+#: .\templates\appointments\create.html:33 .\templates\dashboard\admin.html:215
+#: .\templates\home.html:33
+msgid "Doctor"
+msgstr ""
+
+#: .\apps\appointments\admin.py:76 .\apps\doctors\admin.py:53
+#: .\apps\services\admin.py:27 .\templates\dashboard\admin.html:221
+msgid "Status"
+msgstr ""
+
+#: .\apps\appointments\admin.py:88
+msgid "Confirm selected appointments"
+msgstr ""
+
+#: .\apps\appointments\admin.py:98
+msgid "Cancel selected appointments"
+msgstr ""
+
+#: .\apps\appointments\admin.py:104
+msgid "Mark as completed"
+msgstr ""
+
+#: .\apps\appointments\forms.py:28
+msgid "Describe your symptoms..."
+msgstr ""
+
+#: .\apps\appointments\forms.py:48
+msgid "Cannot book appointments in the past"
+msgstr ""
+
+#: .\apps\appointments\forms.py:69
+msgid "Doctor is not available on this day"
+msgstr ""
+
+#: .\apps\appointments\forms.py:79
+msgid "Selected time is outside doctor's working hours"
+msgstr ""
+
+#: .\apps\appointments\forms.py:83
+msgid "Doctor is not available on this date"
+msgstr ""
+
+#: .\apps\appointments\forms.py:97 .\apps\appointments\views.py:254
+msgid "This time slot is already booked"
+msgstr ""
+
+#: .\apps\appointments\forms.py:109
+msgid "Reason for cancellation (optional)"
+msgstr ""
+
+#: .\apps\appointments\forms.py:118
+msgid "All Statuses"
+msgstr ""
+
+#: .\apps\appointments\models.py:12
+msgid "Pending"
+msgstr ""
+
+#: .\apps\appointments\models.py:13
+msgid "Confirmed"
+msgstr ""
+
+#: .\apps\appointments\models.py:14 .\templates\dashboard\patient.html:31
+msgid "Canceled"
+msgstr ""
+
+#: .\apps\appointments\models.py:15 .\templates\dashboard\patient.html:26
+msgid "Completed"
+msgstr ""
+
+#: .\apps\appointments\models.py:16
+msgid "No Show"
+msgstr ""
+
+#: .\apps\appointments\models.py:23
+msgid "patient"
+msgstr ""
+
+#: .\apps\appointments\models.py:30 .\apps\doctors\models.py:85
+#: .\apps\doctors\models.py:115 .\apps\doctors\models.py:139
+msgid "doctor"
+msgstr ""
+
+#: .\apps\appointments\models.py:36 .\apps\clinics\models.py:41
+#: .\apps\doctors\models.py:44 .\apps\services\models.py:13
+msgid "clinic"
+msgstr ""
+
+#: .\apps\appointments\models.py:43 .\apps\services\models.py:38
+msgid "service"
+msgstr ""
+
+#: .\apps\appointments\models.py:47 .\apps\doctors\models.py:141
+msgid "date"
+msgstr ""
+
+#: .\apps\appointments\models.py:48 .\apps\doctors\models.py:118
+msgid "start time"
+msgstr ""
+
+#: .\apps\appointments\models.py:49 .\apps\doctors\models.py:119
+msgid "end time"
+msgstr ""
+
+#: .\apps\appointments\models.py:52
+msgid "symptoms"
+msgstr ""
+
+#: .\apps\appointments\models.py:53
+msgid "notes"
+msgstr ""
+
+#: .\apps\appointments\models.py:55
+msgid "status"
+msgstr ""
+
+#: .\apps\appointments\models.py:62 .\apps\clinics\models.py:37
+#: .\apps\doctors\models.py:15 .\apps\doctors\models.py:81
+#: .\apps\doctors\models.py:145 .\apps\services\models.py:34
+#: .\apps\users\models.py:134
+msgid "created at"
+msgstr ""
+
+#: .\apps\appointments\models.py:63 .\apps\clinics\models.py:38
+#: .\apps\doctors\models.py:82 .\apps\services\models.py:35
+#: .\apps\users\models.py:135
+msgid "updated at"
+msgstr ""
+
+#: .\apps\appointments\models.py:64
+msgid "confirmed at"
+msgstr ""
+
+#: .\apps\appointments\models.py:65
+msgid "canceled at"
+msgstr ""
+
+#: .\apps\appointments\models.py:66
+msgid "cancellation reason"
+msgstr ""
+
+#: .\apps\appointments\models.py:69
+msgid "appointment"
+msgstr ""
+
+#: .\apps\appointments\models.py:70 .\templates\dashboard\admin.html:154
+#: .\templates\dashboard\admin.html:181
+msgid "appointments"
+msgstr ""
+
+#: .\apps\appointments\views.py:110
+msgid "Appointment booked successfully!"
+msgstr ""
+
+#: .\apps\appointments\views.py:151
+msgid "This appointment cannot be canceled"
+msgstr ""
+
+#: .\apps\appointments\views.py:164
+msgid "Appointment canceled successfully"
+msgstr ""
+
+#: .\apps\appointments\views.py:184 .\apps\appointments\views.py:210
+msgid "Unauthorized"
+msgstr ""
+
+#: .\apps\appointments\views.py:192
+msgid "Appointment confirmed"
+msgstr ""
+
+#: .\apps\appointments\views.py:217
+msgid "Appointment marked as completed"
+msgstr ""
+
+#: .\apps\appointments\views.py:259
+msgid "This time slot is available"
+msgstr ""
+
+#: .\apps\clinics\admin.py:19 .\apps\services\admin.py:18
+msgid "Basic Info"
+msgstr ""
+
+#: .\apps\clinics\admin.py:22
+msgid "Contact"
+msgstr ""
+
+#: .\apps\clinics\admin.py:25
+msgid "Media"
+msgstr ""
+
+#: .\apps\clinics\admin.py:28
+msgid "Operating Hours"
+msgstr ""
+
+#: .\apps\clinics\admin.py:31
+msgid "Status & Rating"
+msgstr ""
+
+#: .\apps\clinics\forms.py:11 .\templates\clinics\list.html:26
+msgid "Search clinics..."
+msgstr ""
+
+#: .\apps\clinics\forms.py:33 .\templates\clinics\list.html:39
+msgid "All Cities"
+msgstr ""
+
+#: .\apps\clinics\models.py:12 .\apps\doctors\models.py:10
+#: .\apps\services\models.py:15
+msgid "name"
+msgstr ""
+
+#: .\apps\clinics\models.py:13 .\apps\doctors\models.py:11
+#: .\apps\services\models.py:16
+msgid "slug"
+msgstr ""
+
+#: .\apps\clinics\models.py:14 .\apps\doctors\models.py:12
+#: .\apps\services\models.py:17
+msgid "description"
+msgstr ""
+
+#: .\apps\clinics\models.py:15 .\apps\users\models.py:107
+msgid "address"
+msgstr ""
+
+#: .\apps\clinics\models.py:16 .\apps\users\models.py:108
+msgid "city"
+msgstr ""
+
+#: .\apps\clinics\models.py:17
+msgid "phone"
+msgstr ""
+
+#: .\apps\clinics\models.py:18
+msgid "email"
+msgstr ""
+
+#: .\apps\clinics\models.py:19
+msgid "website"
+msgstr ""
+
+#: .\apps\clinics\models.py:20
+msgid "logo"
+msgstr ""
+
+#: .\apps\clinics\models.py:21
+msgid "cover image"
+msgstr ""
+
+#: .\apps\clinics\models.py:24
+msgid "opening time"
+msgstr ""
+
+#: .\apps\clinics\models.py:25
+msgid "closing time"
+msgstr ""
+
+#: .\apps\clinics\models.py:28 .\apps\doctors\models.py:120
+#: .\apps\services\models.py:33
+msgid "active"
+msgstr ""
+
+#: .\apps\clinics\models.py:30 .\apps\doctors\models.py:70
+msgid "rating"
+msgstr ""
+
+#: .\apps\clinics\models.py:35 .\apps\doctors\models.py:75
+msgid "total reviews"
+msgstr ""
+
+#: .\apps\clinics\models.py:42
+msgid "clinics"
+msgstr ""
+
+#: .\apps\doctors\admin.py:41
+msgid "User & Clinic"
+msgstr ""
+
+#: .\apps\doctors\admin.py:44
+msgid "Professional Info"
+msgstr ""
+
+#: .\apps\doctors\admin.py:47
+msgid "Consultation"
+msgstr ""
+
+#: .\apps\doctors\admin.py:50 .\templates\clinics\detail.html:167
+msgid "Statistics"
+msgstr ""
+
+#: .\apps\doctors\admin.py:65
+msgid "Doctor Name"
+msgstr ""
+
+#: .\apps\doctors\admin.py:80
+msgid "Day"
+msgstr ""
+
+#: .\apps\doctors\forms.py:24
+msgid "End time must be after start time"
+msgstr ""
+
+#: .\apps\doctors\forms.py:37
+msgid "e.g., Vacation, Conference"
+msgstr ""
+
+#: .\apps\doctors\forms.py:55 .\templates\doctors\list.html:16
+msgid "Search doctors..."
+msgstr ""
+
+#: .\apps\doctors\forms.py:81
+msgid "Min Rating"
+msgstr ""
+
+#: .\apps\doctors\forms.py:93
+msgid "All Specializations"
+msgstr ""
+
+#: .\apps\doctors\forms.py:99
+msgid "All Clinics"
+msgstr ""
+
+#: .\apps\doctors\models.py:13
+msgid "icon"
+msgstr ""
+
+#: .\apps\doctors\models.py:18 .\apps\doctors\models.py:50
+msgid "specialization"
+msgstr ""
+
+#: .\apps\doctors\models.py:19
+msgid "specializations"
+msgstr ""
+
+#: .\apps\doctors\models.py:38 .\apps\users\models.py:61
+#: .\apps\users\models.py:93
+msgid "user"
+msgstr ""
+
+#: .\apps\doctors\models.py:54
+msgid "license number"
+msgstr ""
+
+#: .\apps\doctors\models.py:55
+msgid "years of experience"
+msgstr ""
+
+#: .\apps\doctors\models.py:56
+msgid "education"
+msgstr ""
+
+#: .\apps\doctors\models.py:57
+msgid "biography"
+msgstr ""
+
+#: .\apps\doctors\models.py:61
+msgid "consultation fee"
+msgstr ""
+
+#: .\apps\doctors\models.py:68
+msgid "total patients"
+msgstr ""
+
+#: .\apps\doctors\models.py:78
+msgid "available"
+msgstr ""
+
+#: .\apps\doctors\models.py:79
+msgid "verified"
+msgstr ""
+
+#: .\apps\doctors\models.py:86
+msgid "doctors"
+msgstr ""
+
+#: .\apps\doctors\models.py:102
+msgid "Sunday"
+msgstr ""
+
+#: .\apps\doctors\models.py:103
+msgid "Monday"
+msgstr ""
+
+#: .\apps\doctors\models.py:104
+msgid "Tuesday"
+msgstr ""
+
+#: .\apps\doctors\models.py:105
+msgid "Wednesday"
+msgstr ""
+
+#: .\apps\doctors\models.py:106
+msgid "Thursday"
+msgstr ""
+
+#: .\apps\doctors\models.py:107
+msgid "Friday"
+msgstr ""
+
+#: .\apps\doctors\models.py:108
+msgid "Saturday"
+msgstr ""
+
+#: .\apps\doctors\models.py:117
+msgid "day of week"
+msgstr ""
+
+#: .\apps\doctors\models.py:123
+msgid "working hour"
+msgstr ""
+
+#: .\apps\doctors\models.py:124
+msgid "working hours"
+msgstr ""
+
+#: .\apps\doctors\models.py:142
+msgid "reason"
+msgstr ""
+
+#: .\apps\doctors\models.py:143
+msgid "recurring annually"
+msgstr ""
+
+#: .\apps\doctors\models.py:148
+msgid "day off"
+msgstr ""
+
+#: .\apps\doctors\models.py:149
+msgid "days off"
+msgstr ""
+
+#: .\apps\doctors\views.py:310
+msgid "Working hours added successfully"
+msgstr ""
+
+#: .\apps\doctors\views.py:337
+msgid "Day off added successfully"
+msgstr ""
+
+#: .\apps\doctors\views.py:351
+msgid "Day off deleted successfully"
+msgstr ""
+
+#: .\apps\services\admin.py:24
+msgid "Requirements"
+msgstr ""
+
+#: .\apps\services\models.py:18
+msgid "duration (minutes)"
+msgstr ""
+
+#: .\apps\services\models.py:20
+msgid "price"
+msgstr ""
+
+#: .\apps\services\models.py:27
+msgid "requires fasting"
+msgstr ""
+
+#: .\apps\services\models.py:29
+msgid "preparation instructions"
+msgstr ""
+
+#: .\apps\services\models.py:39
+msgid "services"
+msgstr ""
+
+#: .\apps\users\admin.py:18
+msgid "Personal info"
+msgstr ""
+
+#: .\apps\users\admin.py:19
+msgid "Permissions"
+msgstr ""
+
+#: .\apps\users\admin.py:22
+msgid "Important dates"
+msgstr ""
+
+#: .\apps\users\admin.py:35
+msgid "Full Name"
+msgstr ""
+
+#: .\apps\users\admin.py:48
+msgid "User"
+msgstr ""
+
+#: .\apps\users\admin.py:49
+msgid "Contact Info"
+msgstr ""
+
+#: .\apps\users\admin.py:50
+msgid "Personal Info"
+msgstr ""
+
+#: .\apps\users\admin.py:51
+msgid "Preferences"
+msgstr ""
+
+#: .\apps\users\models.py:17
+msgid "يجب إدخال البريد الإلكتروني"
+msgstr ""
+
+#: .\apps\users\models.py:31
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: .\apps\users\models.py:33
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: .\apps\users\models.py:44 .\templates\base.html:169
+msgid "Admin"
+msgstr ""
+
+#: .\apps\users\models.py:47
+msgid "email address"
+msgstr ""
+
+#: .\apps\users\models.py:49
+msgid "role"
+msgstr ""
+
+#: .\apps\users\models.py:62
+msgid "users"
+msgstr ""
+
+#: .\apps\users\models.py:86
+msgid ""
+"Phone number must be entered in the format: '+999999999'. Up to 15 digits "
+"allowed."
+msgstr ""
+
+#: .\apps\users\models.py:96
+msgid "avatar"
+msgstr ""
+
+#: .\apps\users\models.py:102
+msgid "phone number"
+msgstr ""
+
+#: .\apps\users\models.py:109
+msgid "country"
+msgstr ""
+
+#: .\apps\users\models.py:110
+msgid "date of birth"
+msgstr ""
+
+#: .\apps\users\models.py:111
+msgid "bio"
+msgstr ""
+
+#: .\apps\users\models.py:115
+msgid "preferred language"
+msgstr ""
+
+#: .\apps\users\models.py:117
+msgid "Arabic"
+msgstr ""
+
+#: .\apps\users\models.py:117
+msgid "English"
+msgstr ""
+
+#: .\apps\users\models.py:121
+msgid "timezone"
+msgstr ""
+
+#: .\apps\users\models.py:126
+msgid "email notifications"
+msgstr ""
+
+#: .\apps\users\models.py:130
+msgid "SMS notifications"
+msgstr ""
+
+#: .\apps\users\models.py:138
+msgid "profile"
+msgstr ""
+
+#: .\apps\users\models.py:139
+msgid "profiles"
+msgstr ""
+
+#: .\apps\users\views.py:43
+msgid "Profile updated successfully"
+msgstr ""
+
+#: .\apps\users\views.py:61
+msgid "Avatar updated successfully"
+msgstr ""
+
+#: .\apps\users\views.py:88
+msgid "Notification settings updated"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:4 .\templates\base.html:194
+msgid "Login"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:16
+msgid "Welcome back!"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:22 ⁨.\templates\account\ login.html⁩:74
+msgid "Sign In"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:39
+#: .\templates\account\password_reset.html:13
+#: .\templates\account\signup.html:29
+msgid "Email"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:49 .\templates\account\signup.html:55
+msgid "Password"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:61
+msgid "Remember me"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:67
+msgid "Forgot password?"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:78
+msgid "Don't have an account?"
+msgstr ""
+
+#: ⁨.\templates\account\ login.html⁩:80
+msgid "Sign up"
+msgstr ""
+
+#: .\templates\account\logout.html:8
+msgid "Logged Out"
+msgstr ""
+
+#: .\templates\account\logout.html:10
+msgid "You have been successfully logged out."
+msgstr ""
+
+#: .\templates\account\logout.html:14
+msgid "Login Again"
+msgstr ""
+
+#: .\templates\account\password_reset.html:7
+msgid "Reset Password"
+msgstr ""
+
+#: .\templates\account\password_reset.html:19
+msgid "Send Reset Link"
+msgstr ""
+
+#: .\templates\account\signup.html:4 .\templates\account\signup.html:20
+msgid "Sign Up"
+msgstr ""
+
+#: .\templates\account\signup.html:15
+msgid "Create your account"
+msgstr ""
+
+#: .\templates\account\signup.html:40
+msgid "First Name"
+msgstr ""
+
+#: .\templates\account\signup.html:47
+msgid "Last Name"
+msgstr ""
+
+#: .\templates\account\signup.html:65
+msgid "Confirm Password"
+msgstr ""
+
+#: .\templates\account\signup.html:76
+msgid "Create Account"
+msgstr ""
+
+#: .\templates\account\signup.html:80
+msgid "Already have an account?"
+msgstr ""
+
+#: .\templates\account\signup.html:82
+msgid "Sign in"
+msgstr ""
+
+#: .\templates\appointments\create.html:4
+#: .\templates\appointments\create.html:10
+#: .\templates\appointments\create.html:79 .\templates\doctors\detail.html:67
+#: .\templates\doctors\partials\doctor_card.html:68
+msgid "Book Appointment"
+msgstr ""
+
+#: .\templates\appointments\create.html:42
+msgid "Service"
+msgstr ""
+
+#: .\templates\appointments\create.html:48
+msgid "Date"
+msgstr ""
+
+#: .\templates\appointments\create.html:65
+msgid "Time"
+msgstr ""
+
+#: .\templates\appointments\create.html:71
+msgid "Symptoms"
+msgstr ""
+
+#: .\templates\appointments\create.html:83
+#: .\templates\appointments\partials\appointment_card.html:66
+msgid "Cancel"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:4
+#: .\templates\appointments\my_appointments.html:10 .\templates\base.html:158
+msgid "My Appointments"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:18
+#: .\templates\dashboard\patient.html:21
+msgid "Upcoming"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:23
+msgid "Past"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:34
+#: .\templates\dashboard\patient.html:43
+msgid "No upcoming appointments"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:37
+#: .\templates\doctors\detail.html:77
+msgid "Book Now"
+msgstr ""
+
+#: .\templates\appointments\my_appointments.html:49
+msgid "No past appointments"
+msgstr ""
+
+#: .\templates\appointments\partials\appointment_card.html:49
+#: .\templates\clinics\detail.html:105 .\templates\dashboard\admin.html:82
+#: .\templates\doctors\detail.html:71
+#: .\templates\doctors\partials\doctor_card.html:53
+msgid "SAR"
+msgstr ""
+
+#: .\templates\appointments\partials\appointment_card.html:59
+msgid "View Doctor"
+msgstr ""
+
+#: .\templates\appointments\partials\appointment_card.html:80
+#: .\templates\base.html:153 .\templates\base.html:280
+#: .\templates\clinics\detail.html:171 .\templates\clinics\list.html:92
+#: .\templates\doctors\list.html:4 .\templates\home.html:74
+msgid "Doctors"
+msgstr ""
+
+#: .\templates\appointments\partials\appointment_card.html:102
+#: .\templates\base.html:150 .\templates\base.html:279
+#: .\templates\clinics\list.html:4 .\templates\home.html:78
+msgid "Clinics"
+msgstr ""
+
+#: .\templates\appointments\partials\appointment_card.html:121
+msgid "No results found"
+msgstr ""
+
+#: .\templates\base.html:10
+msgid "Healthcare Made Easy"
+msgstr ""
+
+#: .\templates\base.html:163 .\templates\dashboard\patient.html:4
+msgid "Dashboard"
+msgstr ""
+
+#: .\templates\base.html:185
+msgid "Profile"
+msgstr ""
+
+#: .\templates\base.html:188
+msgid "Logout"
+msgstr ""
+
+#: .\templates\base.html:197
+msgid "Register"
+msgstr ""
+
+#: .\templates\base.html:274
+msgid "Healthcare made easy and accessible for everyone"
+msgstr ""
+
+#: .\templates\base.html:277
+msgid "Quick Links"
+msgstr ""
+
+#: .\templates\base.html:284
+msgid "Support"
+msgstr ""
+
+#: .\templates\base.html:286
+msgid "Help Center"
+msgstr ""
+
+#: .\templates\base.html:287
+msgid "Contact Us"
+msgstr ""
+
+#: .\templates\base.html:291
+msgid "Follow Us"
+msgstr ""
+
+#: .\templates\base.html:306
+msgid "All rights reserved."
+msgstr ""
+
+#: .\templates\clinics\detail.html:33
+msgid "reviews"
+msgstr ""
+
+#: .\templates\clinics\detail.html:56 .\templates\doctors\detail.html:38
+msgid "About"
+msgstr ""
+
+#: .\templates\clinics\detail.html:62
+msgid "Our Doctors"
+msgstr ""
+
+#: .\templates\clinics\detail.html:84 .\templates\dashboard\admin.html:274
+msgid "View"
+msgstr ""
+
+#: .\templates\clinics\detail.html:93 .\templates\clinics\detail.html:175
+msgid "Services"
+msgstr ""
+
+#: .\templates\clinics\detail.html:106
+msgid "min"
+msgstr ""
+
+#: .\templates\clinics\detail.html:120
+msgid "Contact Information"
+msgstr ""
+
+#: .\templates\clinics\detail.html:142
+msgid "Visit Website"
+msgstr ""
+
+#: .\templates\clinics\detail.html:151 .\templates\doctors\detail.html:50
+msgid "Working Hours"
+msgstr ""
+
+#: .\templates\clinics\detail.html:155
+msgid "Opens"
+msgstr ""
+
+#: .\templates\clinics\detail.html:159
+msgid "Closes"
+msgstr ""
+
+#: .\templates\clinics\detail.html:179
+msgid "Average Rating"
+msgstr ""
+
+#: .\templates\clinics\list.html:13
+msgid "Find the Best Clinics"
+msgstr ""
+
+#: .\templates\clinics\list.html:16
+msgid "Browse our network of verified medical clinics"
+msgstr ""
+
+#: .\templates\clinics\list.html:51
+msgid "Highest Rated"
+msgstr ""
+
+#: .\templates\clinics\list.html:52
+msgid "Name A-Z"
+msgstr ""
+
+#: .\templates\clinics\list.html:53
+msgid "City"
+msgstr ""
+
+#: .\templates\clinics\list.html:93
+msgid "Reviews"
+msgstr ""
+
+#: .\templates\clinics\list.html:98
+msgid "View Details"
+msgstr ""
+
+#: .\templates\clinics\list.html:105
+msgid "No clinics found"
+msgstr ""
+
+#: .\templates\clinics\list.html:115
+msgid "First"
+msgstr ""
+
+#: .\templates\clinics\list.html:116
+msgid "Previous"
+msgstr ""
+
+#: .\templates\clinics\list.html:124
+msgid "Next"
+msgstr ""
+
+#: .\templates\clinics\list.html:125
+msgid "Last"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:4 .\templates\dashboard\admin.html:13
+msgid "Admin Dashboard"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:16
+msgid "Welcome back! Here's what's happening today."
+msgstr ""
+
+#: .\templates\dashboard\admin.html:27
+msgid "Total Clinics"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:44
+msgid "Total Doctors"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:61 .\templates\dashboard\doctor.html:26
+msgid "Total Patients"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:78
+msgid "This Month Revenue"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:100 .\templates\dashboard\doctor.html:16
+#: .\templates\dashboard\doctor.html:37
+msgid "Today's Appointments"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:109
+msgid "Pending Confirmations"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:118 .\templates\dashboard\patient.html:16
+msgid "Total Appointments"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:129
+msgid "Top Doctors"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:132 .\templates\dashboard\admin.html:202
+#: .\templates\home.html:186
+msgid "View All"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:165
+msgid "Popular Specializations"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:199
+msgid "Recent Appointments"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:218
+msgid "Date & Time"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:224
+msgid "Actions"
+msgstr ""
+
+#: .\templates\dashboard\admin.html:281
+msgid "No recent appointments"
+msgstr ""
+
+#: .\templates\dashboard\doctor.html:4 .\templates\dashboard\doctor.html:10
+msgid "Doctor Dashboard"
+msgstr ""
+
+#: .\templates\dashboard\doctor.html:21
+msgid "Pending Confirmation"
+msgstr ""
+
+#: .\templates\dashboard\doctor.html:31
+msgid "Rating"
+msgstr ""
+
+#: .\templates\dashboard\doctor.html:58
+msgid "Confirm"
+msgstr ""
+
+#: .\templates\dashboard\doctor.html:63
+msgid "No appointments today"
+msgstr ""
+
+#: .\templates\dashboard\patient.html:10
+msgid "Welcome back"
+msgstr ""
+
+#: .\templates\dashboard\patient.html:37
+msgid "Upcoming Appointments"
+msgstr ""
+
+#: .\templates\doctors\detail.html:44
+msgid "Education"
+msgstr ""
+
+#: .\templates\doctors\detail.html:82
+msgid "Login to Book"
+msgstr ""
+
+#: .\templates\doctors\detail.html:89
+msgid "Experience"
+msgstr ""
+
+#: .\templates\doctors\detail.html:90
+msgid "years"
+msgstr ""
+
+#: .\templates\doctors\detail.html:93
+#: .\templates\doctors\partials\doctor_card.html:49
+msgid "Patients"
+msgstr ""
+
+#: .\templates\doctors\list.html:10
+msgid "Find the Best Doctors"
+msgstr ""
+
+#: .\templates\doctors\partials\available_slots.html:21
+msgid "No available slots for this date"
+msgstr ""
+
+#: .\templates\doctors\partials\doctor_card.html:20
+msgid "Verified"
+msgstr ""
+
+#: .\templates\doctors\partials\doctor_card.html:45
+msgid "Years"
+msgstr ""
+
+#: .\templates\doctors\partials\doctor_card.html:61
+msgid "View Profile"
+msgstr ""
+
+#: .\templates\errors\403.html:10
+msgid "Access Denied"
+msgstr ""
+
+#: .\templates\errors\403.html:12
+msgid "You don't have permission to access this page."
+msgstr ""
+
+#: .\templates\errors\403.html:15 .\templates\errors\404.html:29
+msgid "Go Home"
+msgstr ""
+
+#: .\templates\errors\404.html:4 .\templates\errors\404.html:18
+msgid "Page Not Found"
+msgstr ""
+
+#: .\templates\errors\404.html:22
+msgid "Sorry, we couldn't find the page you're looking for."
+msgstr ""
+
+#: .\templates\errors\404.html:35
+msgid "Go Back"
+msgstr ""
+
+#: .\templates\home.html:18
+msgid "Healthcare"
+msgstr ""
+
+#: .\templates\home.html:19
+msgid "Made Simple"
+msgstr ""
+
+#: .\templates\home.html:22
+msgid ""
+"Book appointments with top doctors instantly. Your health, our priority."
+msgstr ""
+
+#: .\templates\home.html:39
+msgid "Clinic"
+msgstr ""
+
+#: .\templates\home.html:45
+msgid "Specialization"
+msgstr ""
+
+#: .\templates\home.html:52
+msgid "Search for doctors, clinics, or specializations..."
+msgstr ""
+
+#: .\templates\home.html:82
+msgid "Appointments"
+msgstr ""
+
+#: .\templates\home.html:99
+msgid "Easy Booking"
+msgstr ""
+
+#: .\templates\home.html:100
+msgid "Book in 3 clicks"
+msgstr ""
+
+#: .\templates\home.html:121
+msgid "Why Choose MediBook?"
+msgstr ""
+
+#: .\templates\home.html:122
+msgid "Experience healthcare booking like never before"
+msgstr ""
+
+#: .\templates\home.html:131
+msgid "Instant Booking"
+msgstr ""
+
+#: .\templates\home.html:132
+msgid "Book appointments in seconds with real-time availability"
+msgstr ""
+
+#: .\templates\home.html:140
+msgid "Verified Doctors"
+msgstr ""
+
+#: .\templates\home.html:141
+msgid "All doctors are verified and certified professionals"
+msgstr ""
+
+#: .\templates\home.html:149
+msgid "Smart Reminders"
+msgstr ""
+
+#: .\templates\home.html:150
+msgid "Never miss an appointment with automated reminders"
+msgstr ""
+
+#: .\templates\home.html:160
+msgid "Browse by Specialization"
+msgstr ""
+
+#: .\templates\home.html:161
+msgid "Find the right specialist for your needs"
+msgstr ""
+
+#: .\templates\home.html:182
+msgid "Top Rated Doctors"
+msgstr ""
+
+#: .\templates\home.html:183
+msgid "Meet our highly rated professionals"
+msgstr ""
+
+#: .\templates\home.html:207
+msgid "Ready to Get Started?"
+msgstr ""
+
+#: .\templates\home.html:208
+msgid ""
+"Join thousands of patients who trust MediBook for their healthcare needs"
+msgstr ""
+
+#: .\templates\home.html:210
+msgid "Create Free Account"
+msgstr ""
+
+#: .\utils\decorators.py:16 .\utils\mixins.py:14
+msgid "You must be a patient to access this page"
+msgstr ""
+
+#: .\utils\decorators.py:33 .\utils\mixins.py:25
+msgid "You must be a doctor to access this page"
+msgstr ""
+
+#: .\utils\decorators.py:50 .\utils\mixins.py:36
+msgid "You must be an admin to access this page"
+msgstr ""

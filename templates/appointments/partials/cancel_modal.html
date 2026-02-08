@@ -1,0 +1,95 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static i18n %}
+<!-- Cancel Modal -->
+<div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="iconify text-3xl text-red-600" data-icon="mdi:alert-circle"></span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {% trans "Cancel Appointment?" %}
+            </h3>
+            <p class="text-gray-600 dark:text-gray-400">
+                {% trans "Are you sure you want to cancel this appointment?" %}
+            </p>
+        </div>
+
+        <!-- Appointment Info -->
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+            <div class="flex items-center space-x-3">
+                <img src="{{ appointment.doctor.user.profile.get_avatar_url }}"
+                     alt="{{ appointment.doctor.user.get_full_name }}"
+                     class="w-12 h-12 rounded-full">
+                <div>
+                    <p class="font-semibold text-gray-900 dark:text-white">
+                        Dr. {{ appointment.doctor.user.get_full_name }}
+                    </p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        {{ appointment.date|date:"d M Y" }} at {{ appointment.start_time|time:"H:i" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancellation Form -->
+        <form method="post" action="{% url 'appointments:cancel' appointment.pk %}" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Reason -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {% trans "Reason (Optional)" %}
+                </label>
+                <textarea name="reason" rows="3"
+                          class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          placeholder="{% trans 'Please let us know why you are canceling...' %}"></textarea>
+            </div>
+
+            <!-- Warning -->
+            <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                <div class="flex">
+                    <span class="iconify text-yellow-600 mr-2 flex-shrink-0" data-icon="mdi:information"></span>
+                    <p class="text-sm text-yellow-800 dark:text-yellow-400">
+                        {% trans "This action cannot be undone. You will need to book a new appointment if you change your mind." %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex space-x-3">
+                <button type="button"
+                        onclick="closeCancelModal()"
+                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    {% trans "Keep Appointment" %}
+                </button>
+                <button type="submit"
+                        class="flex-1 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                    {% trans "Yes, Cancel" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Close modal when clicking outside
+document.querySelector('.fixed').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeCancelModal();
+    }
+});
+
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeCancelModal();
+    }
+});
+</script>
+{% endblock %}

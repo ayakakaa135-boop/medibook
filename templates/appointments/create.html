@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Book Appointment" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-message {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .field-error input,
+    .field-error select,
+    .field-error textarea {
+        border-color: #dc2626;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'doctors:list' %}" 
+               class="text-purple-600 hover:text-purple-700 mb-4 inline-flex items-center transition-colors">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Doctors" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">
+                {% trans "Book Appointment" %}
+            </h1>
+        </div>
+
+        <!-- Doctor Info Card -->
+        {% if doctor %}
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6 flex items-center space-x-4">
+            <img src="{{ doctor.user.profile.get_avatar_url }}"
+                 alt="{{ doctor.user.get_full_name }}"
+                 class="w-20 h-20 rounded-full object-cover ring-2 ring-purple-500">
+            <div class="flex-1">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                    Dr. {{ doctor.user.get_full_name }}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {{ doctor.specialization.name }}
+                </p>
+                <p class="text-purple-600 font-semibold mt-1">
+                    {{ doctor.consultation_fee }} SAR
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Booking Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <form method="post" class="space-y-6" id="appointment-form">
+                {% csrf_token %}
+
+                <!-- Display non-field errors -->
+                {% if form.non_field_errors %}
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                    <div class="flex">
+                        <span class="iconify text-red-600 text-xl mr-2" data-icon="mdi:alert-circle"></span>
+                        <div class="text-red-700 dark:text-red-400">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Doctor Selection (if not pre-selected) -->
+                {% if not doctor %}
+                <div class="{% if form.doctor.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Select Doctor" %} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.doctor }}
+                    {% if form.doctor.errors %}
+                        <p class="error-message">{{ form.doctor.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% else %}
+                <input type="hidden" name="doctor" value="{{ doctor.pk }}">
+                {% endif %}
+
+                <!-- Service -->
+                <div class="{% if form.service.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Service" %} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.service }}
+                    {% if form.service.errors %}
+                        <p class="error-message">{{ form.service.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Date -->
+                <div class="{% if form.date.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Date" %} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.date }}
+                    {% if form.date.errors %}
+                        <p class="error-message">{{ form.date.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Time -->
+                <div class="{% if form.start_time.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Time" %} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.start_time }}
+                    {% if form.start_time.errors %}
+                        <p class="error-message">{{ form.start_time.errors.0 }}</p>
+                    {% endif %}
+                    <p class="text-xs text-gray-500 mt-1">
+                        {% trans "Available slots will be shown after selecting a date" %}
+                    </p>
+                </div>
+
+                <!-- Symptoms -->
+                <div class="{% if form.symptoms.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Symptoms" %}
+                    </label>
+                    {{ form.symptoms }}
+                    {% if form.symptoms.errors %}
+                        <p class="error-message">{{ form.symptoms.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Notes -->
+                <div class="{% if form.notes.errors %}field-error{% endif %}">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Notes (Optional)" %}
+                    </label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                        <p class="error-message">{{ form.notes.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="w-full gradient-primary text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                    <span class="iconify inline mr-2" data-icon="mdi:calendar-check"></span>
+                    {% trans "Confirm Booking" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.querySelector('input[name="date"]');
+    const timeSelect = document.querySelector('select[name="start_time"]');
+    const doctorInput = document.querySelector('input[name="doctor"]') || 
+                        document.querySelector('select[name="doctor"]');
+    
+    // Get doctor ID
+    const getDoctorId = () => {
+        if (doctorInput) {
+            return doctorInput.value;
+        }
+        return null;
+    };
+
+    // Load available slots when date changes
+    if (dateInput && timeSelect) {
+        dateInput.addEventListener('change', function() {
+            const doctorId = getDoctorId();
+            const date = this.value;
+
+            if (!doctorId || !date) {
+                return;
+            }
+
+            // Show loading
+            timeSelect.innerHTML = '<option value="">{% trans "Loading..." %}</option>';
+            timeSelect.disabled = true;
+
+            // Fetch available slots
+            fetch(`{% url 'appointments:get_slots' %}?doctor=${doctorId}&date=${date}`)
+                .then(response => response.text())
+                .then(html => {
+                    timeSelect.innerHTML = html;
+                    timeSelect.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    timeSelect.innerHTML = '<option value="">{% trans "Error loading slots" %}</option>';
+                    timeSelect.disabled = false;
+                });
+        });
+    }
+});
+</script>
+{% endblock %}

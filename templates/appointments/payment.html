@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Payment" %}{% endblock %}
+
+{% block extra_css %}
+
+
+<style>
+    .card-icon {
+        width: 50px;
+        height: 32px;
+        display: inline-block;
+    }
+
+    /* تنسيق حقل رقم البطاقة */
+    input[name="card_number"] {
+        padding-right: 80px !important;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 3px;
+        font-size: 1.1rem;
+    }
+
+    /* الأيقونات الشفافة */
+    .card-brand-icons {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 8px;
+        pointer-events: none; /* السماح بالكتابة فوق الأيقونات */
+        transition: opacity 0.3s ease;
+    }
+
+    .card-brand-icons.hidden {
+        opacity: 0.05; /* شفافية عالية عند الكتابة */
+    }
+
+    .card-brand-icons .iconify {
+        filter: grayscale(30%);
+        opacity: 0.4;
+    }
+
+    /* تأثير hover على الحقل */
+    .card-input-wrapper:focus-within .card-brand-icons {
+        opacity: 0.2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{{ appointment.get_absolute_url }}"
+               class="text-purple-600 hover:text-purple-700 mb-4 inline-flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Appointment" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">
+                {% trans "Payment" %}
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Payment Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+
+                    <!-- Payment Due Warning -->
+                    {% if is_overdue %}
+                    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+                        <div class="flex">
+                            <span class="iconify text-red-600 text-xl mr-3" data-icon="mdi:alert-circle"></span>
+                            <div>
+                                <h3 class="font-bold text-red-800 dark:text-red-400">
+                                    {% trans "Payment Overdue!" %}
+                                </h3>
+                                <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                                    {% trans "Your payment is overdue. Late fees have been applied." %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% elif days_until_due <= 7 %}
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+                        <div class="flex">
+                            <span class="iconify text-yellow-600 text-xl mr-3" data-icon="mdi:clock-alert"></span>
+                            <div>
+                                <h3 class="font-bold text-yellow-800 dark:text-yellow-400">
+                                    {% trans "Payment Due Soon" %}
+                                </h3>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                                    {% trans "Please pay within" %} {{ days_until_due }} {% trans "days to avoid late fees" %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Saved Cards -->
+                    {% if saved_cards %}
+                    <div class="mb-8">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                            {% trans "Saved Cards" %}
+                        </h3>
+                        <div class="space-y-3">
+                            {% for card in saved_cards %}
+                            <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-purple-500 transition-colors cursor-pointer"
+                                 onclick="showSavedCardPayment({{ card.id }})">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="iconify text-3xl opacity-70"
+                                              data-icon="{% if card.card_brand == 'visa' %}cib:visa{% elif card.card_brand == 'mastercard' %}cib:mastercard{% else %}mdi:credit-card{% endif %}"
+                                              style="{% if card.card_brand == 'visa' %}color: #1A1F71;{% elif card.card_brand == 'mastercard' %}color: #EB001B;{% endif %}">
+                                        </span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900 dark:text-white">
+                                                {{ card.get_card_brand_display|default:card.card_brand|title }} **** {{ card.card_last_four }}
+                                            </p>
+                                            <p class="text-sm text-gray-500">
+                                                {% trans "Expires" %} {{ card.expiry_month }}/{{ card.expiry_year }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% if card.is_default %}
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
+                                        {% trans "Default" %}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <button onclick="showNewCardForm()"
+                                    class="text-purple-600 hover:text-purple-700 font-semibold">
+                                {% trans "or use a new card" %}
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- New Card Form -->
+                    <div id="new-card-form" {% if saved_cards %}style="display:none"{% endif %}>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                            {% trans "Payment Details" %}
+                        </h3>
+
+                        <form method="post" id="payment-form" class="space-y-6">
+                            {% csrf_token %}
+
+                            <!-- Card Number -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {% trans "Card Number" %} <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative card-input-wrapper">
+                                    {{ form.card_number }}
+
+                                    <!-- أيقونات شفافة -->
+                                    <div class="card-brand-icons" id="cardIcons">
+                                        <span class="iconify text-2xl" data-icon="cib:visa" style="color: #1A1F71;"></span>
+                                        <span class="iconify text-2xl" data-icon="cib:mastercard" style="color: #EB001B;"></span>
+                                    </div>
+                                </div>
+                                {% if form.card_number.errors %}
+                                    <p class="text-red-500 text-sm mt-1">{{ form.card_number.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Cardholder Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    {% trans "Cardholder Name" %} <span class="text-red-500">*</span>
+                                </label>
+                                {{ form.cardholder_name }}
+                                {% if form.cardholder_name.errors %}
+                                    <p class="text-red-500 text-sm mt-1">{{ form.cardholder_name.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Expiry Date & CVV -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        {% trans "Month" %} <span class="text-red-500">*</span>
+                                    </label>
+                                    {{ form.expiry_month }}
+                                    {% if form.expiry_month.errors %}
+                                        <p class="text-red-500 text-sm mt-1">{{ form.expiry_month.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        {% trans "Year" %} <span class="text-red-500">*</span>
+                                    </label>
+                                    {{ form.expiry_year }}
+                                    {% if form.expiry_year.errors %}
+                                        <p class="text-red-500 text-sm mt-1">{{ form.expiry_year.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        {% trans "CVV" %} <span class="text-red-500">*</span>
+                                    </label>
+                                    {{ form.cvv }}
+                                    {% if form.cvv.errors %}
+                                        <p class="text-red-500 text-sm mt-1">{{ form.cvv.errors.0 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Save Card Option -->
+                            <div class="flex items-start">
+                                {{ form.save_card }}
+                                <label for="{{ form.save_card.id_for_label }}" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                    {% trans "Save this card for future payments" %}
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit"
+                                    class="w-full bg-purple-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition-colors flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                                    id="submit-button">
+                                <span class="iconify mr-2 text-xl" data-icon="mdi:credit-card"></span>
+                                {% trans "Pay" %} {{ total_amount }} {% trans "SAR" %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <div class="flex">
+                        <span class="iconify text-blue-600 text-xl mr-3" data-icon="mdi:shield-check"></span>
+                        <div class="text-sm text-blue-800 dark:text-blue-400">
+                            <p class="font-semibold">{% trans "Secure Payment" %}</p>
+                            <p class="mt-1">
+                                {% trans "Your payment information is encrypted and secure. We never store your full card details." %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sticky top-6">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                        {% trans "Payment Summary" %}
+                    </h3>
+
+                    <!-- Appointment Details -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <img src="{{ appointment.doctor.user.profile.get_avatar_url }}"
+                                 alt="{{ appointment.doctor.user.get_full_name }}"
+                                 onerror="this.src='{% static 'images/default-avatar.png' %}'"
+                                 class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white text-sm">
+                                    Dr. {{ appointment.doctor.user.get_full_name }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    {{ appointment.date|date:"d M Y" }} at {{ appointment.start_time|time:"H:i" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">{% trans "Consultation Fee" %}</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ base_amount }} {% trans "SAR" %}</span>
+                        </div>
+
+                        {% if late_fee > 0 %}
+                        <div class="flex justify-between text-sm">
+                            <span class="text-red-600 dark:text-red-400">{% trans "Late Payment Fee" %}</span>
+                            <span class="font-semibold text-red-600">{{ late_fee }} {% trans "SAR" %}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between">
+                            <span class="font-bold text-gray-900 dark:text-white">{% trans "Total" %}</span>
+                            <span class="font-bold text-purple-600 text-xl">{{ total_amount }} {% trans "SAR" %}</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Due Date -->
+                    {% if not is_overdue %}
+                    <div class="mt-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p class="text-xs text-gray-600 dark:text-gray-400 text-center">
+                            {% trans "Payment due in" %} <span class="font-semibold text-purple-600">{{ days_until_due }}</span> {% trans "days" %}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Saved Card Payment Modal -->
+<div id="saved-card-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <!-- Modal content will be loaded here -->
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cardNumberInput = document.querySelector('input[name="card_number"]');
+    const cardIcons = document.getElementById('cardIcons');
+    const form = document.getElementById('payment-form');
+    const submitBtn = document.getElementById('submit-button');
+
+    // Format card number input
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+
+            // إخفاء الأيقونات عند الكتابة
+            if (cardIcons) {
+                if (formattedValue.length > 0) {
+                    cardIcons.classList.add('hidden');
+                } else {
+                    cardIcons.classList.remove('hidden');
+                }
+            }
+
+            // تحديد نوع البطاقة وإظهار الأيقونة المناسبة فقط
+            detectCardType(value);
+        });
+
+        // عند الخروج من الحقل، إذا كان فارغاً أعد الأيقونات
+        cardNumberInput.addEventListener('blur', function() {
+            if (this.value.length === 0 && cardIcons) {
+                cardIcons.classList.remove('hidden');
+            }
+        });
+    }
+
+    // اكتشاف نوع البطاقة
+    function detectCardType(number) {
+        const visaIcon = cardIcons.querySelector('[data-icon="cib:visa"]');
+        const mastercardIcon = cardIcons.querySelector('[data-icon="cib:mastercard"]');
+
+        if (number.startsWith('4')) {
+            // Visa
+            visaIcon.style.opacity = '0.8';
+            mastercardIcon.style.opacity = '0.1';
+        } else if (['51', '52', '53', '54', '55'].includes(number.substring(0, 2))) {
+            // Mastercard
+            visaIcon.style.opacity = '0.1';
+            mastercardIcon.style.opacity = '0.8';
+        } else {
+            // Both
+            visaIcon.style.opacity = '0.4';
+            mastercardIcon.style.opacity = '0.4';
+        }
+    }
+
+    // Form submission
+    if (form) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="iconify animate-spin mr-2" data-icon="mdi:loading"></span> {% trans "Processing..." %}';
+        });
+    }
+
+    // CVV validation -numbers only
+    const cvvInput = document.querySelector('input[name="cvv"]');
+    if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+});
+
+function showNewCardForm() {
+    const form = document.getElementById('new-card-form');
+    if (form) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function showSavedCardPayment(cardId) {
+    window.location.href = `{% url 'appointments:pay_with_saved_card' appointment.id 0 %}`.replace('/0/', `/${cardId}/`);
+}
+</script>
+{% endblock %}

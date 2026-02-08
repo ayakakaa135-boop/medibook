@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Logo -->
+        <div class="text-center">
+            <div class="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span class="iconify text-white text-4xl" data-icon="mdi:hospital-building"></span>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {% trans "Create Account" %}
+            </h2>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                {% trans "Join MediBook for better healthcare" %}
+            </p>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <form method="post" action="{% url 'account_signup' %}" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Error Messages -->
+                {% if form.errors %}
+                <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded">
+                    {% for error in form.non_field_errors %}
+                    <p class="text-red-600 dark:text-red-400 text-sm">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Email -->
+                <div>
+                    <label for="id_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Email" %}
+                    </label>
+                    <div class="relative">
+                        <span class="iconify absolute left-3 top-3 text-gray-400" data-icon="mdi:email"></span>
+                        <input type="email" name="email" id="id_email" required
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+                               placeholder="{% trans 'your@email.com' %}">
+                    </div>
+                    {% if form.email.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="id_password1" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Password" %}
+                    </label>
+                    <div class="relative">
+                        <span class="iconify absolute left-3 top-3 text-gray-400" data-icon="mdi:lock"></span>
+                        <input type="password" name="password1" id="id_password1" required
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+                               placeholder="{% trans 'Create password' %}">
+                    </div>
+                    {% if form.password1.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.password1.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="id_password2" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Confirm Password" %}
+                    </label>
+                    <div class="relative">
+                        <span class="iconify absolute left-3 top-3 text-gray-400" data-icon="mdi:lock-check"></span>
+                        <input type="password" name="password2" id="id_password2" required
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+                               placeholder="{% trans 'Confirm password' %}">
+                    </div>
+                    {% if form.password2.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ form.password2.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-start">
+                    <input type="checkbox" required
+                           class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1">
+                    <label class="ml-2 block text-sm text-gray-600 dark:text-gray-400">
+                        {% trans "I agree to the" %}
+                        <a href="#" class="text-purple-600 hover:text-purple-500">{% trans "Terms of Service" %}</a>
+                        {% trans "and" %}
+                        <a href="#" class="text-purple-600 hover:text-purple-500">{% trans "Privacy Policy" %}</a>
+                    </label>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="w-full gradient-primary text-white py-3 rounded-lg font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                    {% trans "Create Account" %}
+                </button>
+            </form>
+
+            <!-- Sign In Link -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Already have an account?" %}
+                    <a href="{% url 'account_login' %}" class="text-purple-600 hover:text-purple-500 font-semibold">
+                        {% trans "Sign in" %}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

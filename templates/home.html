@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Hero Section with Gradient Background -->
+<section class="relative overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 text-white">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+
+    <!-- Animated background shapes -->
+    <div class="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute bottom-0 left-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 animate-fade-in-up">
+                <h1 class="text-5xl md:text-6xl font-black leading-tight">
+                    {% trans "Healthcare" %}
+                    <span class="block text-cyan-300">{% trans "Made Simple" %}</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-purple-100 leading-relaxed">
+                    {% trans "Book appointments with top doctors instantly. Your health, our priority." %}
+                </p>
+
+                <!-- Search Bar with HTMX -->
+                <div class="bg-white rounded-2xl p-2 shadow-2xl"
+                     x-data="{ searchType: 'doctor' }">
+                    <div class="flex mb-3 space-x-2 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                        <button @click="searchType = 'doctor'"
+                                :class="searchType === 'doctor' ? 'gradient-primary text-white' : 'bg-gray-100 text-gray-700'"
+                                class="flex-1 py-2 px-4 rounded-lg font-semibold transition-all">
+                            <span class="iconify" data-icon="mdi:doctor"></span>
+                            {% trans "Doctor" %}
+                        </button>
+                        <button @click="searchType = 'clinic'"
+                                :class="searchType === 'clinic' ? 'gradient-primary text-white' : 'bg-gray-100 text-gray-700'"
+                                class="flex-1 py-2 px-4 rounded-lg font-semibold transition-all">
+                            <span class="iconify" data-icon="mdi:hospital-building"></span>
+                            {% trans "Clinic" %}
+                        </button>
+                        <button @click="searchType = 'specialization'"
+                                :class="searchType === 'specialization' ? 'gradient-primary text-white' : 'bg-gray-100 text-gray-700'"
+                                class="flex-1 py-2 px-4 rounded-lg font-semibold transition-all">
+                            <span class="iconify" data-icon="mdi:medical-bag"></span>
+                            {% trans "Specialization" %}
+                        </button>
+                    </div>
+
+                    <div class="flex space-x-2 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                        <input type="text"
+                               name="search"
+                               placeholder="{% trans 'Search for doctors, clinics, or specializations...' %}"
+                               hx-get="{% url 'search' %}"
+                               hx-trigger="keyup changed delay:500ms"
+                               hx-target="#search-results"
+                               hx-indicator="#search-spinner"
+                               class="flex-1 px-6 py-4 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <button class="gradient-primary px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                            <span class="iconify text-xl" data-icon="mdi:magnify"></span>
+                        </button>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div id="search-results" class="mt-4"></div>
+                    <div id="search-spinner" class="htmx-indicator text-center py-4">
+                        <span class="iconify animate-spin text-purple-600 text-2xl" data-icon="mdi:loading"></span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 pt-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold">200+</div>
+                        <div class="text-purple-200">{% trans "Doctors" %}</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold">20+</div>
+                        <div class="text-purple-200">{% trans "Clinics" %}</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold">10k+</div>
+                        <div class="text-purple-200">{% trans "Appointments" %}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Image -->
+            <div class="hidden md:block animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="relative">
+                    <img src="{% static 'images/hero-doctor.png' %}" alt="Doctor" class="rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+
+                    <!-- Floating Card -->
+                    <div class="absolute -bottom-6 -left-6 glass p-6 rounded-2xl shadow-xl">
+                        <div class="flex items-center space-x-4 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                            <div class="w-12 h-12 gradient-success rounded-full flex items-center justify-center">
+                                <span class="iconify text-white text-2xl" data-icon="mdi:check"></span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white">{% trans "Easy Booking" %}</div>
+                                <div class="text-sm text-purple-200">{% trans "Book in 3 clicks" %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wave SVG -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F9FAFB"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">{% trans "Why Choose MediBook?" %}</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400">{% trans "Experience healthcare booking like never before" %}</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 animate-fade-in-up">
+                <div class="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mb-6">
+                    <span class="iconify text-white text-3xl" data-icon="mdi:clock-fast"></span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">{% trans "Instant Booking" %}</h3>
+                <p class="text-gray-600 dark:text-gray-400">{% trans "Book appointments in seconds with real-time availability" %}</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.1s;">
+                <div class="w-16 h-16 gradient-success rounded-2xl flex items-center justify-center mb-6">
+                    <span class="iconify text-white text-3xl" data-icon="mdi:shield-check"></span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">{% trans "Verified Doctors" %}</h3>
+                <p class="text-gray-600 dark:text-gray-400">{% trans "All doctors are verified and certified professionals" %}</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="w-16 h-16 gradient-sky rounded-2xl flex items-center justify-center mb-6">
+                    <span class="iconify text-white text-3xl" data-icon="mdi:calendar-check"></span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">{% trans "Smart Reminders" %}</h3>
+                <p class="text-gray-600 dark:text-gray-400">{% trans "Never miss an appointment with automated reminders" %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Specializations with HTMX -->
+<section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">{% trans "Browse by Specialization" %}</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400">{% trans "Find the right specialist for your needs" %}</p>
+        </div>
+
+        <div hx-get="{% url 'doctors:specialization_list' %}"
+           hx-trigger="load"
+           hx-indicator="#spec-spinner"
+           class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+
+        <div id="spec-spinner" class="htmx-indicator text-center py-8">
+            <span class="iconify animate-spin text-purple-600 text-4xl" data-icon="mdi:loading"></span>
+        </div>
+    </div>
+</section>
+
+<!-- Top Doctors with HTMX -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-12">
+            <div>
+                <h2 class="text-4xl font-bold mb-4">{% trans "Top Rated Doctors" %}</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">{% trans "Meet our highly rated professionals" %}</p>
+            </div>
+            <a href="{% url 'doctors:list' %}" class="gradient-primary text-white px-6 py-3 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                {% trans "View All" %}
+            </a>
+        </div>
+
+        <div hx-get="{% url 'doctors:top_rated' %}"
+             hx-trigger="load"
+             hx-indicator="#doctors-spinner"
+             class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Content loaded via HTMX -->
+        </div>
+
+        <div id="doctors-spinner" class="htmx-indicator text-center py-8">
+            <span class="iconify animate-spin text-purple-600 text-4xl" data-icon="mdi:loading"></span>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="relative overflow-hidden gradient-primary text-white py-20">
+    <div class="absolute inset-0 bg-black opacity-10"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">{% trans "Ready to Get Started?" %}</h2>
+        <p class="text-xl mb-8">{% trans "Join thousands of patients who trust MediBook for their healthcare needs" %}</p>
+        <a href="{% url 'account_signup' %}" class="inline-block bg-white text-purple-600 px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transform hover:scale-105 transition-all">
+            {% trans "Create Free Account" %}
+        </a>
+    </div>
+</section>
+
+<style>
+    @keyframes blob {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        25% { transform: translate(20px, -50px) scale(1.1); }
+        50% { transform: translate(-20px, 20px) scale(0.9); }
+        75% { transform: translate(50px, 50px) scale(1.05); }
+    }
+
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+</style>
+{% endblock %}

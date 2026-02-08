@@ -1,0 +1,25 @@
+{% load static i18n %}
+
+{% for doctor in doctors %}
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+    <img src="{{ doctor.user.profile.get_avatar_url }}"
+         alt="{{ doctor.user.get_full_name }}"
+         class="w-16 h-16 rounded-full object-cover">
+
+    <div class="flex-1">
+        <h4 class="font-bold text-gray-900 dark:text-white">Dr. {{ doctor.user.get_full_name }}</h4>
+        <p class="text-sm text-purple-600">{{ doctor.specialization.name }}</p>
+        <div class="flex items-center text-sm text-gray-500 mt-1">
+            <span class="iconify mr-1 text-yellow-500" data-icon="mdi:star"></span>
+            <span>{{ doctor.rating|default:"5.0" }}</span>
+        </div>
+    </div>
+
+    <a href="{% url 'doctors:detail' doctor.pk %}"
+       class="p-2 text-purple-600 hover:bg-purple-100 dark:hover:bg-purple-900 rounded-lg transition-colors">
+        <span class="iconify text-xl" data-icon="mdi:arrow-right"></span>
+    </a>
+</div>
+{% empty %}
+<p class="text-center text-gray-500 py-4">{% trans "No doctors available" %}</p>
+{% endfor %}

@@ -1,0 +1,41 @@
+{% load static i18n %}
+
+{# يجب إضافة حلقة التكرار لأن ListView ترسل قائمة من الأطباء وليس طبيباً واحداً #}
+{% for doctor in doctors %}
+<div class="flex items-center space-x-4 p-4 bg-white dark:bg-gray-800 rounded-xl hover:shadow-lg transition-all mb-4">
+
+    <img src="{{ doctor.user.profile.get_avatar_url }}"
+         alt="{{ doctor.user.get_full_name }}"
+         class="w-16 h-16 rounded-full border-2 border-purple-500 object-cover">
+
+    <div class="flex-1">
+        <h4 class="font-bold text-gray-900 dark:text-white">
+            Dr. {{ doctor.user.get_full_name }}
+        </h4>
+
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+            {{ doctor.specialization.name }}
+        </p>
+
+        <div class="flex items-center mt-1">
+            <span class="iconify text-yellow-500 mr-1" data-icon="mdi:star"></span>
+            <span class="text-sm font-semibold">{{ doctor.rating|floatformat:1 }}</span>
+            <span class="text-xs text-gray-500 ml-2">
+                ({{ doctor.total_reviews|default:"0" }} {% trans "reviews" %})
+            </span>
+        </div>
+    </div>
+
+    {# هنا كان الخطأ، الآن doctor.pk سيكون متاحاً داخل الحلقة #}
+    <a href="{% url 'doctors:detail' doctor.pk %}"
+       class="text-purple-600 hover:text-purple-700 font-semibold">
+        {% trans "View" %} →
+    </a>
+
+</div>
+{% empty %}
+    {# رسالة في حال لم ينجح البحث عن الطبيب #}
+    <div class="text-center py-8 text-gray-500">
+        {% trans "No doctors found matching your search." %}
+    </div>
+{% endfor %}

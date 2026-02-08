@@ -1,0 +1,53 @@
+{% load static i18n %}
+
+<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+
+    <!-- Header with Gradient -->
+    <div class="h-32 bg-gradient-to-br from-purple-600 to-blue-600 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white rounded-full"></div>
+        </div>
+
+        <div class="relative h-full flex items-center justify-center">
+            {% if specialization.icon %}
+            <span class="iconify text-white text-6xl" data-icon="{{ specialization.icon }}"></span>
+            {% else %}
+            <span class="iconify text-white text-6xl" data-icon="mdi:medical-bag"></span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6">
+
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 text-center">
+            {{ specialization.name }}
+        </h3>
+
+        {% if specialization.description %}
+        <p class="text-gray-600 dark:text-gray-400 text-center mb-4 line-clamp-2">
+            {{ specialization.description }}
+        </p>
+        {% endif %}
+
+        <!-- Stats -->
+        <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 mb-4 text-center">
+            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
+                {{ specialization.doctor_count|default:0 }}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+                {% trans "Available Doctors" %}
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <a href="{% url 'doctors:specialization_detail' specialization.slug %}"
+           class="block w-full text-center gradient-primary text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+            <span class="iconify mr-2" data-icon="mdi:doctor"></span>
+            {% trans "View Doctors" %}
+        </a>
+
+    </div>
+</div>
+

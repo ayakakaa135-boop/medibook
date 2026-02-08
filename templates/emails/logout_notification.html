@@ -1,0 +1,78 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل خروج</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 30px;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #FF9800;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👋 تسجيل خروج</h1>
+            <p>Logout Notification</p>
+        </div>
+
+        <div class="content">
+            <p>مرحباً <strong>{{ user_name }}</strong>،</p>
+
+            <p>تم تسجيل خروجك من حسابك بنجاح.</p>
+
+            <div class="info-box">
+                <div style="padding: 8px 0;">
+                    <strong>⏰ الوقت:</strong> {{ logout_time|date:"d/m/Y H:i" }}
+                </div>
+                <div style="padding: 8px 0;">
+                    <strong>🌐 عنوان IP:</strong> {{ ip_address }}
+                </div>
+            </div>
+
+            <p>نتمنى لك يوماً سعيداً! 😊</p>
+        </div>
+
+        <div class="footer">
+            <p>شكراً لاستخدامك خدماتنا</p>
+        </div>
+    </div>
+</body>
+</html>

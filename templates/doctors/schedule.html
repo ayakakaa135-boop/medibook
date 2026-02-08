@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "My Schedule" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "My Schedule" %}</h1>
+            <a href="{% url 'doctors:dashboard' %}" class="text-purple-600 hover:text-purple-700">
+                ← {% trans "Back to Dashboard" %}
+            </a>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Working Hours -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <span class="iconify mr-2 text-purple-600" data-icon="mdi:clock-outline"></span>
+                        {% trans "Working Hours" %}
+                    </h2>
+                    <a href="{% url 'doctors:working_hours' %}" class="text-purple-600 hover:text-purple-700 text-sm">
+                        {% trans "Manage" %} →
+                    </a>
+                </div>
+
+                <div class="space-y-3">
+                    {% for hour in working_hours %}
+                    <div class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <span class="font-medium text-gray-900 dark:text-white">{{ hour.get_day_of_week_display }}</span>
+                        <span class="text-purple-600 font-semibold">{{ hour.start_time|time:"H:i" }} - {{ hour.end_time|time:"H:i" }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500 py-8">{% trans "No working hours set" %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Days Off -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <span class="iconify mr-2 text-red-600" data-icon="mdi:calendar-remove"></span>
+                        {% trans "Days Off" %}
+                    </h2>
+                    <a href="{% url 'doctors:days_off' %}" class="text-purple-600 hover:text-purple-700 text-sm">
+                        {% trans "Manage" %} →
+                    </a>
+                </div>
+
+                <div class="space-y-3">
+                    {% for day in days_off %}
+                    <div class="flex justify-between items-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                        <span class="font-medium text-gray-900 dark:text-white">{{ day.date|date:"l, d M Y" }}</span>
+                        {% if day.reason %}
+                        <span class="text-sm text-gray-500">{{ day.reason }}</span>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500 py-8">{% trans "No days off scheduled" %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

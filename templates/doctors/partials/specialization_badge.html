@@ -1,0 +1,15 @@
+{% load static i18n %}
+
+<a href="{% url 'doctors:specialization_detail' specialization.slug %}"
+   class="inline-flex items-center space-x-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-4 py-2 rounded-full hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-all">
+
+    {% if specialization.icon %}
+    <span class="iconify" data-icon="{{ specialization.icon }}"></span>
+    {% endif %}
+
+    <span class="font-semibold">{{ specialization.name }}</span>
+
+    <span class="bg-purple-200 dark:bg-purple-800 text-purple-700 dark:text-purple-300 text-xs px-2 py-0.5 rounded-full">
+        {{ specialization.doctor_count|default:0 }}
+    </span>
+</a>

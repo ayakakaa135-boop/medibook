@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Working Hours" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header - التصميم المحسن -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'doctors:dashboard_schedule' %}"
+                   class="flex items-center px-4 py-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 group">
+                    <span class="iconify text-gray-600 dark:text-gray-400 mr-2 group-hover:text-purple-600 transition-colors" data-icon="mdi:arrow-left"></span>
+                    <span class="text-gray-700 dark:text-gray-300 font-medium group-hover:text-purple-600 transition-colors">{% trans "Back to Schedule" %}</span>
+                </a>
+
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                        <span class="iconify text-white text-2xl" data-icon="mdi:clock-outline"></span>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Working Hours" %}</h1>
+                        <p class="text-gray-500 dark:text-gray-400">{% trans "Manage your availability" %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add New Button -->
+            <a href="{% url 'doctors:working_hours' %}"
+               class="gradient-primary text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center space-x-2">
+                <span class="iconify" data-icon="mdi:plus"></span>
+                <span>{% trans "Add New Schedule" %}</span>
+            </a>
+        </div>
+
+        <!-- Add New Schedule Form -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-8">
+            <h2 class="text-xl font-bold mb-6 flex items-center">
+                <span class="iconify mr-2 text-purple-600" data-icon="mdi:calendar-plus"></span>
+                {% trans "Add New Schedule" %}
+            </h2>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Day of Week -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Day of week" %}
+                    </label>
+                    {{ form.day_of_week }}
+                </div>
+
+                <!-- Start Time -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Start time" %}
+                    </label>
+                    {{ form.start_time }}
+                </div>
+
+                <!-- End Time -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "End time" %}
+                    </label>
+                    {{ form.end_time }}
+                </div>
+
+                <!-- ✅ Active Checkbox - الحل هنا -->
+                <div class="flex items-center">
+                    <input type="checkbox" name="is_active" id="id_is_active"
+                           class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                           {% if form.is_active.value %}checked{% endif %}>
+                    <label for="id_is_active" class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        {% trans "Active" %}
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full gradient-primary text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                    <span class="iconify inline mr-2" data-icon="mdi:content-save"></span>
+                    {% trans "Add Schedule" %}
+                </button>
+            </form>
+        </div>
+
+        <!-- Current Schedule -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-6 flex items-center">
+                <span class="iconify mr-2 text-purple-600" data-icon="mdi:calendar-clock"></span>
+                {% trans "Current Schedule" %}
+            </h2>
+
+            {% if working_hours %}
+            <div class="space-y-4">
+                {% for hour in working_hours %}
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mr-4">
+                            <span class="iconify text-purple-600" data-icon="mdi:calendar"></span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900 dark:text-white">
+                                {{ hour.get_day_of_week_display }}
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                {{ hour.start_time|time:"H:i" }} - {{ hour.end_time|time:"H:i" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        {% if hour.is_active %}
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                            {% trans "Active" %}
+                        </span>
+                        {% else %}
+                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                            {% trans "Inactive" %}
+                        </span>
+                        {% endif %}
+
+                        <a href="{% url 'doctors:working_hours_delete' hour.pk %}"
+                           class="text-red-600 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors">
+                            <span class="iconify" data-icon="mdi:delete"></span>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12 text-gray-500">
+                <span class="iconify text-5xl mb-4" data-icon="mdi:calendar-blank"></span>
+                <h3 class="text-lg font-semibold mb-2">{% trans "No schedules yet" %}</h3>
+                <p class="text-gray-400">{% trans "Add your first working hours schedule" %}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-8 flex justify-center space-x-4">
+            <a href="{% url 'doctors:dashboard_schedule' %}"
+               class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all flex items-center space-x-2">
+                <span class="iconify" data-icon="mdi:arrow-left"></span>
+                <span>{% trans "Back to Schedule" %}</span>
+            </a>
+
+            <a href="{% url 'doctors:days_off' %}"
+               class="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-6 py-3 rounded-xl font-semibold hover:bg-blue-200 dark:hover:bg-blue-800 transition-all flex items-center space-x-2">
+                <span class="iconify" data-icon="mdi:calendar-remove"></span>
+                <span>{% trans "Manage Days Off" %}</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

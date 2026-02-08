@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Payment Successful" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4">
+    <div class="max-w-md w-full">
+        <!-- Success Animation -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 dark:bg-green-900 rounded-full mb-4">
+                <span class="iconify text-5xl text-green-600" data-icon="mdi:check-circle"></span>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                {% trans "Payment Successful!" %}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+                {% trans "Your payment has been processed successfully" %}
+            </p>
+        </div>
+
+        <!-- Payment Details Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-6">
+            <div class="space-y-4">
+                <!-- Transaction ID -->
+                <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {% trans "Transaction ID" %}
+                    </p>
+                    <p class="font-mono font-semibold text-gray-900 dark:text-white">
+                        {{ payment.transaction_id }}
+                    </p>
+                </div>
+
+                <!-- Amount -->
+                <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {% trans "Amount Paid" %}
+                    </p>
+                    <p class="text-2xl font-bold text-green-600">
+                        {{ payment.amount }} {% trans "SAR" %}
+                    </p>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {% trans "Payment Method" %}
+                    </p>
+                    <div class="flex items-center space-x-2">
+                        <span class="iconify text-2xl" data-icon="{% if payment.card_brand == 'visa' %}logos:visa{% elif payment.card_brand == 'mastercard' %}logos:mastercard{% else %}mdi:credit-card{% endif %}"></span>
+                        <p class="font-semibold text-gray-900 dark:text-white">
+                            **** {{ payment.card_last_four }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Date & Time -->
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {% trans "Date & Time" %}
+                    </p>
+                    <p class="font-semibold text-gray-900 dark:text-white">
+                        {{ payment.completed_at|date:"d M Y, H:i" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-3">
+            <a href="{{ payment.appointment.get_absolute_url }}" 
+               class="block w-full text-center bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors">
+                {% trans "View Appointment" %}
+            </a>
+            <a href="{% url 'appointments:my_appointments' %}" 
+               class="block w-full text-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                {% trans "Back to Appointments" %}
+            </a>
+        </div>
+
+        <!-- Receipt Download -->
+        <div class="mt-6 text-center">
+            <a href="#" class="text-purple-600 hover:text-purple-700 text-sm font-semibold inline-flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:download"></span>
+                {% trans "Download Receipt" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

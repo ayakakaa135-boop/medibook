@@ -1,0 +1,9 @@
+{% load static i18n %}
+
+{% for doctor in doctors %}
+    {% include "doctors/partials/doctor_card.html" %}
+{% empty %}
+<div class="col-span-full text-center py-8">
+    <p class="text-gray-500">{% trans "No top doctors found" %}</p>
+</div>
+{% endfor %}

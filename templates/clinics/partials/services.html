@@ -1,0 +1,28 @@
+{% load static i18n %}
+
+{% for service in services %}
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 hover:shadow-xl transition-shadow">
+    <div class="flex justify-between items-start mb-2">
+        <h4 class="font-bold text-gray-900 dark:text-white">{{ service.name }}</h4>
+        <span class="text-lg font-bold text-purple-600">{{ service.price }} SAR</span>
+    </div>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+        {{ service.description|truncatewords:10 }}
+    </p>
+
+    <div class="flex items-center justify-between">
+        <span class="text-sm text-gray-500 flex items-center">
+            <span class="iconify mr-1" data-icon="mdi:clock-outline"></span>
+            {{ service.duration }} {% trans "min" %}
+        </span>
+
+        <a href="{% url 'appointments:create' %}?service={{ service.pk }}"
+           class="text-sm gradient-primary text-white px-4 py-2 rounded-lg hover:shadow-md transition-all">
+            {% trans "Book" %}
+        </a>
+    </div>
+</div>
+{% empty %}
+<p class="text-center text-gray-500 py-4">{% trans "No services available" %}</p>
+{% endfor %}

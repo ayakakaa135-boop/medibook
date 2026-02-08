@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% load static i18n humanize %}
+
+{% block title %}{% trans "Admin Dashboard" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                {% trans "Admin Dashboard" %}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+                {% trans "Welcome back! Here's what's happening today." %}
+            </p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Clinics -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">
+                            {% trans "Total Clinics" %}
+                        </p>
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
+                            {{ stats.total_clinics|intcomma }}
+                        </h3>
+                    </div>
+                    <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900 rounded-xl flex items-center justify-center">
+                        <span class="iconify text-purple-600 dark:text-purple-400 text-3xl" data-icon="mdi:hospital-building"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Doctors -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">
+                            {% trans "Total Doctors" %}
+                        </p>
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
+                            {{ stats.total_doctors|intcomma }}
+                        </h3>
+                    </div>
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+                        <span class="iconify text-blue-600 dark:text-blue-400 text-3xl" data-icon="mdi:doctor"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Patients -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">
+                            {% trans "Total Patients" %}
+                        </p>
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
+                            {{ stats.total_patients|intcomma }}
+                        </h3>
+                    </div>
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center">
+                        <span class="iconify text-green-600 dark:text-green-400 text-3xl" data-icon="mdi:account-group"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Revenue -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">
+                            {% trans "This Month Revenue" %}
+                        </p>
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
+                            {{ revenue.this_month|floatformat:0|intcomma }}
+                            <span class="text-lg text-gray-500">{% trans "SAR" %}</span>
+                        </h3>
+                    </div>
+                    <div class="w-14 h-14 bg-yellow-100 dark:bg-yellow-900 rounded-xl flex items-center justify-center">
+                        <span class="iconify text-yellow-600 dark:text-yellow-400 text-3xl" data-icon="mdi:currency-usd"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Today's Appointments -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="iconify text-4xl" data-icon="mdi:calendar-today"></span>
+                    <span class="text-3xl font-bold">{{ stats.today_appointments }}</span>
+                </div>
+                <p class="text-blue-100">{% trans "Today's Appointments" %}</p>
+            </div>
+
+            <!-- Pending Appointments -->
+            <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="iconify text-4xl" data-icon="mdi:clock-alert"></span>
+                    <span class="text-3xl font-bold">{{ stats.pending_appointments }}</span>
+                </div>
+                <p class="text-yellow-100">{% trans "Pending Confirmations" %}</p>
+            </div>
+
+            <!-- Total Appointments -->
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="iconify text-4xl" data-icon="mdi:calendar-check"></span>
+                    <span class="text-3xl font-bold">{{ stats.total_appointments|intcomma }}</span>
+                </div>
+                <p class="text-green-100">{% trans "Total Appointments" %}</p>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+
+            <!-- Top Doctors -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {% trans "Top Doctors" %}
+                    </h2>
+                    <a href="{% url 'doctors:list' %}" class="text-purple-600 hover:text-purple-700 text-sm font-semibold">
+                        {% trans "View All" %} →
+                    </a>
+                </div>
+
+                <div class="space-y-4">
+                    {% for doctor in top_doctors %}
+                    <div class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <img src="{{ doctor.user.profile.get_avatar_url }}"
+                             alt="{{ doctor.user.get_full_name }}"
+                             class="w-14 h-14 rounded-full border-2 border-purple-500">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">
+                                {{ doctor.user.get_full_name }}
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {{ doctor.specialization.name }}
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-purple-600">
+                                {{ doctor.appointment_count }}
+                            </div>
+                            <div class="text-xs text-gray-500">{% trans "appointments" %}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Top Specializations -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {% trans "Popular Specializations" %}
+                    </h2>
+                </div>
+
+                <div class="space-y-4">
+                    {% for spec in top_specializations %}
+                    <div class="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
+                                <span class="iconify text-blue-600 dark:text-blue-400 text-2xl" data-icon="{{ spec.icon }}"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">
+                                    {{ spec.name }}
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ spec.appointment_count }} {% trans "appointments" %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-blue-600">
+                            {{ spec.appointment_count }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Appointments Table -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {% trans "Recent Appointments" %}
+                    </h2>
+                    <a href="{% url 'appointments:my_appointments' %}" class="text-purple-600 hover:text-purple-700 text-sm font-semibold">
+                        {% trans "View All" %} →
+                    </a>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+                                {% trans "Patient" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+                                {% trans "Doctor" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+                                {% trans "Date & Time" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+                                {% trans "Status" %}
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+                                {% trans "Actions" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for appointment in recent_appointments %}
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="{{ appointment.patient.profile.get_avatar_url }}"
+                                         alt="{{ appointment.patient.get_full_name }}"
+                                         class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <div class="font-semibold text-gray-900 dark:text-white">
+                                            {{ appointment.patient.get_full_name }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ appointment.patient.email }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="font-semibold text-gray-900 dark:text-white">
+                                    {{ appointment.doctor.user.get_full_name }}
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    {{ appointment.doctor.specialization.name }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-gray-900 dark:text-white">
+                                    {{ appointment.date|date:"M d, Y" }}
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    {{ appointment.start_time|time:"h:i A" }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold
+                                    {% if appointment.status == 'CONFIRMED' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                                    {% elif appointment.status == 'PENDING' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400
+                                    {% elif appointment.status == 'CANCELED' %}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
+                                    {% else %}bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400{% endif %}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{% url 'appointments:detail' appointment.pk %}"
+                                   class="text-purple-600 hover:text-purple-700 font-semibold">
+                                    {% trans "View" %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                {% trans "No recent appointments" %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Doctor Dashboard" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <h1 class="text-4xl font-bold mb-8">{% trans "Doctor Dashboard" %}</h1>
+
+        <!-- Stats -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="text-3xl font-bold mb-2">{{ stats.today_count }}</div>
+                <div class="text-blue-100">{% trans "Today's Appointments" %}</div>
+            </div>
+
+            <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="text-3xl font-bold mb-2">{{ stats.pending_count }}</div>
+                <div class="text-yellow-100">{% trans "Pending Confirmation" %}</div>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="text-3xl font-bold mb-2">{{ stats.total_patients }}</div>
+                <div class="text-green-100">{% trans "Total Patients" %}</div>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="text-3xl font-bold mb-2">{{ stats.rating }}</div>
+                <div class="text-purple-100">{% trans "Rating" %}</div>
+            </div>
+        </div>
+
+        <!-- Today's Appointments -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-6">{% trans "Today's Appointments" %}</h2>
+
+            <div class="space-y-4">
+                {% for appointment in today_appointments %}
+                <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-xl">
+                    <div class="flex items-center space-x-4">
+                        <img src="{{ appointment.patient.profile.get_avatar_url }}"
+                             alt="{{ appointment.patient.get_full_name }}"
+                             class="w-12 h-12 rounded-full">
+                        <div>
+                            <h4 class="font-semibold">{{ appointment.patient.get_full_name }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {{ appointment.start_time|time:"h:i A" }} - {{ appointment.service.name }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if appointment.status == 'PENDING' %}
+                    <button hx-post="{% url 'appointments:confirm' appointment.pk %}"
+                            hx-confirm="Confirm this appointment?"
+                            class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold">
+                        {% trans "Confirm" %}
+                    </button>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p class="text-gray-600 dark:text-gray-400">{% trans "No appointments today" %}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

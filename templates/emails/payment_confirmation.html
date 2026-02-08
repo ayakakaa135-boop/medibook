@@ -1,0 +1,23 @@
+<!-- templates/emails/payment_confirmation.html -->
+{% load i18n %}
+
+<h2>Payment Successful!</h2>
+<p>Dear {{ appointment.patient.get_full_name }},</p>
+<p>Your payment has been successfully processed.</p>
+
+<table>
+    <tr>
+        <td>Transaction ID:</td>
+        <td>{{ payment.transaction_id }}</td>
+    </tr>
+    <tr>
+        <td>Amount:</td>
+        <td>{{ payment.amount }} SAR</td>
+    </tr>
+    <tr>
+        <td>Appointment:</td>
+        <td>{{ appointment.date }} at {{ appointment.start_time }}</td>
+    </tr>
+</table>
+
+<p>Thank you for your payment!</p>

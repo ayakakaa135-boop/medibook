@@ -1,0 +1,18 @@
+{% load static i18n %}
+
+<div id="avatar-container" class="fixed top-4 right-4 z-50">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-up">
+            <span class="iconify inline mr-2" data-icon="mdi:check-circle"></span>
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Updated Avatar Preview -->
+<script>
+    // تحديث الصورة في الصفحة الرئيسية
+    document.querySelector('img[alt="{{ user.get_full_name }}"]').src = "{{ profile.get_avatar_url }}?t=" + Date.now();
+</script>

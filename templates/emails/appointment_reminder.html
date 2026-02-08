@@ -1,0 +1,41 @@
+
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Appointment Reminder" %}</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #f3f4f6; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; }
+        .header { background: #f59e0b; padding: 30px; text-align: center; color: white; }
+        .content { padding: 30px; }
+        .reminder-box { background: #fef3c7; border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .btn { display: inline-block; background: #f59e0b; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+        .footer { background: #1f2937; color: #9ca3af; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% trans "Reminder: Your Appointment is Tomorrow!" %}</h1>
+        </div>
+        <div class="content">
+            <p>{% trans "Hi" %} {{ appointment.patient.get_full_name }},</p>
+            <p>{% trans "This is a friendly reminder that you have an appointment scheduled for tomorrow." %}</p>
+
+            <div class="reminder-box">
+                <p><strong>{% trans "Date:" %}</strong> {{ appointment.date|date:"l, d F Y" }}</p>
+                <p><strong>{% trans "Time:" %}</strong> {{ appointment.start_time|time:"H:i" }}</p>
+                <p><strong>{% trans "Doctor:" %}</strong> Dr. {{ appointment.doctor.user.get_full_name }}</p>
+                <p><strong>{% trans "Location:" %}</strong> {{ appointment.clinic.name }}</p>
+            </div>
+
+            <a href="{{ appointment_url }}" class="btn">{% trans "View Details" %}</a>
+        </div>
+        <div class="footer">
+            <p>MediBook - {% trans "Healthcare Made Simple" %}</p>
+        </div>
+    </div>
+</body>
+</html>

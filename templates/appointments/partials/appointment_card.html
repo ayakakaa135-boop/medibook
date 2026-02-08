@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% load static i18n %}
+
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border-l-4
+     {% if appointment.status == 'CONFIRMED' %}border-green-500
+     {% elif appointment.status == 'PENDING' %}border-yellow-500
+     {% elif appointment.status == 'CANCELED' %}border-red-500
+     {% else %}border-gray-500{% endif %}">
+
+    <div class="flex justify-between items-start mb-4">
+        <!-- Date & Time -->
+        <div>
+            <div class="flex items-center space-x-2 text-gray-600 dark:text-gray-400 mb-2">
+                <span class="iconify text-xl" data-icon="mdi:calendar"></span>
+                <span class="font-semibold">{{ appointment.date|date:"F d, Y" }}</span>
+            </div>
+            <div class="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                <span class="iconify text-xl" data-icon="mdi:clock"></span>
+                <span class="font-semibold">{{ appointment.start_time|time:"h:i A" }}</span>
+            </div>
+        </div>
+
+        <!-- Status Badge -->
+        <span class="px-3 py-1 rounded-full text-sm font-semibold
+             {% if appointment.status == 'CONFIRMED' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+             {% elif appointment.status == 'PENDING' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400
+             {% elif appointment.status == 'CANCELED' %}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
+             {% else %}bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400{% endif %}">
+            {{ appointment.get_status_display }}
+        </span>
+    </div>
+
+    <!-- Doctor Info -->
+    <div class="flex items-center space-x-4 mb-4">
+        <img src="{{ appointment.doctor.user.profile.get_avatar_url }}"
+             alt="{{ appointment.doctor.user.get_full_name }}"
+             class="w-16 h-16 rounded-full border-2 border-purple-500">
+        <div>
+            <h4 class="font-bold text-lg">{{ appointment.doctor.user.get_full_name }}</h4>
+            <p class="text-gray-600 dark:text-gray-400">{{ appointment.doctor.specialization.name }}</p>
+            <p class="text-sm text-gray-500">{{ appointment.clinic.name }}</p>
+        </div>
+    </div>
+
+    <!-- Service -->
+    {% if appointment.service %}
+    <div class="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+        <div class="flex justify-between items-center">
+            <span class="font-semibold text-purple-700 dark:text-purple-400">{{ appointment.service.name }}</span>
+            <span class="text-purple-600 dark:text-purple-400 font-bold">{{ appointment.service.price }} {% trans "SAR" %}</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Actions -->
+    {% if appointment.can_cancel %}
+    <div class="flex space-x-3">
+        <a href="{% url 'doctors:detail' appointment.doctor.id %}"
+           class="flex-1 text-center bg-gray-100 dark:bg-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+            {% trans "View Doctor" %}
+        </a>
+
+        <button hx-get="{% url 'appointments:cancel' appointment.id %}"
+                hx-target="#cancel-modal"
+                hx-swap="innerHTML"
+                class="flex-1 bg-red-500 text-white py-2 rounded-lg font-semibold hover:bg-red-600 transition-all">
+            {% trans "Cancel" %}
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ============================================ -->
+<!-- Search Results Partial -->
+<!-- ============================================ -->
+{% load static i18n %}
+
+<div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-h-96 overflow-y-auto z-50">
+    {% if doctors %}
+        <div class="p-2">
+            <h4 class="px-4 py-2 text-sm font-semibold text-gray-500 uppercase">{% trans "Doctors" %}</h4>
+            {% for doctor in doctors %}
+                <a href="{% url 'doctors:detail' doctor.id %}"
+                   class="flex items-center space-x-4 p-4 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <img src="{{ doctor.user.profile.get_avatar_url }}"
+                         alt="{{ doctor.user.get_full_name }}"
+                         class="w-12 h-12 rounded-full">
+                    <div class="flex-1">
+                        <div class="font-semibold">{{ doctor.user.get_full_name }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">{{ doctor.specialization.name }}</div>
+                    </div>
+                    <div class="flex items-center space-x-1 text-yellow-500">
+                        <span class="iconify" data-icon="mdi:star"></span>
+                        <span class="font-semibold">{{ doctor.rating }}</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if clinics %}
+        <div class="p-2 border-t dark:border-gray-700">
+            <h4 class="px-4 py-2 text-sm font-semibold text-gray-500 uppercase">{% trans "Clinics" %}</h4>
+            {% for clinic in clinics %}
+                <a href="{% url 'clinics:detail' clinic.slug %}"
+                   class="flex items-center space-x-4 p-4 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <div class="w-12 h-12 gradient-primary rounded-lg flex items-center justify-center">
+                        <span class="iconify text-white text-2xl" data-icon="mdi:hospital-building"></span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-semibold">{{ clinic.name }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">{{ clinic.city }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if not doctors and not clinics %}
+        <div class="p-8 text-center">
+            <span class="iconify text-6xl text-gray-400 mb-4" data-icon="mdi:magnify"></span>
+            <p class="text-gray-600 dark:text-gray-400">{% trans "No results found" %}</p>
+        </div>
+    {% endif %}
+</div>
+
+
+<!-- ============================================ -->
+<!-- Loading Spinner -->
+<!-- ============================================ -->
+<div class="flex items-center justify-center py-8">
+    <div class="relative">
+        <div class="w-16 h-16 border-4 border-purple-200 rounded-full animate-spin"></div>
+        <div class="w-16 h-16 border-4 border-purple-600 rounded-full animate-ping absolute top-0 left-0"></div>
+    </div>
+</div>
+{% endblock %}

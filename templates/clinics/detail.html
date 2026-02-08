@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ clinic.name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+
+    <!-- Cover Image -->
+    <div class="h-64 md:h-96 bg-gradient-to-br from-purple-600 to-blue-600 relative">
+        {% if clinic.cover_image %}
+        <img src="{{ clinic.cover_image.url }}" alt="{{ clinic.name }}" class="w-full h-full object-cover">
+        {% endif %}
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+        <div class="absolute bottom-0 left-0 right-0 p-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center space-x-6">
+                    {% if clinic.logo %}
+                    <img src="{{ clinic.logo.url }}" alt="{{ clinic.name }}" class="w-24 h-24 rounded-2xl border-4 border-white shadow-lg">
+                    {% else %}
+                    <div class="w-24 h-24 rounded-2xl bg-white flex items-center justify-center">
+                        <span class="iconify text-purple-600 text-4xl" data-icon="mdi:hospital-building"></span>
+                    </div>
+                    {% endif %}
+
+                    <div class="text-white">
+                        <h1 class="text-4xl font-bold mb-2">{{ clinic.name }}</h1>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <span class="iconify text-yellow-400 mr-1" data-icon="mdi:star"></span>
+                                <span class="font-semibold">{{ clinic.rating }}</span>
+                                <span class="text-sm ml-1">({{ clinic.total_reviews }} {% trans "reviews" %})</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="iconify mr-1" data-icon="mdi:map-marker"></span>
+                                <span>{{ clinic.city }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+
+                <!-- About -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4">{% trans "About" %}</h2>
+                    <p class="text-gray-600 dark:text-gray-400">{{ clinic.description }}</p>
+                </div>
+
+                <!-- Doctors -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">{% trans "Our Doctors" %}</h2>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        {% for doctor in doctors %}
+                        <div class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <img src="{{ doctor.user.profile.get_avatar_url }}"
+                                 alt="{{ doctor.user.get_full_name }}"
+                                 class="w-16 h-16 rounded-full">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 dark:text-white">
+                                    {{ doctor.user.get_full_name }}
+                                </h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ doctor.specialization.name }}
+                                </p>
+                                <div class="flex items-center text-sm text-yellow-500">
+                                    <span class="iconify mr-1" data-icon="mdi:star"></span>
+                                    <span>{{ doctor.rating }}</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'doctors:detail' doctor.pk %}"
+                               class="text-purple-600 hover:text-purple-700 font-semibold">
+                                {% trans "View" %}
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6">{% trans "Services" %}</h2>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        {% for service in services %}
+                        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">
+                                {{ service.name }}
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                {{ service.description|truncatewords:15 }}
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-purple-600 font-bold">{{ service.price }} {% trans "SAR" %}</span>
+                                <span class="text-sm text-gray-500">{{ service.duration_minutes }} {% trans "min" %}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+
+                <!-- Contact Info -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">{% trans "Contact Information" %}</h3>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-purple-600" data-icon="mdi:phone"></span>
+                            <span>{{ clinic.phone }}</span>
+                        </div>
+
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-purple-600" data-icon="mdi:email"></span>
+                            <span>{{ clinic.email }}</span>
+                        </div>
+
+                        <div class="flex items-start text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-purple-600 mt-1" data-icon="mdi:map-marker"></span>
+                            <span>{{ clinic.address }}</span>
+                        </div>
+
+                        {% if clinic.website %}
+                        <div class="flex items-center text-gray-600 dark:text-gray-400">
+                            <span class="iconify mr-3 text-purple-600" data-icon="mdi:web"></span>
+                            <a href="{{ clinic.website }}" target="_blank" class="text-purple-600 hover:underline">
+                                {% trans "Visit Website" %}
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Working Hours -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">{% trans "Working Hours" %}</h3>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">{% trans "Opens" %}</span>
+                            <span class="font-semibold">{{ clinic.opening_time|time:"h:i A" }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">{% trans "Closes" %}</span>
+                            <span class="font-semibold">{{ clinic.closing_time|time:"h:i A" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+                    <h3 class="text-xl font-bold mb-4">{% trans "Statistics" %}</h3>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>{% trans "Doctors" %}</span>
+                            <span class="font-bold">{{ stats.total_doctors }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>{% trans "Services" %}</span>
+                            <span class="font-bold">{{ stats.total_services }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>{% trans "Average Rating" %}</span>
+                            <span class="font-bold">{{ stats.avg_rating|floatformat:1 }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

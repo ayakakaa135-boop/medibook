@@ -1,0 +1,42 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Appointment Cancelled" %}</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background: #f3f4f6; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; }
+        .header { background: #dc2626; padding: 30px; text-align: center; color: white; }
+        .content { padding: 30px; }
+        .cancel-box { background: #fee2e2; border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .btn { display: inline-block; background: #dc2626; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; }
+        .footer { background: #1f2937; color: #9ca3af; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% trans "Appointment Cancelled" %}</h1>
+        </div>
+        <div class="content">
+            <p>{% trans "Hi" %} {{ appointment.patient.get_full_name }},</p>
+            <p>{% trans "Your appointment has been cancelled as requested." %}</p>
+
+            <div class="cancel-box">
+                <p><strong>{% trans "Cancelled Appointment:" %}</strong></p>
+                <p>{% trans "Date:" %} {{ appointment.date|date:"l, d F Y" }}</p>
+                <p>{% trans "Time:" %} {{ appointment.start_time|time:"H:i" }}</p>
+                <p>{% trans "Doctor:" %} Dr. {{ appointment.doctor.user.get_full_name }}</p>
+            </div>
+
+            <p>{% trans "Want to book a new appointment?" %}</p>
+            <a href="{{ book_url }}" class="btn">{% trans "Book New Appointment" %}</a>
+        </div>
+        <div class="footer">
+            <p>MediBook - {% trans "Healthcare Made Simple" %}</p>
+        </div>
+    </div>
+</body>
+</html>

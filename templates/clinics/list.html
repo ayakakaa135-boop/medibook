@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Clinics" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                {% trans "Find the Best Clinics" %}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">
+                {% trans "Browse our network of verified medical clinics" %}
+            </p>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
+            <form method="get" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text"
+                       name="search"
+                       value="{{ request.GET.search }}"
+                       placeholder="{% trans 'Search clinics...' %}"
+                       hx-get="{% url 'clinics:list' %}"
+                       hx-trigger="keyup changed delay:500ms"
+                       hx-target="#clinic-list"
+                       hx-include="[name='city'], [name='order']"
+                       class="col-span-2 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-purple-500">
+
+                <select name="city"
+                        hx-get="{% url 'clinics:list' %}"
+                        hx-trigger="change"
+                        hx-target="#clinic-list"
+                        hx-include="[name='search'], [name='order']"
+                        class="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                    <option value="">{% trans "All Cities" %}</option>
+                    {% for city in cities %}
+                    <option value="{{ city }}" {% if request.GET.city == city %}selected{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="order"
+                        hx-get="{% url 'clinics:list' %}"
+                        hx-trigger="change"
+                        hx-target="#clinic-list"
+                        hx-include="[name='search'], [name='city']"
+                        class="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                    <option value="-rating">{% trans "Highest Rated" %}</option>
+                    <option value="name">{% trans "Name A-Z" %}</option>
+                    <option value="city">{% trans "City" %}</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- Clinic Grid -->
+        <div id="clinic-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% include "clinics/partials/clinic_list.html" %}
+            {% for clinic in clinics %}
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
+                <!-- Clinic Image -->
+                <div class="h-48 bg-gradient-to-br from-purple-500 to-blue-500 relative">
+                    {% if clinic.cover_image %}
+                    <img src="{{ clinic.cover_image.url }}" alt="{{ clinic.name }}" class="w-full h-full object-cover">
+                    {% endif %}
+
+                    <!-- Rating Badge -->
+                    <div class="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-3 py-1 flex items-center space-x-1">
+                        <span class="iconify text-yellow-500" data-icon="mdi:star"></span>
+                        <span class="font-bold">{{ clinic.rating }}</span>
+                    </div>
+                </div>
+
+                <!-- Clinic Info -->
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        {{ clinic.name }}
+                    </h3>
+
+                    <div class="flex items-center text-gray-600 dark:text-gray-400 mb-3">
+                        <span class="iconify mr-2" data-icon="mdi:map-marker"></span>
+                        <span>{{ clinic.city }}</span>
+                    </div>
+
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                        {{ clinic.description }}
+                    </p>
+
+                    <!-- Stats -->
+                    <div class="flex justify-between text-sm text-gray-500 mb-4">
+                        <span>{{ clinic.doctor_count }} {% trans "Doctors" %}</span>
+                        <span>{{ clinic.total_reviews }} {% trans "Reviews" %}</span>
+                    </div>
+
+                    <a href="{% url 'clinics:detail' clinic.slug %}"
+                       class="block w-full text-center gradient-primary text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                        {% trans "View Details" %}
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <span class="iconify text-6xl text-gray-400 mb-4" data-icon="mdi:hospital-building"></span>
+                <p class="text-gray-600 dark:text-gray-400">{% trans "No clinics found" %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="mt-8 flex justify-center">
+            <nav class="flex space-x-2">
+                {% if page_obj.has_previous %}
+                <a href="?page=1" class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg">{% trans "First" %}</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg">{% trans "Previous" %}</a>
+                {% endif %}
+
+                <span class="px-4 py-2 bg-purple-600 text-white rounded-lg">
+                    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg">{% trans "Next" %}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg">{% trans "Last" %}</a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

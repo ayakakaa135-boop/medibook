@@ -1,0 +1,56 @@
+<!-- partials/pagination.html -->
+{% load i18n %}
+{% comment %}
+Generic pagination partial for Django list views.
+Usage: {% include 'partials/pagination.html' with page_obj=your_page_object %}
+Assumes context: page_obj, request
+{% endcomment %}
+{% if page_obj %}
+    <div class="mt-8 flex justify-center">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}" aria-label="Pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{{ query_string|default:'' }}" class="relative inline-flex items-center px-4 py-2 rounded-l-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    {% trans "First" %}
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}{{ query_string|default:'' }}" class="relative inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    {% trans "Previous" %}
+                </a>
+            {% else %}
+                <span class="relative inline-flex items-center px-4 py-2 rounded-l-md bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                    {% trans "First" %}
+                </span>
+                <span class="relative inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                    {% trans "Previous" %}
+                </span>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="relative inline-flex items-center px-4 py-2 bg-purple-600 border border-purple-600 text-sm font-medium text-white">
+                        {{ num }}
+                    </span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}{{ query_string|default:'' }}" class="relative inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        {{ num }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{{ query_string|default:'' }}" class="relative inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    {% trans "Next" %}
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{{ query_string|default:'' }}" class="relative inline-flex items-center px-4 py-2 rounded-r-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    {% trans "Last" %}
+                </a>
+            {% else %}
+                <span class="relative inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                    {% trans "Next" %}
+                </span>
+                <span class="relative inline-flex items-center px-4 py-2 rounded-r-md bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-400 dark:text-gray-600 cursor-not-allowed">
+                    {% trans "Last" %}
+                </span>
+            {% endif %}
+        </nav>
+    </div>
+{% endif %}

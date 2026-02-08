@@ -1,0 +1,14 @@
+{% load static i18n %}
+
+{% for spec in specializations %}
+<a href="{% url 'doctors:list' %}?specialization={{ spec.slug }}"
+   class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 p-6 text-center">
+    <div class="w-12 h-12 mx-auto mb-3 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center group-hover:bg-purple-500 transition-colors">
+        <span class="iconify text-2xl text-purple-600 group-hover:text-white" data-icon="mdi:medical-bag"></span>
+    </div>
+    <h3 class="font-bold text-gray-900 dark:text-white text-sm">{{ spec.name }}</h3>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ spec.doctor_count }}</p>
+</a>
+{% empty %}
+<p class="col-span-full text-center text-gray-500">{% trans "No specializations" %}</p>
+{% endfor %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Dashboard" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <h1 class="text-4xl font-bold mb-8">{% trans "Welcome back" %}, {{ user.get_full_name }}!</h1>
+
+        <!-- Stats Cards -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-purple-600 mb-2">{{ stats.total_appointments }}</div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Total Appointments" %}</div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-green-600 mb-2">{{ stats.upcoming }}</div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Upcoming" %}</div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-blue-600 mb-2">{{ stats.completed }}</div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Completed" %}</div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <div class="text-3xl font-bold text-yellow-600 mb-2">{{ stats.canceled }}</div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Canceled" %}</div>
+            </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-6">{% trans "Upcoming Appointments" %}</h2>
+
+            <div class="space-y-4">
+                {% for appointment in upcoming_appointments %}
+                {% include "appointments/partials/appointment_card.html" %}
+                {% empty %}
+                <p class="text-gray-600 dark:text-gray-400">{% trans "No upcoming appointments" %}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

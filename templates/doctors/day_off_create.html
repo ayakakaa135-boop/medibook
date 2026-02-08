@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Add Day Off" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <a href="{% url 'doctors:days_off' %}" class="text-purple-600 hover:text-purple-700 mb-4 inline-block">
+                ← {% trans "Back to Days Off" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Add Day Off" %}</h1>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ field.label }}
+                    </label>
+                    {# تأكد أن حقل التاريخ يمتلك id="id_date" وهو الافتراضي في Django #}
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="submit" class="flex-1 gradient-primary text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                        {% trans "Save" %}
+                    </button>
+                    <a href="{% url 'doctors:days_off' %}" class="flex-1 bg-gray-200 dark:bg-gray-700 text-center text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold">
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // التواريخ الممررة من Django
+        const disabledDates = {{ existing_days_json|safe }};
+
+        flatpickr("#id_date", {
+            dateFormat: "Y-m-d",
+            minDate: "today", // منع اختيار أيام قديمة
+            disable: disabledDates, // تعطيل الأيام المحجوزة
+            locale: {
+                firstDayOfWeek: 6 // يبدأ الأسبوع بالسبت مثلاً
+            },
+            // لإضافة تنسيق جمالي للأيام المعطلة
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                if (disabledDates.includes(dayElem.dateObj.toISOString().split('T')[0])) {
+                    dayElem.title = "{% trans 'This day is already a day off' %}";
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

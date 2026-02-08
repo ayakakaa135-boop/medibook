@@ -1,0 +1,339 @@
+{% load static i18n compress %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}MediBook - Modern Clinic Appointment Booking System{% endblock %}">
+    <meta name="theme-color" content="#0ea5e9">
+
+    <title>{% block title %}MediBook{% endblock %} | {% trans "Healthcare Made Easy" %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <!-- Tailwind Config -->
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {}
+        }
+    }
+</script>
+
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+
+        body {
+            font-family: {% if LANGUAGE_CODE == 'ar' %}'Tajawal'{% else %}'Inter'{% endif %}, sans-serif;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gradient-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .gradient-sky {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .htmx-swapping {
+            opacity: 0;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .htmx-settling {
+            opacity: 1;
+            transition: opacity 0.2s ease-in;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    {% endcompress %}
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen"
+      x-data="{
+          darkMode: localStorage.getItem('darkMode') === 'true',
+          sidebarOpen: false,
+          init() {
+              this.$watch('darkMode', val => {
+                  localStorage.setItem('darkMode', val);
+                  if (val) {
+                      document.documentElement.classList.add('dark');
+                  } else {
+                      document.documentElement.classList.remove('dark');
+                  }
+              });
+              if (this.darkMode) {
+                  document.documentElement.classList.add('dark');
+              }
+          }
+      }"
+      x-init="init()">
+
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg fixed w-full top-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center space-x-3 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                        <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center transform hover:scale-110 transition-transform">
+                            <span class="iconify text-white text-2xl" data-icon="mdi:hospital-building"></span>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                            MediBook
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                    <a href="{% url 'clinics:list' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                        {% trans "Clinics" %}
+                    </a>
+                    <a href="{% url 'doctors:list' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                        {% trans "Doctors" %}
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'appointments:my_appointments' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                            {% trans "My Appointments" %}
+                        </a>
+
+                        {% if user.is_doctor %}
+                            <a href="{% url 'doctors:dashboard' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                                {% trans "Dashboard" %}
+                            </a>
+                        {% endif %}
+
+                        {% if user.is_admin_user %}
+                            <a href="{% url 'admin:index' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                                {% trans "Admin" %}
+                            </a>
+                        {% endif %}
+
+                        <!-- User Dropdown -->
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="flex items-center space-x-2 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %} text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors">
+                                <img src="{{ user.profile.get_avatar_url }}" alt="{{ user.get_full_name }}" class="w-8 h-8 rounded-full border-2 border-purple-500">
+                                <span>{{ user.get_full_name }}</span>
+                                <span class="iconify" data-icon="mdi:chevron-down"></span>
+                            </button>
+
+                            <div x-show="open"
+                                 @click.away="open = false"
+                                 x-transition
+                                 class="absolute {% if LANGUAGE_CODE == 'ar' %}left-0{% else %}right-0{% endif %} mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-2">
+                                <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700">
+                                    {% trans "Profile" %}
+                                </a>
+                                <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700">
+                                    {% trans "Logout" %}
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors">
+                            {% trans "Login" %}
+                        </a>
+                        <a href="{% url 'account_signup' %}" class="gradient-primary text-white px-6 py-2 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                            {% trans "Register" %}
+                        </a>
+                    {% endif %}
+
+                    <!-- Dark Mode Toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <span x-show="!darkMode" class="iconify text-xl" data-icon="mdi:moon-waning-crescent"></span>
+                        <span x-show="darkMode" class="iconify text-xl text-yellow-400" data-icon="mdi:white-balance-sunny"></span>
+                    </button>
+
+                    <!-- Language Switcher -->
+                    <form action="{% url 'set_language' %}" method="post" class="inline-block">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.path }}">
+                        <select name="language" onchange="this.form.submit()"
+                                class="bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500">
+                            <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>العربية</option>
+                            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                        </select>
+                    </form>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <span class="iconify text-2xl" data-icon="mdi:menu"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div x-show="sidebarOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden">
+    </div>
+
+    <!-- Mobile Sidebar -->
+    <div x-show="sidebarOpen"
+         x-transition:enter="transition ease-out duration-300 transform"
+         x-transition:enter-start="{% if LANGUAGE_CODE == 'ar' %}translate-x-full{% else %}-translate-x-full{% endif %}"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-200 transform"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="{% if LANGUAGE_CODE == 'ar' %}translate-x-full{% else %}-translate-x-full{% endif %}"
+         class="fixed top-0 {% if LANGUAGE_CODE == 'ar' %}right-0{% else %}left-0{% endif %} h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-50 md:hidden">
+
+        <div class="p-4">
+            <button @click="sidebarOpen = false" class="mb-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                <span class="iconify text-2xl" data-icon="mdi:close"></span>
+            </button>
+
+            <div class="space-y-4">
+                <a href="{% url 'clinics:list' %}" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600">
+                    {% trans "Clinics" %}
+                </a>
+                <a href="{% url 'doctors:list' %}" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600">
+                    {% trans "Doctors" %}
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'appointments:my_appointments' %}" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600">
+                        {% trans "My Appointments" %}
+                    </a>
+                    <a href="{% url 'users:profile' %}" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600">
+                        {% trans "Profile" %}
+                    </a>
+                    <a href="{% url 'account_logout' %}" class="block py-2 text-red-600">
+                        {% trans "Logout" %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="block py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600">
+                        {% trans "Login" %}
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="block py-2 gradient-primary text-white rounded-lg text-center">
+                        {% trans "Register" %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-16 min-h-screen">
+        <!-- Messages -->
+        {% if messages %}
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                {% for message in messages %}
+                    <div class="animate-fade-in-up mb-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800 border-l-4 border-red-500{% elif message.tags == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-500{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500{% else %}bg-blue-50 text-blue-800 border-l-4 border-blue-500{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">MediBook</h3>
+                    <p class="text-gray-400">{% trans "Healthcare made easy and accessible for everyone" %}</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">{% trans "Quick Links" %}</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{% url 'clinics:list' %}" class="hover:text-white transition-colors">{% trans "Clinics" %}</a></li>
+                        <li><a href="{% url 'doctors:list' %}" class="hover:text-white transition-colors">{% trans "Doctors" %}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">{% trans "Support" %}</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">{% trans "Help Center" %}</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">{% trans "Contact Us" %}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">{% trans "Follow Us" %}</h4>
+                    <div class="flex space-x-4 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                        <a href="#" class="text-2xl hover:text-purple-400 transition-colors">
+                            <span class="iconify" data-icon="mdi:facebook"></span>
+                        </a>
+                        <a href="#" class="text-2xl hover:text-purple-400 transition-colors">
+                            <span class="iconify" data-icon="mdi:twitter"></span>
+                        </a>
+                        <a href="#" class="text-2xl hover:text-purple-400 transition-colors">
+                            <span class="iconify" data-icon="mdi:instagram"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 MediBook. {% trans "All rights reserved." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    {% compress js %}
+    <script src="{% static 'js/custom.js' %}"></script>
+    {% endcompress %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

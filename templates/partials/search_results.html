@@ -1,0 +1,201 @@
+{% load static i18n %}
+
+<div class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-h-[600px] overflow-y-auto z-50 border border-gray-200 dark:border-gray-700">
+
+    {% if doctors or clinics or specializations %}
+
+        <!-- Doctors Section -->
+        {% if doctors %}
+        <div class="p-2">
+            <div class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:doctor"></span>
+                {% trans "Doctors" %}
+                <span class="ml-auto bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-2 py-0.5 rounded-full">
+                    {{ doctors|length }}
+                </span>
+            </div>
+
+            {% for doctor in doctors %}
+            <a href="{% url 'doctors:detail' doctor.pk %}"
+               class="flex items-center space-x-4 p-4 hover:bg-purple-50 dark:hover:bg-gray-700 rounded-xl transition-all group">
+
+                <img src="{{ doctor.user.profile.get_avatar_url }}"
+                     alt="{{ doctor.user.get_full_name }}"
+                     class="w-14 h-14 rounded-full border-2 border-purple-500 object-cover">
+
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                        Dr. {{ doctor.user.get_full_name }}
+                    </div>
+
+                    <div class="text-sm text-gray-600 dark:text-gray-400 truncate">
+                        {{ doctor.specialization.name }}
+                    </div>
+
+                    <div class="flex items-center space-x-2 mt-1">
+                        <div class="flex items-center text-yellow-500">
+                            <span class="iconify text-sm" data-icon="mdi:star"></span>
+                            <span class="text-xs font-semibold ml-1">{{ doctor.rating|floatformat:1 }}</span>
+                        </div>
+
+                        <span class="text-gray-400">•</span>
+
+                        <div class="text-xs text-gray-500">
+                            {{ doctor.clinic.city }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <div class="text-sm font-bold text-purple-600 dark:text-purple-400">
+                        {{ doctor.consultation_fee|floatformat:0 }} {% trans "SAR" %}
+                    </div>
+                    <span class="iconify text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors"
+                          data-icon="mdi:chevron-right"></span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Divider -->
+        {% if doctors and clinics %}
+        <div class="border-t border-gray-200 dark:border-gray-700"></div>
+        {% endif %}
+
+        <!-- Clinics Section -->
+        {% if clinics %}
+        <div class="p-2">
+            <div class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:hospital-building"></span>
+                {% trans "Clinics" %}
+                <span class="ml-auto bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full">
+                    {{ clinics|length }}
+                </span>
+            </div>
+
+            {% for clinic in clinics %}
+            <a href="{% url 'clinics:detail' clinic.slug %}"
+               class="flex items-center space-x-4 p-4 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl transition-all group">
+
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    {% if clinic.logo %}
+                    <img src="{{ clinic.logo.url }}" alt="{{ clinic.name }}" class="w-full h-full object-cover rounded-xl">
+                    {% else %}
+                    <span class="iconify text-white text-2xl" data-icon="mdi:hospital-building"></span>
+                    {% endif %}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                        {{ clinic.name }}
+                    </div>
+
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span class="iconify mr-1" data-icon="mdi:map-marker"></span>
+                        <span class="truncate">{{ clinic.city }}</span>
+                    </div>
+
+                    <div class="flex items-center space-x-2 mt-1">
+                        <div class="flex items-center text-yellow-500">
+                            <span class="iconify text-sm" data-icon="mdi:star"></span>
+                            <span class="text-xs font-semibold ml-1">{{ clinic.rating|floatformat:1 }}</span>
+                        </div>
+
+                        <span class="text-gray-400">•</span>
+
+                        <div class="text-xs text-gray-500">
+                            {{ clinic.doctor_count|default:0 }} {% trans "doctors" %}
+                        </div>
+                    </div>
+                </div>
+
+                <span class="iconify text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+                      data-icon="mdi:chevron-right"></span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Divider -->
+        {% if clinics and specializations %}
+        <div class="border-t border-gray-200 dark:border-gray-700"></div>
+        {% endif %}
+
+        <!-- Specializations Section -->
+        {% if specializations %}
+        <div class="p-2">
+            <div class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center">
+                <span class="iconify mr-2" data-icon="mdi:medical-bag"></span>
+                {% trans "Specializations" %}
+                <span class="ml-auto bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">
+                    {{ specializations|length }}
+                </span>
+            </div>
+
+            {% for spec in specializations %}
+            <a href="{% url 'doctors:specialization_detail' spec.slug %}"
+               class="flex items-center space-x-4 p-4 hover:bg-green-50 dark:hover:bg-gray-700 rounded-xl transition-all group">
+
+                <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    {% if spec.icon %}
+                    <span class="iconify text-white text-2xl" data-icon="{{ spec.icon }}"></span>
+                    {% else %}
+                    <span class="iconify text-white text-2xl" data-icon="mdi:medical-bag"></span>
+                    {% endif %}
+                </div>
+
+                <div class="flex-1">
+                    <div class="font-bold text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                        {{ spec.name }}
+                    </div>
+
+                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {{ spec.doctor_count|default:0 }} {% trans "available doctors" %}
+                    </div>
+                </div>
+
+                <span class="iconify text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors"
+                      data-icon="mdi:chevron-right"></span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- View All Results -->
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+            <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                {% trans "Press Enter for full results or click on an item" %}
+            </div>
+        </div>
+
+    {% else %}
+
+        <!-- No Results -->
+        <div class="p-12 text-center">
+            <span class="iconify text-6xl text-gray-400 mb-4" data-icon="mdi:magnify"></span>
+
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                {% trans "No Results Found" %}
+            </h3>
+
+            <p class="text-gray-600 dark:text-gray-400 mb-6">
+                {% trans "We couldn't find any doctors, clinics, or specializations matching your search" %}
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-2">
+                <a href="{% url 'doctors:list' %}"
+                   class="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-all">
+                    {% trans "Browse All Doctors" %}
+                </a>
+
+                <a href="{% url 'clinics:list' %}"
+                   class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-all">
+                    {% trans "Browse All Clinics" %}
+                </a>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Email Addresses" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {% trans "Email Addresses" %}
+            </h2>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <!-- Current Emails -->
+            {% if user.emailaddress_set.all %}
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                    {% trans "Your Email Addresses" %}
+                </h3>
+                <div class="space-y-3">
+                    {% for emailaddress in user.emailaddress_set.all %}
+                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <span class="iconify mr-3 text-purple-600" data-icon="mdi:email"></span>
+                            <span class="text-gray-900 dark:text-white">{{ emailaddress.email }}</span>
+                            {% if emailaddress.verified %}
+                            <span class="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                                {% trans "Verified" %}
+                            </span>
+                            {% else %}
+                            <span class="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
+                                {% trans "Unverified" %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% if not emailaddress.primary %}
+                        <form method="post" action="{% url 'account_email' %}" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="email" value="{{ emailaddress.email }}">
+                            <button type="submit" name="action_primary" class="text-purple-600 hover:text-purple-700 text-sm">
+                                {% trans "Make Primary" %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Add New Email -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                    {% trans "Add Email Address" %}
+                </h3>
+                <form method="post" action="{% url 'account_email' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="relative">
+                        <span class="iconify absolute left-3 top-3 text-gray-400" data-icon="mdi:email-plus"></span>
+                        <input type="email" name="email" required
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500"
+                               placeholder="{% trans 'New email address' %}">
+                    </div>
+                    <button type="submit" name="action_add" class="w-full gradient-primary text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+                        {% trans "Add Email" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

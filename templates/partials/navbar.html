@@ -1,0 +1,98 @@
+<!-- partials/navbar.html -->
+{% load static i18n %}
+<nav class="bg-white dark:bg-gray-800 shadow-lg fixed w-full top-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="{% url 'home' %}" class="flex items-center space-x-3 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                    <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center transform hover:scale-110 transition-transform">
+                        <span class="iconify text-white text-2xl" data-icon="mdi:hospital-building"></span>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                        MediBook
+                    </span>
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %}">
+                <a href="{% url 'clinics:list' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                    {% trans "Clinics" %}
+                </a>
+                <a href="{% url 'doctors:list' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                    {% trans "Doctors" %}
+                </a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'appointments:my_appointments' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                        {% trans "My Appointments" %}
+                    </a>
+
+                    {% if user.is_doctor %}
+                        <a href="{% url 'doctors:dashboard' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                            {% trans "Dashboard" %}
+                        </a>
+                    {% endif %}
+
+                    {% if user.is_admin_user %}
+                        <a href="{% url 'admin:index' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                            {% trans "Admin" %}
+                        </a>
+                    {% endif %}
+
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="flex items-center space-x-2 {% if LANGUAGE_CODE == 'ar' %}space-x-reverse{% endif %} text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors">
+                            <img src="{{ user.profile.get_avatar_url }}" alt="{{ user.get_full_name }}" class="w-8 h-8 rounded-full border-2 border-purple-500">
+                            <span>{{ user.get_full_name }}</span>
+                            <span class="iconify" data-icon="mdi:chevron-down"></span>
+                        </button>
+
+                        <div x-show="open"
+                             @click.away="open = false"
+                             x-transition
+                             class="absolute {% if LANGUAGE_CODE == 'ar' %}left-0{% else %}right-0{% endif %} mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-2">
+                            <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700">
+                                {% trans "Profile" %}
+                            </a>
+                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700">
+                                {% trans "Logout" %}
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="text-gray-700 dark:text-gray-300 hover:text-purple-600 transition-colors">
+                        {% trans "Login" %}
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="gradient-primary text-white px-6 py-2 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all">
+                        {% trans "Register" %}
+                    </a>
+                {% endif %}
+
+                <!-- Dark Mode Toggle -->
+                <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <span x-show="!darkMode" class="iconify text-xl" data-icon="mdi:moon-waning-crescent"></span>
+                    <span x-show="darkMode" class="iconify text-xl text-yellow-400" data-icon="mdi:white-balance-sunny"></span>
+                </button>
+
+                <!-- Language Switcher -->
+                <form action="{% url 'set_language' %}" method="post" class="inline-block">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language" onchange="this.form.submit()"
+                            class="bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500">
+                        <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>العربية</option>
+                        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    </select>
+                </form>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="iconify text-2xl" data-icon="mdi:menu"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>

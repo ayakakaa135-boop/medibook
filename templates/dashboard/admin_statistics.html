@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Statistics" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Detailed Statistics" %}</h1>
+            <a href="{% url 'dashboard:admin' %}" class="text-purple-600 hover:text-purple-700">
+                ← {% trans "Back to Dashboard" %}
+            </a>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Appointments by Status -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    {% trans "Appointments by Status" %}
+                </h3>
+                <div class="space-y-3">
+                    {% for item in appointments_by_status %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <span class="text-gray-700 dark:text-gray-300">{{ item.status }}</span>
+                        <span class="font-bold text-purple-600">{{ item.count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Appointments by Specialization -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    {% trans "Top Specializations" %}
+                </h3>
+                <div class="space-y-3">
+                    {% for spec in appointments_by_specialization|slice:":10" %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <span class="text-gray-700 dark:text-gray-300">{{ spec.name }}</span>
+                        <span class="font-bold text-purple-600">{{ spec.appointment_count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- User Growth -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    {% trans "User Growth" %}
+                </h3>
+                <div class="space-y-3">
+                    {% for item in user_growth %}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <span class="text-gray-700 dark:text-gray-300">{{ item.month|date:"M Y" }}</span>
+                        <span class="font-bold text-green-600">+{{ item.count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Appointments by Hour -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                    {% trans "Peak Hours" %}
+                </h3>
+                <div class="grid grid-cols-4 gap-2">
+                    {% for hour in appointments_by_hour %}
+                    <div class="text-center p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                        <p class="font-bold text-purple-600">{{ hour.hour|floatformat:0 }}:00</p>
+                        <p class="text-sm text-gray-600">{{ hour.count }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

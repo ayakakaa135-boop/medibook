@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "My Profile" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Profile Header -->
+        <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <!-- Avatar with HTMX update -->
+                <div class="relative group" x-data="{ uploading: false }">
+                    <img src="{{ profile.get_avatar_url }}"
+                         alt="{{ user.get_full_name }}"
+                         class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+
+                    <form hx-post="{% url 'users:avatar_update' %}"
+      hx-target="#avatar-container"
+      hx-swap="innerHTML"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      enctype="multipart/form-data"
+      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-colors">
+
+    <label class="bg-black bg-opacity-50 text-white px-4 py-2 rounded-full cursor-pointer">
+        <span class="iconify" data-icon="mdi:camera"></span>
+        <input type="file" name="avatar" accept="image/*" class="hidden"
+               @change="$el.closest('form').dispatchEvent(new Event('submit'))">
+    </label>
+</form>
+                    <div x-show="uploading" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-full">
+                        <span class="iconify text-white text-2xl animate-spin" data-icon="mdi:loading"></span>
+                    </div>
+                </div>
+
+                <div class="text-center md:text-left">
+                    <h1 class="text-3xl font-bold mb-2">{{ user.get_full_name }}</h1>
+                    <p class="text-purple-100">{{ user.email }}</p>
+                    <p class="text-purple-200 mt-1">
+                        {% if user.is_doctor %}{% trans "Doctor" %}
+                        {% elif user.is_patient %}{% trans "Patient" %}
+                        {% else %}{% trans "User" %}{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-2xl text-purple-600" data-icon="mdi:calendar-clock"></span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">0</h3>
+                <p class="text-gray-500">{% trans "Upcoming Appointments" %}</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-14 h-14 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-2xl text-green-600" data-icon="mdi:calendar-check"></span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">0</h3>
+                <p class="text-gray-500">{% trans "Completed Visits" %}</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center">
+                <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="iconify text-2xl text-blue-600" data-icon="mdi:account"></span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ user.date_joined|date:"Y" }}</h3>
+                <p class="text-gray-500">{% trans "Member Since" %}</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{% trans "Quick Actions" %}</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <a href="{% url 'users:profile_edit' %}"
+                   class="flex items-center p-4 bg-purple-50 dark:bg-purple-900 rounded-xl hover:bg-purple-100 transition-colors">
+                    <span class="iconify text-2xl text-purple-600 mr-4" data-icon="mdi:account-edit"></span>
+                    <span class="font-medium text-gray-900 dark:text-white">{% trans "Edit Profile" %}</span>
+                </a>
+
+                <a href="{% url 'users:settings' %}"
+                   class="flex items-center p-4 bg-blue-50 dark:bg-blue-900 rounded-xl hover:bg-blue-100 transition-colors">
+                    <span class="iconify text-2xl text-blue-600 mr-4" data-icon="mdi:cog"></span>
+                    <span class="font-medium text-gray-900 dark:text-white">{% trans "Settings" %}</span>
+                </a>
+
+                <a href="{% url 'users:notification_settings' %}"
+                   class="flex items-center p-4 bg-green-50 dark:bg-green-900 rounded-xl hover:bg-green-100 transition-colors">
+                    <span class="iconify text-2xl text-green-600 mr-4" data-icon="mdi:bell"></span>
+                    <span class="font-medium text-gray-900 dark:text-white">{% trans "Notifications" %}</span>
+                </a>
+
+                <a href="{% url 'account_change_password' %}"
+                   class="flex items-center p-4 bg-orange-50 dark:bg-orange-900 rounded-xl hover:bg-orange-100 transition-colors">
+                    <span class="iconify text-2xl text-orange-600 mr-4" data-icon="mdi:lock-reset"></span>
+                    <span class="font-medium text-gray-900 dark:text-white">{% trans "Change Password" %}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HTMX Avatar Container -->
+<div id="avatar-container"></div>
+{% endblock %}

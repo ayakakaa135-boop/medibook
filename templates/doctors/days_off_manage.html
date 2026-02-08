@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Manage Days Off" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{% trans "Days Off" %}</h1>
+            <a href="{% url 'doctors:day_off_create' %}" class="gradient-primary text-white px-6 py-3 rounded-lg font-semibold">
+                <span class="iconify inline mr-2" data-icon="mdi:plus"></span>
+                {% trans "Add Day Off" %}
+            </a>
+        </div>
+
+        <!-- Days Off List -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+            {% if days_off %}
+            <div class="space-y-3">
+                {% for day in days_off %}
+                <div class="flex justify-between items-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                    <div>
+                        <p class="font-medium text-gray-900 dark:text-white">{{ day.date|date:"l, d M Y" }}</p>
+                        {% if day.reason %}
+                        <p class="text-sm text-gray-500">{{ day.reason }}</p>
+                        {% endif %}
+                    </div>
+                    <form method="post" action="{% url 'doctors:days_off_delete' day.pk %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:text-red-700 p-2" onclick="return confirm('{% trans "Delete this day off?" %}')">
+                            <span class="iconify text-xl" data-icon="mdi:delete"></span>
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <span class="iconify text-6xl text-gray-300 mb-4" data-icon="mdi:calendar-check"></span>
+                <p class="text-gray-500">{% trans "No days off scheduled" %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

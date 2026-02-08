@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Confirm Payment" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <a href="{% url 'appointments:payment' appointment.pk %}"
+               class="text-purple-600 hover:text-purple-700 mb-4 inline-flex items-center transition-colors">
+                <span class="iconify mr-2" data-icon="mdi:arrow-left"></span>
+                {% trans "Back to Payment Options" %}
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">
+                {% trans "Confirm Payment" %}
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+                {% trans "Verify your card details and enter CVV to complete payment" %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Payment Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+
+                    <!-- Card Display -->
+                    <div class="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600 to-purple-800 text-white p-6 shadow-lg">
+                        <!-- Background Pattern -->
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20"></div>
+                        <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16"></div>
+
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-8">
+                                <span class="iconify text-4xl" data-icon="{% if card.card_brand == 'visa' %}logos:visa{% elif card.card_brand == 'mastercard' %}logos:mastercard{% else %}mdi:credit-card{% endif %}"></span>
+                                {% if card.is_default %}
+                                <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-bold">
+                                    {% trans "DEFAULT" %}
+                                </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-6">
+                                <p class="text-2xl font-mono font-bold tracking-wider mb-1">
+                                    **** **** **** {{ card.card_last_four }}
+                                </p>
+                                <p class="text-purple-200 text-sm">{% trans "Card Number" %}</p>
+                            </div>
+
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <p class="text-xs text-purple-200 mb-1">{% trans "Cardholder" %}</p>
+                                    <p class="font-semibold">{{ card.cardholder_name }}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-purple-200 mb-1">{% trans "Expires" %}</p>
+                                    <p class="font-semibold">{{ card.expiry_month }}/{{ card.expiry_year }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CVV Form -->
+                    <form method="post" class="space-y-6">
+                        {% csrf_token %}
+
+                        <div>
+                            <label for="cvv" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {% trans "CVV" %} <span class="text-red-500">*</span>
+                                <span class="text-gray-400 text-xs ml-1">({% trans "3 or 4 digits on back of card" %})</span>
+                            </label>
+                            <div class="relative">
+                                <input type="password"
+                                       name="cvv"
+                                       id="cvv"
+                                       maxlength="4"
+                                       pattern="[0-9]{3,4}"
+                                       required
+                                       class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent text-center text-2xl tracking-widest"
+                                       placeholder="***"
+                                       autofocus>
+                                <div class="absolute right-3 top-3">
+                                    <span class="iconify text-gray-400 text-2xl" data-icon="mdi:lock"></span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">
+                                {% trans "For your security, we require CVV verification for every transaction" %}
+                            </p>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="space-y-3">
+                            <button type="submit"
+                                    class="w-full bg-purple-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition-colors flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                                <span class="iconify mr-2 text-xl" data-icon="mdi:lock-check"></span>
+                                {% trans "Pay Securely" %} {{ appointment.total_amount }} {% trans "SAR" %}
+                            </button>
+
+                            <a href="{% url 'appointments:payment' appointment.pk %}"
+                               class="block w-full text-center bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                                {% trans "Cancel" %}
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Security Notice -->
+                    <div class="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-500">
+                        <span class="iconify text-green-500" data-icon="mdi:shield-check"></span>
+                        <span>{% trans "256-bit SSL Secure Connection" %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sticky top-6">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
+                        {% trans "Payment Summary" %}
+                    </h3>
+
+                    <!-- Appointment Details -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <img src="{{ appointment.doctor.user.profile.get_avatar_url }}"
+                                 class="w-12 h-12 rounded-full">
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white text-sm">
+                                    Dr. {{ appointment.doctor.user.get_full_name }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    {{ appointment.date|date:"d M Y" }} at {{ appointment.start_time|time:"H:i" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-400">{% trans "Consultation Fee" %}</span>
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ appointment.base_price }} {% trans "SAR" %}</span>
+                        </div>
+
+                        {% if appointment.late_payment_fee > 0 %}
+                        <div class="flex justify-between text-sm">
+                            <span class="text-red-600 dark:text-red-400">{% trans "Late Payment Fee" %}</span>
+                            <span class="font-semibold text-red-600">{{ appointment.late_payment_fee }} {% trans "SAR" %}</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between">
+                            <span class="font-bold text-gray-900 dark:text-white">{% trans "Total" %}</span>
+                            <span class="font-bold text-purple-600 text-xl">{{ appointment.total_amount }} {% trans "SAR" %}</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Info -->
+                    <div class="mt-6 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            <span class="iconify" data-icon="mdi:credit-card-check"></span>
+                            <span>{% trans "Paying with" %}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="iconify text-2xl" data-icon="{% if card.card_brand == 'visa' %}logos:visa{% elif card.card_brand == 'mastercard' %}logos:mastercard{% else %}mdi:credit-card{% endif %}"></span>
+                            <span class="font-mono font-semibold text-gray-900 dark:text-white">
+                                **** {{ card.card_last_four }}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if appointment.is_payment_overdue %}
+                    <div class="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <p class="text-xs text-red-700 dark:text-red-300 text-center">
+                            <span class="iconify inline mr-1" data-icon="mdi:alert-circle"></span>
+                            {% trans "Payment is overdue. Please complete now." %}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cvvInput = document.getElementById('cvv');
+    const form = document.querySelector('form');
+
+    // Auto-focus CVV field
+    if (cvvInput) {
+        cvvInput.focus();
+    }
+
+    // Allow only numbers
+    if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    // Form submission loading state
+    if (form) {
+        form.addEventListener('submit', function() {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="iconify animate-spin mr-2" data-icon="mdi:loading"></span> {% trans "Processing..." %}';
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static i18n %}
+
+<div class="grid grid-cols-3 md:grid-cols-4 gap-3">
+    {% for slot in slots %}
+        {% if slot.available %}
+            <button hx-post="{% url 'appointments:create' %}"
+                    hx-vals='{"doctor": "{{ doctor.id }}", "date": "{{ date }}", "time": "{{ slot.time }}"}'
+                    hx-target="#booking-result"
+                    hx-swap="innerHTML"
+                    class="p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg text-green-700 dark:text-green-400 font-semibold hover:bg-green-100 dark:hover:bg-green-900/40 transition-all transform hover:scale-105">
+                {{ slot.formatted }}
+            </button>
+        {% else %}
+            <div class="p-4 bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700 rounded-lg text-gray-400 font-semibold line-through">
+                {{ slot.formatted }}
+            </div>
+        {% endif %}
+    {% empty %}
+        <div class="col-span-full text-center py-8">
+            <span class="iconify text-6xl text-gray-400 mb-4" data-icon="mdi:calendar-remove"></span>
+            <p class="text-gray-600 dark:text-gray-400">{% trans "No available slots for this date" %}</p>
+        </div>
+    {% endfor %}
+</div>
