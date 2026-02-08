@@ -159,40 +159,25 @@ class Appointment(models.Model):
 
     def calculate_cancellation_fee(self):
         """Calculate cancellation fee (50% if < 24 hours)"""
-
-        # 1. التحقق من أن السعر الأساسي ليس فارغاً
-        if self.base_price is None:
-            return Decimal('0.00')
-
-        hours_until = self.get_hours_until_appointment()
-
-        if hours_until is not None and hours_until < 24:
-            # 2. التحقق من القيمة القادمة من الإعدادات بشكل آمن
-            raw_percentage = getattr(settings, 'CANCELLATION_FEE_PERCENTAGE', 50)
-
-            # التأكد من أن النسبة ليست None وليست نصاً فارغاً
-            if raw_percentage is None:
-                percentage = Decimal('50')
-            else:
-                percentage = Decimal(str(raw_percentage))
-
-            # 3. إجراء العملية الحسابية
-            return (self.base_price * percentage) / Decimal('100')
-
-        return Decimal('0.00')
-    def calculate_late_payment_fee(self):
-        """Calculate late payment fee"""
-
-        # ✅ التحقق من وجود base_price أولاً
         if not self.base_price:
             return Decimal('0.00')
 
-        if self.is_paid or not self.payment_due_date:
+        hours_until = self.get_hours_until_appointment()
+        if hours_until is not None and hours_until < 24:
+            raw_percentage = getattr(settings, 'CANCELLATION_FEE_PERCENTAGE', 50)
+            try:
+                percentage = Decimal(str(raw_percentage)) if raw_percentage else Decimal('50')
+            except:
+                percentage = Decimal('50')
+            return (self.base_price * percentage) / Decimal('100')
+        return Decimal('0.00')
+
+    def calculate_late_payment_fee(self):
+        """Calculate late payment fee"""
+        if not self.base_price or self.is_paid or not self.payment_due_date:
             return Decimal('0.00')
 
         now = timezone.now()
-
-        # Ensure payment_due_date is timezone-aware
         due_date = self.payment_due_date
         if timezone.is_naive(due_date):
             due_date = timezone.make_aware(due_date)
@@ -200,17 +185,21 @@ class Appointment(models.Model):
         if now <= due_date:
             return Decimal('0.00')
 
-        # Calculate overdue days
         days_overdue = (now - due_date).days
         weeks_overdue = max(1, (days_overdue // 7) + 1)
 
-        # 5% per week, max 50%
-        percentage = min(
-            getattr(settings, 'LATE_PAYMENT_FEE_PERCENTAGE', 5) * weeks_overdue,
-            getattr(settings, 'MAX_LATE_FEE_PERCENTAGE', 50)
-        )
+        raw_late_pct = getattr(settings, 'LATE_PAYMENT_FEE_PERCENTAGE', 5)
+        raw_max_pct = getattr(settings, 'MAX_LATE_FEE_PERCENTAGE', 50)
 
-        return (self.base_price * Decimal(percentage)) / Decimal('100')
+        try:
+            late_pct = Decimal(str(raw_late_pct)) if raw_late_pct else Decimal('5')
+            max_pct = Decimal(str(raw_max_pct)) if raw_max_pct else Decimal('50')
+        except:
+            late_pct = Decimal('5')
+            max_pct = Decimal('50')
+
+        percentage = min(late_pct * weeks_overdue, max_pct)
+        return (self.base_price * percentage) / Decimal('100')
 
     def get_absolute_url(self):
         return reverse('appointments:detail', kwargs={'pk': self.pk})
@@ -363,6 +352,7 @@ class PaymentCard(models.Model):
     is_default = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-is_default', '-created_at']

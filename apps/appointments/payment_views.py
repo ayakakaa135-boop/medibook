@@ -199,13 +199,20 @@ class AppointmentPaymentView(LoginRequiredMixin, CreateView):
                     payment.card_last_four = result['card_last_four']
                     payment.card_brand = result['card_brand']
 
-                    # ✅ تحديث payment_method بناءً على نوع البطاقة
+                    # Update payment_method based on card brand
                     if result['card_brand'] == 'visa':
                         payment.payment_method = Payment.PaymentMethod.VISA
                     elif result['card_brand'] == 'mastercard':
                         payment.payment_method = Payment.PaymentMethod.MASTERCARD
 
                     payment.gateway_response = result
+
+                    # Ensure appointment fees are locked in the payment record
+                    payment.base_amount = self.appointment.base_price
+                    payment.late_fee_amount = self.appointment.late_payment_fee
+                    payment.cancellation_fee_amount = self.appointment.cancellation_fee
+                    payment.amount = self.appointment.total_amount
+
                     payment.mark_as_completed()
                     print(f"✅ Payment completed: {payment.transaction_id}")
 
@@ -313,6 +320,13 @@ def pay_with_saved_card(request, appointment_id, card_id):
                 if result['success']:
                     payment.transaction_id = result['transaction_id']
                     payment.gateway_response = result
+
+                    # Lock in the fees
+                    payment.base_amount = appointment.base_price
+                    payment.late_fee_amount = appointment.late_payment_fee
+                    payment.cancellation_fee_amount = appointment.cancellation_fee
+                    payment.amount = appointment.total_amount
+
                     payment.mark_as_completed()
 
                     messages.success(

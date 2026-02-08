@@ -1,1231 +1,1231 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Arabic translations for MediBook project.
+# Copyright (C) 2026 MediBook
+# This file is distributed under the same license as the MediBook package.
+# Automatically generated, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: MediBook 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-22 17:00+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-02-08 12:00+0300\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
 #: .\apps\appointments\admin.py:32
 msgid "Appointment Info"
-msgstr ""
+msgstr "معلومات الموعد"
 
 #: .\apps\appointments\admin.py:35
 msgid "Schedule"
-msgstr ""
+msgstr "الجدول الزمني"
 
 #: .\apps\appointments\admin.py:38 .\apps\services\admin.py:21
 msgid "Details"
-msgstr ""
+msgstr "التفاصيل"
 
 #: .\apps\appointments\admin.py:41
 msgid "Cancellation"
-msgstr ""
+msgstr "الإلغاء"
 
 #: .\apps\appointments\admin.py:45 .\apps\clinics\admin.py:34
 #: .\apps\doctors\admin.py:56 .\apps\services\admin.py:30
 #: .\apps\users\admin.py:52
 msgid "Timestamps"
-msgstr ""
+msgstr "الطوابع الزمنية"
 
 #: .\apps\appointments\admin.py:54 .\apps\users\models.py:42
 #: .\templates\dashboard\admin.html:212
 msgid "Patient"
-msgstr ""
+msgstr "المريض"
 
 #: .\apps\appointments\admin.py:59 .\apps\users\models.py:43
 #: .\templates\appointments\create.html:33 .\templates\dashboard\admin.html:215
 #: .\templates\home.html:33
 msgid "Doctor"
-msgstr ""
+msgstr "الطبيب"
 
 #: .\apps\appointments\admin.py:76 .\apps\doctors\admin.py:53
 #: .\apps\services\admin.py:27 .\templates\dashboard\admin.html:221
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 #: .\apps\appointments\admin.py:88
 msgid "Confirm selected appointments"
-msgstr ""
+msgstr "تأكيد المواعيد المحددة"
 
 #: .\apps\appointments\admin.py:98
 msgid "Cancel selected appointments"
-msgstr ""
+msgstr "إلغاء المواعيد المحددة"
 
 #: .\apps\appointments\admin.py:104
 msgid "Mark as completed"
-msgstr ""
+msgstr "وضع علامة \"مكتمل\""
 
 #: .\apps\appointments\forms.py:28
 msgid "Describe your symptoms..."
-msgstr ""
+msgstr "وصف أعراضك..."
 
 #: .\apps\appointments\forms.py:48
 msgid "Cannot book appointments in the past"
-msgstr ""
+msgstr "لا يمكن حجز مواعيد في الماضي"
 
 #: .\apps\appointments\forms.py:69
 msgid "Doctor is not available on this day"
-msgstr ""
+msgstr "الطبيب غير متاح في هذا اليوم"
 
 #: .\apps\appointments\forms.py:79
 msgid "Selected time is outside doctor's working hours"
-msgstr ""
+msgstr "الوقت المحدد خارج ساعات عمل الطبيب"
 
 #: .\apps\appointments\forms.py:83
 msgid "Doctor is not available on this date"
-msgstr ""
+msgstr "الطبيب غير متاح في هذا التاريخ"
 
 #: .\apps\appointments\forms.py:97 .\apps\appointments\views.py:254
 msgid "This time slot is already booked"
-msgstr ""
+msgstr "هذا الوقت محجوز بالفعل"
 
 #: .\apps\appointments\forms.py:109
 msgid "Reason for cancellation (optional)"
-msgstr ""
+msgstr "سبب الإلغاء (اختياري)"
 
 #: .\apps\appointments\forms.py:118
 msgid "All Statuses"
-msgstr ""
+msgstr "جميع الحالات"
 
 #: .\apps\appointments\models.py:12
 msgid "Pending"
-msgstr ""
+msgstr "قيد الانتظار"
 
 #: .\apps\appointments\models.py:13
 msgid "Confirmed"
-msgstr ""
+msgstr "مؤكد"
 
 #: .\apps\appointments\models.py:14 .\templates\dashboard\patient.html:31
 msgid "Canceled"
-msgstr ""
+msgstr "ملغى"
 
 #: .\apps\appointments\models.py:15 .\templates\dashboard\patient.html:26
 msgid "Completed"
-msgstr ""
+msgstr "مكتمل"
 
 #: .\apps\appointments\models.py:16
 msgid "No Show"
-msgstr ""
+msgstr "لم يحضر"
 
 #: .\apps\appointments\models.py:23
 msgid "patient"
-msgstr ""
+msgstr "المريض"
 
 #: .\apps\appointments\models.py:30 .\apps\doctors\models.py:85
 #: .\apps\doctors\models.py:115 .\apps\doctors\models.py:139
 msgid "doctor"
-msgstr ""
+msgstr "الطبيب"
 
 #: .\apps\appointments\models.py:36 .\apps\clinics\models.py:41
 #: .\apps\doctors\models.py:44 .\apps\services\models.py:13
 msgid "clinic"
-msgstr ""
+msgstr "العيادة"
 
 #: .\apps\appointments\models.py:43 .\apps\services\models.py:38
 msgid "service"
-msgstr ""
+msgstr "الخدمة"
 
 #: .\apps\appointments\models.py:47 .\apps\doctors\models.py:141
 msgid "date"
-msgstr ""
+msgstr "التاريخ"
 
 #: .\apps\appointments\models.py:48 .\apps\doctors\models.py:118
 msgid "start time"
-msgstr ""
+msgstr "وقت البداية"
 
 #: .\apps\appointments\models.py:49 .\apps\doctors\models.py:119
 msgid "end time"
-msgstr ""
+msgstr "وقت النهاية"
 
 #: .\apps\appointments\models.py:52
 msgid "symptoms"
-msgstr ""
+msgstr "الأعراض"
 
 #: .\apps\appointments\models.py:53
 msgid "notes"
-msgstr ""
+msgstr "الملاحظات"
 
 #: .\apps\appointments\models.py:55
 msgid "status"
-msgstr ""
+msgstr "الحالة"
 
 #: .\apps\appointments\models.py:62 .\apps\clinics\models.py:37
 #: .\apps\doctors\models.py:15 .\apps\doctors\models.py:81
 #: .\apps\doctors\models.py:145 .\apps\services\models.py:34
 #: .\apps\users\models.py:134
 msgid "created at"
-msgstr ""
+msgstr "تاريخ الإنشاء"
 
 #: .\apps\appointments\models.py:63 .\apps\clinics\models.py:38
 #: .\apps\doctors\models.py:82 .\apps\services\models.py:35
 #: .\apps\users\models.py:135
 msgid "updated at"
-msgstr ""
+msgstr "تاريخ التحديث"
 
 #: .\apps\appointments\models.py:64
 msgid "confirmed at"
-msgstr ""
+msgstr "تاريخ التأكيد"
 
 #: .\apps\appointments\models.py:65
 msgid "canceled at"
-msgstr ""
+msgstr "تاريخ الإلغاء"
 
 #: .\apps\appointments\models.py:66
 msgid "cancellation reason"
-msgstr ""
+msgstr "سبب الإلغاء"
 
 #: .\apps\appointments\models.py:69
 msgid "appointment"
-msgstr ""
+msgstr "الموعد"
 
 #: .\apps\appointments\models.py:70 .\templates\dashboard\admin.html:154
 #: .\templates\dashboard\admin.html:181
 msgid "appointments"
-msgstr ""
+msgstr "المواعيد"
 
 #: .\apps\appointments\views.py:110
 msgid "Appointment booked successfully!"
-msgstr ""
+msgstr "تم حجز الموعد بنجاح!"
 
 #: .\apps\appointments\views.py:151
 msgid "This appointment cannot be canceled"
-msgstr ""
+msgstr "لا يمكن إلغاء هذا الموعد"
 
 #: .\apps\appointments\views.py:164
 msgid "Appointment canceled successfully"
-msgstr ""
+msgstr "تم إلغاء الموعد بنجاح"
 
 #: .\apps\appointments\views.py:184 .\apps\appointments\views.py:210
 msgid "Unauthorized"
-msgstr ""
+msgstr "غير مصرح"
 
 #: .\apps\appointments\views.py:192
 msgid "Appointment confirmed"
-msgstr ""
+msgstr "تم تأكيد الموعد"
 
 #: .\apps\appointments\views.py:217
 msgid "Appointment marked as completed"
-msgstr ""
+msgstr "تم وضع علامة \"مكتمل\" على الموعد"
 
 #: .\apps\appointments\views.py:259
 msgid "This time slot is available"
-msgstr ""
+msgstr "هذا الوقت متاح"
 
 #: .\apps\clinics\admin.py:19 .\apps\services\admin.py:18
 msgid "Basic Info"
-msgstr ""
+msgstr "المعلومات الأساسية"
 
 #: .\apps\clinics\admin.py:22
 msgid "Contact"
-msgstr ""
+msgstr "جهات الاتصال"
 
 #: .\apps\clinics\admin.py:25
 msgid "Media"
-msgstr ""
+msgstr "الوسائط"
 
 #: .\apps\clinics\admin.py:28
 msgid "Operating Hours"
-msgstr ""
+msgstr "ساعات العمل"
 
 #: .\apps\clinics\admin.py:31
 msgid "Status & Rating"
-msgstr ""
+msgstr "الحالة والتقييم"
 
 #: .\apps\clinics\forms.py:11 .\templates\clinics\list.html:26
 msgid "Search clinics..."
-msgstr ""
+msgstr "البحث عن عيادات..."
 
 #: .\apps\clinics\forms.py:33 .\templates\clinics\list.html:39
 msgid "All Cities"
-msgstr ""
+msgstr "جميع المدن"
 
 #: .\apps\clinics\models.py:12 .\apps\doctors\models.py:10
 #: .\apps\services\models.py:15
 msgid "name"
-msgstr ""
+msgstr "الاسم"
 
 #: .\apps\clinics\models.py:13 .\apps\doctors\models.py:11
 #: .\apps\services\models.py:16
 msgid "slug"
-msgstr ""
+msgstr "المعرف الودي"
 
 #: .\apps\clinics\models.py:14 .\apps\doctors\models.py:12
 #: .\apps\services\models.py:17
 msgid "description"
-msgstr ""
+msgstr "الوصف"
 
 #: .\apps\clinics\models.py:15 .\apps\users\models.py:107
 msgid "address"
-msgstr ""
+msgstr "العنوان"
 
 #: .\apps\clinics\models.py:16 .\apps\users\models.py:108
 msgid "city"
-msgstr ""
+msgstr "المدينة"
 
 #: .\apps\clinics\models.py:17
 msgid "phone"
-msgstr ""
+msgstr "رقم الهاتف"
 
 #: .\apps\clinics\models.py:18
 msgid "email"
-msgstr ""
+msgstr "البريد الإلكتروني"
 
 #: .\apps\clinics\models.py:19
 msgid "website"
-msgstr ""
+msgstr "الموقع الإلكتروني"
 
 #: .\apps\clinics\models.py:20
 msgid "logo"
-msgstr ""
+msgstr "الشعار"
 
 #: .\apps\clinics\models.py:21
 msgid "cover image"
-msgstr ""
+msgstr "صورة الغلاف"
 
 #: .\apps\clinics\models.py:24
 msgid "opening time"
-msgstr ""
+msgstr "وقت الافتتاح"
 
 #: .\apps\clinics\models.py:25
 msgid "closing time"
-msgstr ""
+msgstr "وقت الإغلاق"
 
 #: .\apps\clinics\models.py:28 .\apps\doctors\models.py:120
 #: .\apps\services\models.py:33
 msgid "active"
-msgstr ""
+msgstr "نشط"
 
 #: .\apps\clinics\models.py:30 .\apps\doctors\models.py:70
 msgid "rating"
-msgstr ""
+msgstr "التقييم"
 
 #: .\apps\clinics\models.py:35 .\apps\doctors\models.py:75
 msgid "total reviews"
-msgstr ""
+msgstr "إجمالي التقييمات"
 
 #: .\apps\clinics\models.py:42
 msgid "clinics"
-msgstr ""
+msgstr "العيادات"
 
 #: .\apps\doctors\admin.py:41
 msgid "User & Clinic"
-msgstr ""
+msgstr "المستخدم والعيادة"
 
 #: .\apps\doctors\admin.py:44
 msgid "Professional Info"
-msgstr ""
+msgstr "المعلومات المهنية"
 
 #: .\apps\doctors\admin.py:47
 msgid "Consultation"
-msgstr ""
+msgstr "الاستشارة"
 
 #: .\apps\doctors\admin.py:50 .\templates\clinics\detail.html:167
 msgid "Statistics"
-msgstr ""
+msgstr "الإحصائيات"
 
 #: .\apps\doctors\admin.py:65
 msgid "Doctor Name"
-msgstr ""
+msgstr "اسم الطبيب"
 
 #: .\apps\doctors\admin.py:80
 msgid "Day"
-msgstr ""
+msgstr "اليوم"
 
 #: .\apps\doctors\forms.py:24
 msgid "End time must be after start time"
-msgstr ""
+msgstr "يجب أن يكون وقت النهاية بعد وقت البداية"
 
 #: .\apps\doctors\forms.py:37
 msgid "e.g., Vacation, Conference"
-msgstr ""
+msgstr "مثال: إجازة، مؤتمر"
 
 #: .\apps\doctors\forms.py:55 .\templates\doctors\list.html:16
 msgid "Search doctors..."
-msgstr ""
+msgstr "البحث عن أطباء..."
 
 #: .\apps\doctors\forms.py:81
 msgid "Min Rating"
-msgstr ""
+msgstr "الحد الأدنى للتقييم"
 
 #: .\apps\doctors\forms.py:93
 msgid "All Specializations"
-msgstr ""
+msgstr "جميع التخصصات"
 
 #: .\apps\doctors\forms.py:99
 msgid "All Clinics"
-msgstr ""
+msgstr "جميع العيادات"
 
 #: .\apps\doctors\models.py:13
 msgid "icon"
-msgstr ""
+msgstr "الأيقونة"
 
 #: .\apps\doctors\models.py:18 .\apps\doctors\models.py:50
 msgid "specialization"
-msgstr ""
+msgstr "التخصص"
 
 #: .\apps\doctors\models.py:19
 msgid "specializations"
-msgstr ""
+msgstr "التخصصات"
 
 #: .\apps\doctors\models.py:38 .\apps\users\models.py:61
 #: .\apps\users\models.py:93
 msgid "user"
-msgstr ""
+msgstr "المستخدم"
 
 #: .\apps\doctors\models.py:54
 msgid "license number"
-msgstr ""
+msgstr "رقم الترخيص"
 
 #: .\apps\doctors\models.py:55
 msgid "years of experience"
-msgstr ""
+msgstr "سنوات الخبرة"
 
 #: .\apps\doctors\models.py:56
 msgid "education"
-msgstr ""
+msgstr "التعليم"
 
 #: .\apps\doctors\models.py:57
 msgid "biography"
-msgstr ""
+msgstr "السيرة الذاتية"
 
 #: .\apps\doctors\models.py:61
 msgid "consultation fee"
-msgstr ""
+msgstr "رسوم الاستشارة"
 
 #: .\apps\doctors\models.py:68
 msgid "total patients"
-msgstr ""
+msgstr "إجمالي المرضى"
 
 #: .\apps\doctors\models.py:78
 msgid "available"
-msgstr ""
+msgstr "متاح"
 
 #: .\apps\doctors\models.py:79
 msgid "verified"
-msgstr ""
+msgstr "موثق"
 
 #: .\apps\doctors\models.py:86
 msgid "doctors"
-msgstr ""
+msgstr "الأطباء"
 
 #: .\apps\doctors\models.py:102
 msgid "Sunday"
-msgstr ""
+msgstr "الأحد"
 
 #: .\apps\doctors\models.py:103
 msgid "Monday"
-msgstr ""
+msgstr "الإثنين"
 
 #: .\apps\doctors\models.py:104
 msgid "Tuesday"
-msgstr ""
+msgstr "الثلاثاء"
 
 #: .\apps\doctors\models.py:105
 msgid "Wednesday"
-msgstr ""
+msgstr "الأربعاء"
 
 #: .\apps\doctors\models.py:106
 msgid "Thursday"
-msgstr ""
+msgstr "الخميس"
 
 #: .\apps\doctors\models.py:107
 msgid "Friday"
-msgstr ""
+msgstr "الجمعة"
 
 #: .\apps\doctors\models.py:108
 msgid "Saturday"
-msgstr ""
+msgstr "السبت"
 
 #: .\apps\doctors\models.py:117
 msgid "day of week"
-msgstr ""
+msgstr "يوم الأسبوع"
 
 #: .\apps\doctors\models.py:123
 msgid "working hour"
-msgstr ""
+msgstr "ساعة العمل"
 
 #: .\apps\doctors\models.py:124
 msgid "working hours"
-msgstr ""
+msgstr "ساعات العمل"
 
 #: .\apps\doctors\models.py:142
 msgid "reason"
-msgstr ""
+msgstr "السبب"
 
 #: .\apps\doctors\models.py:143
 msgid "recurring annually"
-msgstr ""
+msgstr "يتكرر سنوياً"
 
 #: .\apps\doctors\models.py:148
 msgid "day off"
-msgstr ""
+msgstr "يوم عطلة"
 
 #: .\apps\doctors\models.py:149
 msgid "days off"
-msgstr ""
+msgstr "أيام العطلة"
 
 #: .\apps\doctors\views.py:310
 msgid "Working hours added successfully"
-msgstr ""
+msgstr "تم إضافة ساعات العمل بنجاح"
 
 #: .\apps\doctors\views.py:337
 msgid "Day off added successfully"
-msgstr ""
+msgstr "تم إضافة يوم العطلة بنجاح"
 
 #: .\apps\doctors\views.py:351
 msgid "Day off deleted successfully"
-msgstr ""
+msgstr "تم حذف يوم العطلة بنجاح"
 
 #: .\apps\services\admin.py:24
 msgid "Requirements"
-msgstr ""
+msgstr "المتطلبات"
 
 #: .\apps\services\models.py:18
 msgid "duration (minutes)"
-msgstr ""
+msgstr "المدة (دقائق)"
 
 #: .\apps\services\models.py:20
 msgid "price"
-msgstr ""
+msgstr "السعر"
 
 #: .\apps\services\models.py:27
 msgid "requires fasting"
-msgstr ""
+msgstr "يتطلب الصيام"
 
 #: .\apps\services\models.py:29
 msgid "preparation instructions"
-msgstr ""
+msgstr "تعليمات التحضير"
 
 #: .\apps\services\models.py:39
 msgid "services"
-msgstr ""
+msgstr "الخدمات"
 
 #: .\apps\users\admin.py:18
 msgid "Personal info"
-msgstr ""
+msgstr "المعلومات الشخصية"
 
 #: .\apps\users\admin.py:19
 msgid "Permissions"
-msgstr ""
+msgstr "الصلاحيات"
 
 #: .\apps\users\admin.py:22
 msgid "Important dates"
-msgstr ""
+msgstr "التواريخ المهمة"
 
 #: .\apps\users\admin.py:35
 msgid "Full Name"
-msgstr ""
+msgstr "الاسم الكامل"
 
 #: .\apps\users\admin.py:48
 msgid "User"
-msgstr ""
+msgstr "المستخدم"
 
 #: .\apps\users\admin.py:49
 msgid "Contact Info"
-msgstr ""
+msgstr "معلومات الاتصال"
 
 #: .\apps\users\admin.py:50
 msgid "Personal Info"
-msgstr ""
+msgstr "المعلومات الشخصية"
 
 #: .\apps\users\admin.py:51
 msgid "Preferences"
-msgstr ""
+msgstr "التفضيلات"
 
 #: .\apps\users\models.py:17
 msgid "يجب إدخال البريد الإلكتروني"
-msgstr ""
+msgstr "يجب إدخال البريد الإلكتروني"
 
 #: .\apps\users\models.py:31
 msgid "Superuser must have is_staff=True."
-msgstr ""
+msgstr "يجب أن يكون المستخدم الخارق لديه is_staff=True."
 
 #: .\apps\users\models.py:33
 msgid "Superuser must have is_superuser=True."
-msgstr ""
+msgstr "يجب أن يكون المستخدم الخارق لديه is_superuser=True."
 
 #: .\apps\users\models.py:44 .\templates\base.html:169
 msgid "Admin"
-msgstr ""
+msgstr "مدير النظام"
 
 #: .\apps\users\models.py:47
 msgid "email address"
-msgstr ""
+msgstr "عنوان البريد الإلكتروني"
 
 #: .\apps\users\models.py:49
 msgid "role"
-msgstr ""
+msgstr "الدور"
 
 #: .\apps\users\models.py:62
 msgid "users"
-msgstr ""
+msgstr "المستخدمون"
 
 #: .\apps\users\models.py:86
 msgid ""
 "Phone number must be entered in the format: '+999999999'. Up to 15 digits "
 "allowed."
-msgstr ""
+msgstr "يجب إدخال رقم الهاتف بالصيغة: '+999999999'. يُسمح بحد أقصى 15 رقمًا."
 
 #: .\apps\users\models.py:96
 msgid "avatar"
-msgstr ""
+msgstr "الصورة الشخصية"
 
 #: .\apps\users\models.py:102
 msgid "phone number"
-msgstr ""
+msgstr "رقم الهاتف"
 
 #: .\apps\users\models.py:109
 msgid "country"
-msgstr ""
+msgstr "الدولة"
 
 #: .\apps\users\models.py:110
 msgid "date of birth"
-msgstr ""
+msgstr "تاريخ الميلاد"
 
 #: .\apps\users\models.py:111
 msgid "bio"
-msgstr ""
+msgstr "السيرة الذاتية"
 
 #: .\apps\users\models.py:115
 msgid "preferred language"
-msgstr ""
+msgstr "اللغة المفضلة"
 
 #: .\apps\users\models.py:117
 msgid "Arabic"
-msgstr ""
+msgstr "العربية"
 
 #: .\apps\users\models.py:117
 msgid "English"
-msgstr ""
+msgstr "الإنجليزية"
 
 #: .\apps\users\models.py:121
 msgid "timezone"
-msgstr ""
+msgstr "المنطقة الزمنية"
 
 #: .\apps\users\models.py:126
 msgid "email notifications"
-msgstr ""
+msgstr "إشعارات البريد الإلكتروني"
 
 #: .\apps\users\models.py:130
 msgid "SMS notifications"
-msgstr ""
+msgstr "إشعارات الرسائل النصية"
 
 #: .\apps\users\models.py:138
 msgid "profile"
-msgstr ""
+msgstr "الملف الشخصي"
 
 #: .\apps\users\models.py:139
 msgid "profiles"
-msgstr ""
+msgstr "الملفات الشخصية"
 
 #: .\apps\users\views.py:43
 msgid "Profile updated successfully"
-msgstr ""
+msgstr "تم تحديث الملف الشخصي بنجاح"
 
 #: .\apps\users\views.py:61
 msgid "Avatar updated successfully"
-msgstr ""
+msgstr "تم تحديث الصورة الشخصية بنجاح"
 
 #: .\apps\users\views.py:88
 msgid "Notification settings updated"
-msgstr ""
+msgstr "تم تحديث إعدادات الإشعارات"
 
-#: ⁨.\templates\account\ login.html⁩:4 .\templates\base.html:194
+#: ⁨.\templates\account\login.html⁩:4 .\templates\base.html:194
 msgid "Login"
-msgstr ""
+msgstr "تسجيل الدخول"
 
-#: ⁨.\templates\account\ login.html⁩:16
+#: ⁨.\templates\account\login.html⁩:16
 msgid "Welcome back!"
-msgstr ""
+msgstr "مرحباً بعودتك!"
 
-#: ⁨.\templates\account\ login.html⁩:22 ⁨.\templates\account\ login.html⁩:74
+#: ⁨.\templates\account\login.html⁩:22 ⁨.\templates\account\login.html⁩:74
 msgid "Sign In"
-msgstr ""
+msgstr "تسجيل الدخول"
 
-#: ⁨.\templates\account\ login.html⁩:39
+#: ⁨.\templates\account\login.html⁩:39
 #: .\templates\account\password_reset.html:13
 #: .\templates\account\signup.html:29
 msgid "Email"
-msgstr ""
+msgstr "البريد الإلكتروني"
 
-#: ⁨.\templates\account\ login.html⁩:49 .\templates\account\signup.html:55
+#: ⁨.\templates\account\login.html⁩:49 .\templates\account\signup.html:55
 msgid "Password"
-msgstr ""
+msgstr "كلمة المرور"
 
-#: ⁨.\templates\account\ login.html⁩:61
+#: ⁨.\templates\account\login.html⁩:61
 msgid "Remember me"
-msgstr ""
+msgstr "تذكرني"
 
-#: ⁨.\templates\account\ login.html⁩:67
+#: ⁨.\templates\account\login.html⁩:67
 msgid "Forgot password?"
-msgstr ""
+msgstr "هل نسيت كلمة المرور؟"
 
-#: ⁨.\templates\account\ login.html⁩:78
+#: ⁨.\templates\account\login.html⁩:78
 msgid "Don't have an account?"
-msgstr ""
+msgstr "ليس لديك حساب؟"
 
-#: ⁨.\templates\account\ login.html⁩:80
+#: ⁨.\templates\account\login.html⁩:80
 msgid "Sign up"
-msgstr ""
+msgstr "إنشاء حساب"
 
 #: .\templates\account\logout.html:8
 msgid "Logged Out"
-msgstr ""
+msgstr "تم تسجيل الخروج"
 
 #: .\templates\account\logout.html:10
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "تم تسجيل خروجك بنجاح."
 
 #: .\templates\account\logout.html:14
 msgid "Login Again"
-msgstr ""
+msgstr "تسجيل الدخول مرة أخرى"
 
 #: .\templates\account\password_reset.html:7
 msgid "Reset Password"
-msgstr ""
+msgstr "إعادة تعيين كلمة المرور"
 
 #: .\templates\account\password_reset.html:19
 msgid "Send Reset Link"
-msgstr ""
+msgstr "إرسال رابط إعادة التعيين"
 
 #: .\templates\account\signup.html:4 .\templates\account\signup.html:20
 msgid "Sign Up"
-msgstr ""
+msgstr "إنشاء حساب"
 
 #: .\templates\account\signup.html:15
 msgid "Create your account"
-msgstr ""
+msgstr "إنشاء حسابك"
 
 #: .\templates\account\signup.html:40
 msgid "First Name"
-msgstr ""
+msgstr "الاسم الأول"
 
 #: .\templates\account\signup.html:47
 msgid "Last Name"
-msgstr ""
+msgstr "اسم العائلة"
 
 #: .\templates\account\signup.html:65
 msgid "Confirm Password"
-msgstr ""
+msgstr "تأكيد كلمة المرور"
 
 #: .\templates\account\signup.html:76
 msgid "Create Account"
-msgstr ""
+msgstr "إنشاء الحساب"
 
 #: .\templates\account\signup.html:80
 msgid "Already have an account?"
-msgstr ""
+msgstr "لديك حساب بالفعل؟"
 
 #: .\templates\account\signup.html:82
 msgid "Sign in"
-msgstr ""
+msgstr "تسجيل الدخول"
 
 #: .\templates\appointments\create.html:4
 #: .\templates\appointments\create.html:10
 #: .\templates\appointments\create.html:79 .\templates\doctors\detail.html:67
 #: .\templates\doctors\partials\doctor_card.html:68
 msgid "Book Appointment"
-msgstr ""
+msgstr "حجز موعد"
 
 #: .\templates\appointments\create.html:42
 msgid "Service"
-msgstr ""
+msgstr "الخدمة"
 
 #: .\templates\appointments\create.html:48
 msgid "Date"
-msgstr ""
+msgstr "التاريخ"
 
 #: .\templates\appointments\create.html:65
 msgid "Time"
-msgstr ""
+msgstr "الوقت"
 
 #: .\templates\appointments\create.html:71
 msgid "Symptoms"
-msgstr ""
+msgstr "الأعراض"
 
 #: .\templates\appointments\create.html:83
 #: .\templates\appointments\partials\appointment_card.html:66
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #: .\templates\appointments\my_appointments.html:4
 #: .\templates\appointments\my_appointments.html:10 .\templates\base.html:158
 msgid "My Appointments"
-msgstr ""
+msgstr "مواعيدي"
 
 #: .\templates\appointments\my_appointments.html:18
 #: .\templates\dashboard\patient.html:21
 msgid "Upcoming"
-msgstr ""
+msgstr "القادمة"
 
 #: .\templates\appointments\my_appointments.html:23
 msgid "Past"
-msgstr ""
+msgstr "السابقة"
 
 #: .\templates\appointments\my_appointments.html:34
 #: .\templates\dashboard\patient.html:43
 msgid "No upcoming appointments"
-msgstr ""
+msgstr "لا توجد مواعيد قادمة"
 
 #: .\templates\appointments\my_appointments.html:37
 #: .\templates\doctors\detail.html:77
 msgid "Book Now"
-msgstr ""
+msgstr "احجز الآن"
 
 #: .\templates\appointments\my_appointments.html:49
 msgid "No past appointments"
-msgstr ""
+msgstr "لا توجد مواعيد سابقة"
 
 #: .\templates\appointments\partials\appointment_card.html:49
 #: .\templates\clinics\detail.html:105 .\templates\dashboard\admin.html:82
 #: .\templates\doctors\detail.html:71
 #: .\templates\doctors\partials\doctor_card.html:53
 msgid "SAR"
-msgstr ""
+msgstr "ر.س."
 
 #: .\templates\appointments\partials\appointment_card.html:59
 msgid "View Doctor"
-msgstr ""
+msgstr "عرض الطبيب"
 
 #: .\templates\appointments\partials\appointment_card.html:80
 #: .\templates\base.html:153 .\templates\base.html:280
 #: .\templates\clinics\detail.html:171 .\templates\clinics\list.html:92
 #: .\templates\doctors\list.html:4 .\templates\home.html:74
 msgid "Doctors"
-msgstr ""
+msgstr "الأطباء"
 
 #: .\templates\appointments\partials\appointment_card.html:102
 #: .\templates\base.html:150 .\templates\base.html:279
 #: .\templates\clinics\list.html:4 .\templates\home.html:78
 msgid "Clinics"
-msgstr ""
+msgstr "العيادات"
 
 #: .\templates\appointments\partials\appointment_card.html:121
 msgid "No results found"
-msgstr ""
+msgstr "لا توجد نتائج"
 
 #: .\templates\base.html:10
 msgid "Healthcare Made Easy"
-msgstr ""
+msgstr "الرعاية الصحية أصبحت سهلة"
 
 #: .\templates\base.html:163 .\templates\dashboard\patient.html:4
 msgid "Dashboard"
-msgstr ""
+msgstr "لوحة التحكم"
 
 #: .\templates\base.html:185
 msgid "Profile"
-msgstr ""
+msgstr "الملف الشخصي"
 
 #: .\templates\base.html:188
 msgid "Logout"
-msgstr ""
+msgstr "تسجيل الخروج"
 
 #: .\templates\base.html:197
 msgid "Register"
-msgstr ""
+msgstr "التسجيل"
 
 #: .\templates\base.html:274
 msgid "Healthcare made easy and accessible for everyone"
-msgstr ""
+msgstr "الرعاية الصحية سهلة ومتاحة للجميع"
 
 #: .\templates\base.html:277
 msgid "Quick Links"
-msgstr ""
+msgstr "روابط سريعة"
 
 #: .\templates\base.html:284
 msgid "Support"
-msgstr ""
+msgstr "الدعم"
 
 #: .\templates\base.html:286
 msgid "Help Center"
-msgstr ""
+msgstr "مركز المساعدة"
 
 #: .\templates\base.html:287
 msgid "Contact Us"
-msgstr ""
+msgstr "اتصل بنا"
 
 #: .\templates\base.html:291
 msgid "Follow Us"
-msgstr ""
+msgstr "تابعنا"
 
 #: .\templates\base.html:306
 msgid "All rights reserved."
-msgstr ""
+msgstr "جميع الحقوق محفوظة."
 
 #: .\templates\clinics\detail.html:33
 msgid "reviews"
-msgstr ""
+msgstr "تقييمات"
 
 #: .\templates\clinics\detail.html:56 .\templates\doctors\detail.html:38
 msgid "About"
-msgstr ""
+msgstr "عن"
 
 #: .\templates\clinics\detail.html:62
 msgid "Our Doctors"
-msgstr ""
+msgstr "أطبماء أطبائنا"
 
 #: .\templates\clinics\detail.html:84 .\templates\dashboard\admin.html:274
 msgid "View"
-msgstr ""
+msgstr "عرض"
 
 #: .\templates\clinics\detail.html:93 .\templates\clinics\detail.html:175
 msgid "Services"
-msgstr ""
+msgstr "الخدمات"
 
 #: .\templates\clinics\detail.html:106
 msgid "min"
-msgstr ""
+msgstr "دقيقة"
 
 #: .\templates\clinics\detail.html:120
 msgid "Contact Information"
-msgstr ""
+msgstr "معلومات الاتصال"
 
 #: .\templates\clinics\detail.html:142
 msgid "Visit Website"
-msgstr ""
+msgstr "زيارة الموقع"
 
 #: .\templates\clinics\detail.html:151 .\templates\doctors\detail.html:50
 msgid "Working Hours"
-msgstr ""
+msgstr "ساعات العمل"
 
 #: .\templates\clinics\detail.html:155
 msgid "Opens"
-msgstr ""
+msgstr "يفتح"
 
 #: .\templates\clinics\detail.html:159
 msgid "Closes"
-msgstr ""
+msgstr "يغلق"
 
 #: .\templates\clinics\detail.html:179
 msgid "Average Rating"
-msgstr ""
+msgstr "متوسط التقييم"
 
 #: .\templates\clinics\list.html:13
 msgid "Find the Best Clinics"
-msgstr ""
+msgstr "ابحث عن أفضل العيادات"
 
 #: .\templates\clinics\list.html:16
 msgid "Browse our network of verified medical clinics"
-msgstr ""
+msgstr "استعرض شبكتنا من العيادات الطبية الموثقة"
 
 #: .\templates\clinics\list.html:51
 msgid "Highest Rated"
-msgstr ""
+msgstr "الأعلى تقييماً"
 
 #: .\templates\clinics\list.html:52
 msgid "Name A-Z"
-msgstr ""
+msgstr "الاسم أ-ي"
 
 #: .\templates\clinics\list.html:53
 msgid "City"
-msgstr ""
+msgstr "المدينة"
 
 #: .\templates\clinics\list.html:93
 msgid "Reviews"
-msgstr ""
+msgstr "التقييمات"
 
 #: .\templates\clinics\list.html:98
 msgid "View Details"
-msgstr ""
+msgstr "عرض التفاصيل"
 
 #: .\templates\clinics\list.html:105
 msgid "No clinics found"
-msgstr ""
+msgstr "لا توجد عيادات"
 
 #: .\templates\clinics\list.html:115
 msgid "First"
-msgstr ""
+msgstr "الأول"
 
 #: .\templates\clinics\list.html:116
 msgid "Previous"
-msgstr ""
+msgstr "السابق"
 
 #: .\templates\clinics\list.html:124
 msgid "Next"
-msgstr ""
+msgstr "التالي"
 
 #: .\templates\clinics\list.html:125
 msgid "Last"
-msgstr ""
+msgstr "الأخير"
 
 #: .\templates\dashboard\admin.html:4 .\templates\dashboard\admin.html:13
 msgid "Admin Dashboard"
-msgstr ""
+msgstr "لوحة تحكم المدير"
 
 #: .\templates\dashboard\admin.html:16
 msgid "Welcome back! Here's what's happening today."
-msgstr ""
+msgstr "مرحباً بعودتك! إليك ما يحدث اليوم."
 
 #: .\templates\dashboard\admin.html:27
 msgid "Total Clinics"
-msgstr ""
+msgstr "إجمالي العيادات"
 
 #: .\templates\dashboard\admin.html:44
 msgid "Total Doctors"
-msgstr ""
+msgstr "إجمالي الأطباء"
 
 #: .\templates\dashboard\admin.html:61 .\templates\dashboard\doctor.html:26
 msgid "Total Patients"
-msgstr ""
+msgstr "إجمالي المرضى"
 
 #: .\templates\dashboard\admin.html:78
 msgid "This Month Revenue"
-msgstr ""
+msgstr "إيرادات هذا الشهر"
 
 #: .\templates\dashboard\admin.html:100 .\templates\dashboard\doctor.html:16
 #: .\templates\dashboard\doctor.html:37
 msgid "Today's Appointments"
-msgstr ""
+msgstr "مواعيد اليوم"
 
 #: .\templates\dashboard\admin.html:109
 msgid "Pending Confirmations"
-msgstr ""
+msgstr "في انتظار التأكيد"
 
 #: .\templates\dashboard\admin.html:118 .\templates\dashboard\patient.html:16
 msgid "Total Appointments"
-msgstr ""
+msgstr "إجمالي المواعيد"
 
 #: .\templates\dashboard\admin.html:129
 msgid "Top Doctors"
-msgstr ""
+msgstr "أفضل الأطباء"
 
 #: .\templates\dashboard\admin.html:132 .\templates\dashboard\admin.html:202
 #: .\templates\home.html:186
 msgid "View All"
-msgstr ""
+msgstr "عرض الكل"
 
 #: .\templates\dashboard\admin.html:165
 msgid "Popular Specializations"
-msgstr ""
+msgstr "التخصصات الشائعة"
 
 #: .\templates\dashboard\admin.html:199
 msgid "Recent Appointments"
-msgstr ""
+msgstr "المواعيد الأخيرة"
 
 #: .\templates\dashboard\admin.html:218
 msgid "Date & Time"
-msgstr ""
+msgstr "التاريخ والوقت"
 
 #: .\templates\dashboard\admin.html:224
 msgid "Actions"
-msgstr ""
+msgstr "الإجراءات"
 
 #: .\templates\dashboard\admin.html:281
 msgid "No recent appointments"
-msgstr ""
+msgstr "لا توجد مواعيد أخيرة"
 
 #: .\templates\dashboard\doctor.html:4 .\templates\dashboard\doctor.html:10
 msgid "Doctor Dashboard"
-msgstr ""
+msgstr "لوحة تحكم الطبيب"
 
 #: .\templates\dashboard\doctor.html:21
 msgid "Pending Confirmation"
-msgstr ""
+msgstr "في انتظار التأكيد"
 
 #: .\templates\dashboard\doctor.html:31
 msgid "Rating"
-msgstr ""
+msgstr "التقييم"
 
 #: .\templates\dashboard\doctor.html:58
 msgid "Confirm"
-msgstr ""
+msgstr "تأكيد"
 
 #: .\templates\dashboard\doctor.html:63
 msgid "No appointments today"
-msgstr ""
+msgstr "لا توجد مواع бата اليوم"
 
 #: .\templates\dashboard\patient.html:10
 msgid "Welcome back"
-msgstr ""
+msgstr "مرحباً بعودتك"
 
 #: .\templates\dashboard\patient.html:37
 msgid "Upcoming Appointments"
-msgstr ""
+msgstr "المواعيد القادمة"
 
 #: .\templates\doctors\detail.html:44
 msgid "Education"
-msgstr ""
+msgstr "التعليم"
 
 #: .\templates\doctors\detail.html:82
 msgid "Login to Book"
-msgstr ""
+msgstr "تسجيل الدخول لحجز موعد"
 
 #: .\templates\doctors\detail.html:89
 msgid "Experience"
-msgstr ""
+msgstr "الخبرة"
 
 #: .\templates\doctors\detail.html:90
 msgid "years"
-msgstr ""
+msgstr "سنوات"
 
 #: .\templates\doctors\detail.html:93
 #: .\templates\doctors\partials\doctor_card.html:49
 msgid "Patients"
-msgstr ""
+msgstr "المرضى"
 
 #: .\templates\doctors\list.html:10
 msgid "Find the Best Doctors"
-msgstr ""
+msgstr "ابحث عن أفضل الأطباء"
 
 #: .\templates\doctors\partials\available_slots.html:21
 msgid "No available slots for this date"
-msgstr ""
+msgstr "لا توجد فتحات متاحة لهذا التاريخ"
 
 #: .\templates\doctors\partials\doctor_card.html:20
 msgid "Verified"
-msgstr ""
+msgstr "موثق"
 
 #: .\templates\doctors\partials\doctor_card.html:45
 msgid "Years"
-msgstr ""
+msgstr "سنوات"
 
 #: .\templates\doctors\partials\doctor_card.html:61
 msgid "View Profile"
-msgstr ""
+msgstr "عرض الملف الشخصي"
 
 #: .\templates\errors\403.html:10
 msgid "Access Denied"
-msgstr ""
+msgstr "الوصول مرفوض"
 
 #: .\templates\errors\403.html:12
 msgid "You don't have permission to access this page."
-msgstr ""
+msgstr "ليس لديك صلاحية للوصول إلى هذه الصفحة."
 
 #: .\templates\errors\403.html:15 .\templates\errors\404.html:29
 msgid "Go Home"
-msgstr ""
+msgstr "الصفحة الرئيسية"
 
 #: .\templates\errors\404.html:4 .\templates\errors\404.html:18
 msgid "Page Not Found"
-msgstr ""
+msgstr "الصفحة غير موجودة"
 
 #: .\templates\errors\404.html:22
 msgid "Sorry, we couldn't find the page you're looking for."
-msgstr ""
+msgstr "عذراً، لم نتمكن من العثور على الصفحة التي تبحث عنها."
 
 #: .\templates\errors\404.html:35
 msgid "Go Back"
-msgstr ""
+msgstr "العودة"
 
 #: .\templates\home.html:18
 msgid "Healthcare"
-msgstr ""
+msgstr "الرعاية الصحية"
 
 #: .\templates\home.html:19
 msgid "Made Simple"
-msgstr ""
+msgstr "أصبحت بسيطة"
 
 #: .\templates\home.html:22
 msgid ""
 "Book appointments with top doctors instantly. Your health, our priority."
-msgstr ""
+msgstr "احجز مواعيد مع أفضل الأطباء فوراً. صحتك أولويتنا."
 
 #: .\templates\home.html:39
 msgid "Clinic"
-msgstr ""
+msgstr "العيادة"
 
 #: .\templates\home.html:45
 msgid "Specialization"
-msgstr ""
+msgstr "التخصص"
 
 #: .\templates\home.html:52
 msgid "Search for doctors, clinics, or specializations..."
-msgstr ""
+msgstr "ابحث عن أطباء، عيادات، أو تخصصات..."
 
 #: .\templates\home.html:82
 msgid "Appointments"
-msgstr ""
+msgstr "المواعيد"
 
 #: .\templates\home.html:99
 msgid "Easy Booking"
-msgstr ""
+msgstr "حجز سهل"
 
 #: .\templates\home.html:100
 msgid "Book in 3 clicks"
-msgstr ""
+msgstr "احجز في 3 نقرات"
 
 #: .\templates\home.html:121
 msgid "Why Choose MediBook?"
-msgstr ""
+msgstr "لماذا تختار MediBook؟"
 
 #: .\templates\home.html:122
 msgid "Experience healthcare booking like never before"
-msgstr ""
+msgstr "جرب حجز الرعاية الصحية بطريقة لم تشهدها من قبل"
 
 #: .\templates\home.html:131
 msgid "Instant Booking"
-msgstr ""
+msgstr "حجز فوري"
 
 #: .\templates\home.html:132
 msgid "Book appointments in seconds with real-time availability"
-msgstr ""
+msgstr "احجز المواعيد في ثوانٍ مع توافر فوري"
 
 #: .\templates\home.html:140
 msgid "Verified Doctors"
-msgstr ""
+msgstr "أطباء موثقون"
 
 #: .\templates\home.html:141
 msgid "All doctors are verified and certified professionals"
-msgstr ""
+msgstr "جميع الأطباء موثقون ومعتمدون مهنياً"
 
 #: .\templates\home.html:149
 msgid "Smart Reminders"
-msgstr ""
+msgstr "تذكيرات ذكية"
 
 #: .\templates\home.html:150
 msgid "Never miss an appointment with automated reminders"
-msgstr ""
+msgstr "لا تفوت موعدًا مع التذكيرات التلقائية"
 
 #: .\templates\home.html:160
 msgid "Browse by Specialization"
-msgstr ""
+msgstr "استعرض حسب التخصص"
 
 #: .\templates\home.html:161
 msgid "Find the right specialist for your needs"
-msgstr ""
+msgstr "ابحث عن المتخصص المناسب لاحتياجاتك"
 
 #: .\templates\home.html:182
 msgid "Top Rated Doctors"
-msgstr ""
+msgstr "الأطباء الأعلى تقييماً"
 
 #: .\templates\home.html:183
 msgid "Meet our highly rated professionals"
-msgstr ""
+msgstr "تعرف على متخصصينا ذوي التقييم العالي"
 
 #: .\templates\home.html:207
 msgid "Ready to Get Started?"
-msgstr ""
+msgstr "جاهز للبدء؟"
 
 #: .\templates\home.html:208
 msgid ""
 "Join thousands of patients who trust MediBook for their healthcare needs"
-msgstr ""
+msgstr "انضم إلى آلاف المرضى الذين يثقون بـ MediBook لاحتياجاتهم الصحية"
 
 #: .\templates\home.html:210
 msgid "Create Free Account"
-msgstr ""
+msgstr "إنشاء حساب مجاني"
 
 #: .\utils\decorators.py:16 .\utils\mixins.py:14
 msgid "You must be a patient to access this page"
-msgstr ""
+msgstr "يجب أن تكون مريضاً للوصول إلى هذه الصفحة"
 
 #: .\utils\decorators.py:33 .\utils\mixins.py:25
 msgid "You must be a doctor to access this page"
-msgstr ""
+msgstr "يجب أن تكون طبيباً للوصول إلى هذه الصفحة"
 
 #: .\utils\decorators.py:50 .\utils\mixins.py:36
 msgid "You must be an admin to access this page"
-msgstr ""
+msgstr "يجب أن تكون مديراً للوصول إلى هذه الصفحة"

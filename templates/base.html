@@ -11,16 +11,29 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
-    <!-- Tailwind Config -->
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {}
-        }
-    }
-</script>
 
+    <!-- ✅ تطبيق الوضع الليلي فوراً قبل أي شيء -->
+    <script>
+        // تطبيق فوري للوضع الليلي
+        (function() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
 
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -87,6 +100,11 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 5px; }
         ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        /* ✅ إضافة transition سلس */
+        html {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 
     {% compress css %}
@@ -96,28 +114,11 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen"
-      x-data="{
-          darkMode: localStorage.getItem('darkMode') === 'true',
-          sidebarOpen: false,
-          init() {
-              this.$watch('darkMode', val => {
-                  localStorage.setItem('darkMode', val);
-                  if (val) {
-                      document.documentElement.classList.add('dark');
-                  } else {
-                      document.documentElement.classList.remove('dark');
-                  }
-              });
-              if (this.darkMode) {
-                  document.documentElement.classList.add('dark');
-              }
-          }
-      }"
-      x-init="init()">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300"
+      x-data="{ sidebarOpen: false }">
 
     <!-- Navigation -->
-    <nav class="bg-white dark:bg-gray-800 shadow-lg fixed w-full top-0 z-50 transition-all duration-300">
+    <nav class="bg-white dark:bg-gray-800 shadow-lg fixed w-full top-0 z-50 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <!-- Logo -->
@@ -167,13 +168,14 @@
                             </button>
 
                             <div x-show="open"
+                                 x-cloak
                                  @click.away="open = false"
                                  x-transition
-                                 class="absolute {% if LANGUAGE_CODE == 'ar' %}left-0{% else %}right-0{% endif %} mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-2">
-                                <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700">
+                                 class="absolute {% if LANGUAGE_CODE == 'ar' %}left-0{% else %}right-0{% endif %} mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-2 transition-colors duration-300">
+                                <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-gray-700 transition-colors">
                                     {% trans "Profile" %}
                                 </a>
-                                <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700">
+                                <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors">
                                     {% trans "Logout" %}
                                 </a>
                             </div>
@@ -187,10 +189,10 @@
                         </a>
                     {% endif %}
 
-                    <!-- Dark Mode Toggle -->
-                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                        <span x-show="!darkMode" class="iconify text-xl" data-icon="mdi:moon-waning-crescent"></span>
-                        <span x-show="darkMode" class="iconify text-xl text-yellow-400" data-icon="mdi:white-balance-sunny"></span>
+                    <!-- ✅ Dark Mode Toggle - باستخدام JavaScript عادي -->
+                    <button onclick="toggleDarkMode()" id="darkModeBtn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <span id="moonIcon" class="iconify text-xl" data-icon="mdi:moon-waning-crescent"></span>
+                        <span id="sunIcon" class="iconify text-xl text-yellow-400 hidden" data-icon="mdi:white-balance-sunny"></span>
                     </button>
 
                     <!-- Language Switcher -->
@@ -198,7 +200,7 @@
                         {% csrf_token %}
                         <input name="next" type="hidden" value="{{ request.path }}">
                         <select name="language" onchange="this.form.submit()"
-                                class="bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500">
+                                class="bg-gray-100 dark:bg-gray-700 border-0 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 transition-colors">
                             <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>العربية</option>
                             <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
                         </select>
@@ -206,7 +208,13 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
+                <div class="md:hidden flex items-center space-x-2">
+                    <!-- Dark Mode for Mobile -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <span id="moonIconMobile" class="iconify text-xl" data-icon="mdi:moon-waning-crescent"></span>
+                        <span id="sunIconMobile" class="iconify text-xl text-yellow-400 hidden" data-icon="mdi:white-balance-sunny"></span>
+                    </button>
+
                     <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                         <span class="iconify text-2xl" data-icon="mdi:menu"></span>
                     </button>
@@ -217,6 +225,7 @@
 
     <!-- Mobile Sidebar Overlay -->
     <div x-show="sidebarOpen"
+         x-cloak
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
@@ -229,13 +238,14 @@
 
     <!-- Mobile Sidebar -->
     <div x-show="sidebarOpen"
+         x-cloak
          x-transition:enter="transition ease-out duration-300 transform"
          x-transition:enter-start="{% if LANGUAGE_CODE == 'ar' %}translate-x-full{% else %}-translate-x-full{% endif %}"
          x-transition:enter-end="translate-x-0"
          x-transition:leave="transition ease-in duration-200 transform"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="{% if LANGUAGE_CODE == 'ar' %}translate-x-full{% else %}-translate-x-full{% endif %}"
-         class="fixed top-0 {% if LANGUAGE_CODE == 'ar' %}right-0{% else %}left-0{% endif %} h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-50 md:hidden">
+         class="fixed top-0 {% if LANGUAGE_CODE == 'ar' %}right-0{% else %}left-0{% endif %} h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-50 md:hidden transition-colors duration-300">
 
         <div class="p-4">
             <button @click="sidebarOpen = false" class="mb-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -329,6 +339,52 @@
             </div>
         </div>
     </footer>
+
+    <!-- ✅ JavaScript للتحكم في الوضع الليلي -->
+    <script>
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+                updateIcons(false);
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+                updateIcons(true);
+            }
+        }
+
+        function updateIcons(isDark) {
+            // Desktop icons
+            const moonIcon = document.getElementById('moonIcon');
+            const sunIcon = document.getElementById('sunIcon');
+
+            // Mobile icons
+            const moonIconMobile = document.getElementById('moonIconMobile');
+            const sunIconMobile = document.getElementById('sunIconMobile');
+
+            if (isDark) {
+                moonIcon?.classList.add('hidden');
+                sunIcon?.classList.remove('hidden');
+                moonIconMobile?.classList.add('hidden');
+                sunIconMobile?.classList.remove('hidden');
+            } else {
+                moonIcon?.classList.remove('hidden');
+                sunIcon?.classList.add('hidden');
+                moonIconMobile?.classList.remove('hidden');
+                sunIconMobile?.classList.add('hidden');
+            }
+        }
+
+        // تحديث الأيقونات عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            updateIcons(isDark);
+        });
+    </script>
 
     {% compress js %}
     <script src="{% static 'js/custom.js' %}"></script>
