@@ -20,20 +20,38 @@ document.addEventListener('DOMContentLoaded', function() {
  * Dark Mode Toggle
  */
 function initDarkMode() {
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-
     // Check for saved preference or default to light mode
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+    
+    // Update icons on page load
+    updateDarkModeIcons(isDarkMode);
+}
 
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', function() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-            // Animate the transition
-            document.documentElement.style.transition = 'background-color 0.3s ease';
-        });
+function updateDarkModeIcons(isDark) {
+    // Desktop icons
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    
+    // Mobile icons
+    const moonIconMobile = document.getElementById('moonIconMobile');
+    const sunIconMobile = document.getElementById('sunIconMobile');
+    
+    if (isDark) {
+        moonIcon?.classList.add('hidden');
+        sunIcon?.classList.remove('hidden');
+        moonIconMobile?.classList.add('hidden');
+        sunIconMobile?.classList.remove('hidden');
+    } else {
+        moonIcon?.classList.remove('hidden');
+        sunIcon?.classList.add('hidden');
+        moonIconMobile?.classList.remove('hidden');
+        sunIconMobile?.classList.add('hidden');
     }
 }
 
