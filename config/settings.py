@@ -10,15 +10,17 @@ import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Render External URL
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+
 # Security
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-CHANGE-ME-in-production')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+
+# Render External URL
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
@@ -263,4 +265,3 @@ else:
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'ar'
 MODELTRANSLATION_LANGUAGES = ('ar', 'en')
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('ar', 'en')
-
