@@ -1,10 +1,9 @@
 from django.contrib import admin
-from modeltranslation.admin import TranslationAdmin
 from .models import Specialization, Doctor, WorkingHour, DayOff
 from django.utils.translation import gettext_lazy as _
 
 @admin.register(Specialization)
-class SpecializationAdmin(TranslationAdmin):
+class SpecializationAdmin(admin.ModelAdmin):
     """Specialization Admin"""
 
     list_display = ['name', 'slug', 'icon', 'created_at']
@@ -28,7 +27,7 @@ class DayOffInline(admin.TabularInline):
 
 
 @admin.register(Doctor)
-class DoctorAdmin(TranslationAdmin):
+class DoctorAdmin(admin.ModelAdmin):
     """Doctor Admin"""
 
     list_display = ['get_full_name', 'specialization', 'clinic', 'rating', 'is_verified', 'is_available']
@@ -89,3 +88,4 @@ class DayOffAdmin(admin.ModelAdmin):
     list_filter = ['is_recurring', 'date']
     search_fields = ['doctor__user__first_name', 'doctor__user__last_name', 'reason']
     date_hierarchy = 'date'
+
