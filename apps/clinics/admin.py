@@ -1,11 +1,10 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-
+from modeltranslation.admin import TranslationAdmin
 from .models import Clinic
 
-
 @admin.register(Clinic)
-class ClinicAdmin(admin.ModelAdmin):
+class ClinicAdmin(TranslationAdmin):
     """Clinic Admin"""
 
     list_display = ['name', 'city', 'phone', 'rating', 'is_active', 'created_at']

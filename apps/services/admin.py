@@ -1,10 +1,11 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 from .models import Service
 from django.utils.translation import gettext_lazy as _
 
 
 @admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
+class ServiceAdmin(TranslationAdmin):
     """Service Admin"""
 
     list_display = ['name', 'clinic', 'duration_minutes', 'price', 'is_active', 'created_at']
@@ -32,5 +33,3 @@ class ServiceAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-
-
