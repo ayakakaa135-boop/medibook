@@ -259,8 +259,8 @@ if not DEBUG:
         "BREVO_API_KEY": config("BREVO_API_KEY", default=""),
     }
     # Format: "Display Name <email@example.com>"
-    DEFAULT_FROM_EMAIL = os.getenv(DEFAULT_FROM_EMAIL)
-    SERVER_EMAIL = os.getenv(SERVER_EMAIL)
+    DEFAULT_FROM_EMAIL = "MediBook <ayakakaa135@gmail.com>"
+    SERVER_EMAIL = "MediBook <ayakakaa135@gmail.com>"
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'MediBook <dev@medibook.local>'
