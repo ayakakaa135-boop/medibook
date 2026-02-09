@@ -9,18 +9,11 @@ import sys
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-
 # Security
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-CHANGE-ME-in-production')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
-
-# Render External URL
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
@@ -54,9 +47,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
 ]
 
-# تعطيل Debug Toolbar نهائياً
-# if DEBUG:
-#     INSTALLED_APPS += ['debug_toolbar', 'django_extensions']
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', 'django_extensions']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,9 +64,8 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-# تعطيل Debug Toolbar Middleware
-# if DEBUG:
-#     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+if DEBUG:
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -101,16 +92,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default=''),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', default='5432'),
+        'OPTIONS': {
+            'sslmode': 'require', # ضروري للاتصال بـ Supabase
+        }
+    }
 }
-
-# Supabase requires SSL
-if 'postgres' in DATABASES.get('default', {}).get('ENGINE', ''):
-    DATABASES['default'].setdefault('OPTIONS', {})['sslmode'] = 'require'
 # Cache (Redis)
 """
 CACHES = {
@@ -202,9 +195,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Custom user model
 AUTH_USER_MODEL = 'users.User'
+# أضف هذه الأسطر أسفل إعدادات Allauth الموجودة لديك
+ACCOUNT_USERNAME_REQUIRED = False          # لا تطلب اسم مستخدم عند التسجيل
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None   # أخبر allauth أن الموديل لا يحتوي على حقل username أصلاً
+ACCOUNT_AUTHENTICATION_METHOD = 'email'    # التأكيد على أن تسجيل الدخول بالإيميل فقط
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Allauth settings
 SITE_ID = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None   # أخبر allauth أن الموديل لا يحتوي على حقل username أصلاً
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
@@ -252,20 +249,17 @@ PAYMENT_DUE_DAYS = os.getenv('PAYMENT_DUE_DAYS', '25')
 # Currency
 DEFAULT_CURRENCY = os.getenv('DEFAULT_CURRENCY', 'SAR')
 
-# Email Settings (Brevo via Anymail)
-if not DEBUG:
-    EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
-    ANYMAIL = {
-        "BREVO_API_KEY": config("BREVO_API_KEY", default=""),
-    }
-    # Format: "Display Name <email@example.com>"
-    DEFAULT_FROM_EMAIL = "MediBook <ayakakaa135@gmail.com>"
-    SERVER_EMAIL = "MediBook <ayakakaa135@gmail.com>"
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'MediBook <dev@medibook.local>'
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # App Password من Gmail
+DEFAULT_FROM_EMAIL = 'mediabook@gmail.com'
 
 # Modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'ar'
 MODELTRANSLATION_LANGUAGES = ('ar', 'en')
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('ar', 'en')
+
