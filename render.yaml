@@ -1,7 +1,7 @@
 services:
   - type: web
     name: medibook
-    env: python
+    runtime: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application"
     envVars:
@@ -11,14 +11,25 @@ services:
         value: config.settings
       - key: DEBUG
         value: "False"
+      - key: SECRET_KEY
+        generateValue: true
       - key: DATABASE_URL
-        value: "postgresql://postgres:PASS@HOST:5432/postgres"
+        sync: false
       - key: REDIS_URL
         fromService:
           type: redis
           name: medibook-redis
           property: connectionString
+      - key: BREVO_API_KEY
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        value: ayakakaa135@gmail.com
 
   - type: redis
     name: medibook-redis
+    plan: free
     ipAllowList: []
+
+databases:
+  - name: medibook-db
+    plan: free
