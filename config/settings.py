@@ -54,8 +54,9 @@ INSTALLED_APPS = [
     'apps.dashboard',
 ]
 
-if DEBUG:
-    INSTALLED_APPS += ['debug_toolbar', 'django_extensions']
+# تعطيل Debug Toolbar نهائياً
+# if DEBUG:
+#     INSTALLED_APPS += ['debug_toolbar', 'django_extensions']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,8 +72,9 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-if DEBUG:
-    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+# تعطيل Debug Toolbar Middleware
+# if DEBUG:
+#     MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -256,10 +258,12 @@ if not DEBUG:
     ANYMAIL = {
         "BREVO_API_KEY": config("BREVO_API_KEY", default=""),
     }
-    DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="ayakakaa135@gmail.com")
+    # Format: "Display Name <email@example.com>"
+    DEFAULT_FROM_EMAIL = os.getenv(DEFAULT_FROM_EMAIL)
+    SERVER_EMAIL = os.getenv(SERVER_EMAIL)
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    DEFAULT_FROM_EMAIL = 'dev@medibook.local'
+    DEFAULT_FROM_EMAIL = 'MediBook <dev@medibook.local>'
 
 # Modeltranslation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'ar'
