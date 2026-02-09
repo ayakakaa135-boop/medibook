@@ -17,6 +17,9 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 
 # Application definition
 INSTALLED_APPS = [
+    # modeltranslation must be before admin
+    'modeltranslation',
+    
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,9 +36,9 @@ INSTALLED_APPS = [
     'compressor',
     'django_htmx',
     'widget_tweaks',
-    'modeltranslation',
     'rosetta',
     'django_celery_beat',
+    'apps.core',
     'apps.users',
     'apps.clinics',
     'apps.doctors',
@@ -254,3 +257,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER") 
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # App Password من Gmail
 DEFAULT_FROM_EMAIL = 'mediabook@gmail.com'
+
+# Modeltranslation settings
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'ar'
+MODELTRANSLATION_LANGUAGES = ('ar', 'en')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('ar', 'en')
+

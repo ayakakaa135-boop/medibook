@@ -24,7 +24,21 @@ class Specialization(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            # Prefer English name for slug since slugify doesn't handle Arabic well
+            name_for_slug = getattr(self, 'name_en', '') or getattr(self, 'name_ar', '') or self.name
+            if name_for_slug:
+                from django.utils.text import slugify as django_slugify
+                base_slug = django_slugify(name_for_slug)
+                # If slugify returns empty (Arabic text), use a fallback
+                if not base_slug:
+                    base_slug = f"specialization-{self.pk or 'new'}"
+                    
+                slug = base_slug
+                counter = 1
+                while Specialization.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                    slug = f"{base_slug}-{counter}"
+                    counter += 1
+                self.slug = slug
         super().save(*args, **kwargs)
 
 

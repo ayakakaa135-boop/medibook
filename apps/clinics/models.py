@@ -52,15 +52,25 @@ class Clinic(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.name)
-            slug = base_slug
-            counter = 1
+            # Prefer English name for slug since slugify doesn't handle Arabic well
+            # Try English first, then fallback to Arabic (though it won't work well)
+            name_for_slug = getattr(self, 'name_en', '') or getattr(self, 'name_ar', '') or self.name
+            if name_for_slug:
+                base_slug = slugify(name_for_slug)
+                # If slugify returns empty (Arabic text), use a fallback
+                if not base_slug:
+                    base_slug = f"clinic-{self.pk or 'new'}"
+                    
+                slug = base_slug
+                counter = 1
 
-            while Clinic.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
+                while Clinic.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                    slug = f"{base_slug}-{counter}"
+                    counter += 1
 
-            self.slug = slug
+                self.slug = slug
 
         super().save(*args, **kwargs)
+
+
 
